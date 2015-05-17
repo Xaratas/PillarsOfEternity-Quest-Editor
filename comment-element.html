@@ -1,0 +1,33 @@
+<link rel="import" href="bower_components/iron-input/iron-input.html">
+<template>
+	<input is="iron-input" bind-value={{comment}} placeholder="comment" >
+	<button on-click="remove">x</button>
+</template>
+<script>
+	Comment = Polymer({
+		is: "comment-element",
+		properties: {
+			comment: String,
+			parent_: Object,
+			index: Number // zur Verwaltung in Listen
+		},
+
+		factoryImpl: function(parent_, index) {
+			this.parent_ = parent_;
+			this.index = index;
+		},
+		remove: function() {
+			//this.remove(); // kommt man nicht so wirklich ran, sich selbst rauszuwerfen ist nicht drin (oder ich weiß nicht wie, deswegen der umweg)
+			this.parent_.removeComment(this.index);
+		},
+		setText: function(text) {
+			this.comment = text;
+		},
+		fromXML: function(xml) { // nicht nötig
+		},
+
+		toXML: function() {
+			return '<Comment>' + this.comment + '</Comment>';
+		}
+	});
+</script>

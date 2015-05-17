@@ -1,0 +1,82 @@
+<link rel="import" href="bower_components/iron-input/iron-input.html">
+<link rel="import" href="comment-element.html">
+
+<dom-module id="FlowChartNode2-element">
+<style>
+	:host {
+		background-color: #ccc;
+		width: 200px;
+		display: flex;
+	    flex-direction: column;
+		margin: 10px;
+		padding: 5px;
+	}
+
+	
+	comments {
+	}
+</style>
+<template>
+		<div>Type: <span>{{type}}</span></div>
+		<div>ID: <input is="iron-input" bind-value={{nodeId}}></input></div>
+		<div>Comments: <button on-click="addComment">Add</button></div>
+		<comments></comments>
+</template>
+</dom-module>
+
+<script>
+	FlowChartNode = Polymer({
+		is: "FlowChartNode2-element",
+		
+		properties: {
+			type: String,
+			nodeId: Number,
+			comments: {
+				type: Array,
+				value: []
+			}
+		},
+		
+		addComment: function(text) {
+			var comment = new Comment(this, this.comments.length + 1);
+			if(text !== undefined)
+				comment.setText(text);
+			this.push("comments", comment);
+        	Polymer.dom(this.$$("comments")).appendChild(comment, this.$$("comments"));
+		},
+
+		removeComment: function(index) {
+			console.log("remove Comment");
+			var comment = this.splice("comments", index - 1, 1)[0]; // splice liefert ein array
+			Polymer.dom(this.$$("comments")).removeChild(comment); // die remove child erwartet eine node, deswegen über comment und nicht über id
+		},
+
+		fromXML: function(xml) {
+			if(xml.hasChildNodes()) {
+				this.type = xml.attributes[0].value;
+				var node;
+				for(node of xml.childNodes) {
+					if(node.nodeName == "NodeID") {
+						this.nodeId = node.childNodes[0].nodeValue;
+					}
+					if(node.nodeName == "Comments") {
+						var cnode;
+						for(cnode of node.childNodes) {
+							this.addComment(cnode.textContent);
+						}
+					}
+					// andere werte
+				}
+			}	
+		},
+
+		toXML: function() {
+			var result = "<FlowChartNode xsi:type=\"" + this.type + "\">"
+						+ "<NodeID>" + this.nodeId + "</NodeID><Comments>";
+			for(comment of this.comments) {
+				result += comment.toXML();
+			}
+			return result + "</Comments></FlowChartNode>";
+		}
+	});
+</script>

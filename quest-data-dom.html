@@ -1,0 +1,65 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="flowChartNode2-element.html">
+<script>
+	QuestData = Polymer({
+		is: "QuestData-dom",
+
+		properties: {
+			nextNodeId: Number,
+			nodes: {
+				type: Array,
+				value: []
+			},
+			parser: {
+				type: Object,
+				value: new window.DOMParser()
+			}
+		},
+
+		// geht erstmal von text aus, hab noch kein file handling
+		fromXML: function(xml) {
+			if(typeof(xml) == "string") // schon geparstes ist object
+				xml = this.parser.parseFromString(xml, 'text/xml');
+			
+			if(xml.hasChildNodes()) {
+				for(var i = 0; i < xml.childNodes.length; i++) {
+            		var item = xml.childNodes.item(i);
+		            var name = item.nodeName;
+					
+					if(name == "QuestData") {
+						this.fromXML(item); // rekursion
+					}
+					if(name == "NextNodeID") {
+						this.nextNodeId = item.childNodes[0].nodeValue;
+					}
+					if(name == "Nodes") {
+						// über alle
+						var node, element;
+						for(node of item.childNodes) {
+							if(node.nodeName == "FlowChartNode") {
+								element = new FlowChartNode();
+								element.fromXML(node);
+							}
+							// bookmarks, classextender, usw.
+						this.push("nodes", element);
+						}
+						// dom anpassen
+						for(node of this.nodes) {
+							Polymer.dom(this).appendChild(node, this);
+						}
+					}
+				}
+			}
+		},
+
+		toXML: function() {
+			var result = '<?xml version="1.0" encoding="utf-8"?><QuestData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><NextNodeID>' + this.nextNodeId + '</NextNodeID>';
+			for(node of this.nodes) { // ES6 
+				result += '<Nodes>';
+				result += node.toXML();
+				result += '</Nodes>';
+			}
+			return result + '</QuestData>';
+		}
+	});
+</script>

@@ -1,0 +1,25 @@
+{
+  "name": "quest-editor",
+  "version": "0.0.1",
+  "authors": [
+    "Xaratas"
+  ],
+  "description": "Pillars of Eternity Quest Editor",
+  "main": "index.html",
+  "keywords": [
+    "xml",
+    "editor"
+  ],
+  "license": "CC",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.9.0",
+    "iron-input": "git://github.com/PolymerElements/iron-input.git#~0.9.4"
+  }
+}

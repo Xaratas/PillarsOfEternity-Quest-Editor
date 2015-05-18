@@ -12,12 +12,15 @@
 		padding: 5px;
 	}
 
-	
+	.direction {
+		float: right;
+	}
+
 	comments {
 	}
 </style>
 <template>
-		<div>Type: <span>{{type}}</span></div>
+		<div>Type: <span>{{type}}</span><span class="direction">{{direction}}</span></div>
 		<div>ID: <input is="iron-input" bind-value={{nodeId}}></input></div>
 		<div>Comments: <button on-click="addComment">Add</button></div>
 		<comments></comments>
@@ -43,13 +46,15 @@
 			id: {
 				computed: 'setId(nodeId)',
 				reflectToAttribute: true
-			}
+			},
+			direction: String
 		},
 		
 		listeners: {
 			'dragstart': 'onDragStart',
 			'dragover': 'onDragOver',
 			'dragenter': 'onDragEnter',
+			'dragleave': 'onDragLeave',
 			'drop': 'onDrop',
 			'dragend': 'onDragEnd'
 		},
@@ -71,10 +76,16 @@
 			var comment = this.splice("comments", index - 1, 1)[0]; // splice liefert ein array
 			Polymer.dom(this.$$("comments")).removeChild(comment); // die remove child erwartet eine node, deswegen über comment und nicht über id
 		},
+
+		createLink: function(from, to) {
+			// FlowChartLink eintragen.
+		},
+
 		//http://www.quirksmode.org/blog/archives/2009/09/the_html5_drag.html Ja verdammt, drag and drop ist fürn arsch, und das wird auch in HTML 5.1 so bleiben
 		onDragStart: function(event) {
 			event.dataTransfer.effectsAllowed = 'link';
 			event.dataTransfer.setData("id", this.id); // type could be anything, as long as it is string, oh and data have to be string too …
+			this.direction = "from";
 		},
 
 		onDragEnter: function(event) {
@@ -84,20 +95,35 @@
 		onDragOver: function(event) {
 			event.preventDefault();
 			event.dataTransfer.dropEffect = 'link';
+			if(this.direction !== "from") {
+				this.direction = "to";
+			}
+		},
+
+		onDragLeave: function(event) {
+			if(this.direction !== "from") {
+				this.direction = "";
+			}
 		},
 
 		onDrop: function(event) {
 			event.preventDefault();
 			// handling für verschiedene nodes
 			// demo:
-			if(event.dataTransfer.getData("id") !== this.id) {
-				var line = new Line(document.getElementById(event.dataTransfer.getData("id")), this);
-				document.getElementsByTagName("body")[0].appendChild(line);
+			if(event.dataTransfer.getData("id") !== this.id) { // selbst linken ist nicht
+				// TODO 
+				var element = document.getElementById(event.dataTransfer.getData("id"));
+				//if(!element.linkExist(from, this)) {
+					var line = new Line(element, this);
+					document.getElementsByTagName("body")[0].appendChild(line);
+				}
 			}
+			this.direction = ""; // drag target
 		},
 
 		onDragEnd: function(event) {
 			console.log("Fin");
+			this.direction = ""; // drag source
 		},
 
 		fromXML: function(xml) {

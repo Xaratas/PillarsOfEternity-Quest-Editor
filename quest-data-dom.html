@@ -22,17 +22,15 @@
 				xml = this.parser.parseFromString(xml, 'text/xml');
 			
 			if(xml.hasChildNodes()) {
-				for(var i = 0; i < xml.childNodes.length; i++) {
-            		var item = xml.childNodes.item(i);
-		            var name = item.nodeName;
-					
-					if(name == "QuestData") {
-						this.fromXML(item); // rekursion
+                var item;
+                for(item of xml.childNodes) {					
+					if(item.nodeName == "QuestData") {
+						this.fromXML(item); // remove outer layer
 					}
-					if(name == "NextNodeID") {
+					if(item.nodeName == "NextNodeID") {
 						this.nextNodeId = item.childNodes[0].nodeValue;
 					}
-					if(name == "Nodes") {
+					if(item.nodeName == "Nodes") {
 						// über alle
 						var node, element;
 						for(node of item.childNodes) {
@@ -41,7 +39,7 @@
 								element.fromXML(node);
 							}
 							// bookmarks, classextender, usw.
-						this.push("nodes", element);
+						    this.push("nodes", element);
 						}
 						// dom anpassen
 						for(node of this.nodes) {
@@ -53,8 +51,9 @@
 		},
 
 		toXML: function() {
-			var result = '<?xml version="1.0" encoding="utf-8"?><QuestData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><NextNodeID>' + this.nextNodeId + '</NextNodeID>';
-			for(node of this.nodes) { // ES6 
+			var result = '<?xml version="1.0" encoding="utf-8"?><QuestData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
+            result += '<NextNodeID>' + this.nextNodeId + '</NextNodeID>';
+			for(node of this.nodes) {
 				result += '<Nodes>';
 				result += node.toXML();
 				result += '</Nodes>';

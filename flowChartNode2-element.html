@@ -34,9 +34,30 @@
 			comments: {
 				type: Array,
 				value: []
+			},
+
+			draggable: {
+				value: "true",
+				reflectToAttribute: true
+			},
+			id: {
+				computed: 'setId(nodeId)',
+				reflectToAttribute: true
 			}
 		},
 		
+		listeners: {
+			'dragstart': 'onDragStart',
+			'dragover': 'onDragOver',
+			'dragenter': 'onDragEnter',
+			'drop': 'onDrop',
+			'dragend': 'onDragEnd'
+		},
+		
+		setId: function(nodeId) {
+			return this.type + nodeId; // node id sollte unique bleiben, TODO enforce davon
+		},
+
 		addComment: function(text) {
 			var comment = new Comment(this, this.comments.length + 1);
 			if(text !== undefined)
@@ -49,6 +70,34 @@
 			console.log("remove Comment");
 			var comment = this.splice("comments", index - 1, 1)[0]; // splice liefert ein array
 			Polymer.dom(this.$$("comments")).removeChild(comment); // die remove child erwartet eine node, deswegen über comment und nicht über id
+		},
+		//http://www.quirksmode.org/blog/archives/2009/09/the_html5_drag.html Ja verdammt, drag and drop ist fürn arsch, und das wird auch in HTML 5.1 so bleiben
+		onDragStart: function(event) {
+			event.dataTransfer.effectsAllowed = 'link';
+			event.dataTransfer.setData("id", this.id); // type could be anything, as long as it is string, oh and data have to be string too …
+		},
+
+		onDragEnter: function(event) {
+			event.preventDefault();
+		},
+
+		onDragOver: function(event) {
+			event.preventDefault();
+			event.dataTransfer.dropEffect = 'link';
+		},
+
+		onDrop: function(event) {
+			event.preventDefault();
+			// handling für verschiedene nodes
+			// demo:
+			if(event.dataTransfer.getData("id") !== this.id) {
+				var line = new Line(document.getElementById(event.dataTransfer.getData("id")), this);
+				document.getElementsByTagName("body")[0].appendChild(line);
+			}
+		},
+
+		onDragEnd: function(event) {
+			console.log("Fin");
 		},
 
 		fromXML: function(xml) {
@@ -71,7 +120,7 @@
 		},
 
 		toXML: function() {
-			var result = "<FlowChartNode xsi:type=\"" + this.type + "\">"
+			var result = '<FlowChartNode xsi:type=" + this.type + ">'
 						+ "<NodeID>" + this.nodeId + "</NodeID><Comments>";
 			for(comment of this.comments) {
 				result += comment.toXML();

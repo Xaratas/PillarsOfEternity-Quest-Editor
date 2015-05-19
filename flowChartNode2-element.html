@@ -1,7 +1,8 @@
 <link rel="import" href="bower_components/iron-input/iron-input.html">
+<link rel="import" href="FlowChartNode-behavior.html">
 <link rel="import" href="comment-element.html">
 
-<dom-module id="FlowChartNode2-element">
+<dom-module id="ObjectiveNode-element">
 <style>
 	:host {
 		background-color: #ccc;
@@ -27,113 +28,51 @@
 </template>
 </dom-module>
 
+<dom-module id="TalkNode-element">
+<style>
+	:host {
+		background-color: #aaddaa;
+		width: 200px;
+		display: flex;
+	    flex-direction: column;
+		margin: 10px;
+		padding: 5px;
+	}
+
+	.direction {
+		float: right;
+	}
+
+	comments {
+	}
+</style>
+<template>
+		<div>Type: <span>{{type}}</span><span class="direction">{{direction}}</span></div>
+		<div>ID: <input is="iron-input" bind-value={{nodeId}}></input></div>
+		<div>Comments: <button on-click="addComment">Add</button></div>
+		<comments></comments>
+</template>
+</dom-module>
+
+
 <script>
-	FlowChartNode = Polymer({
-		is: "FlowChartNode2-element",
-		
-		properties: {
-			type: String,
-			nodeId: Number,
-			comments: {
-				type: Array,
-				value: []
-			},
-			links: { // todo links abhängig vom typ
-				type: Object,
-				value: {}
-			},
+	ObjectiveNode = Polymer({
+		is: "ObjectiveNode-element",
+		behaviors: [FlowChartNodeBehavior],
 
-			draggable: {
-				value: "true",
-				reflectToAttribute: true
-			},
-			id: {
-				computed: 'setId(nodeId)',
-				reflectToAttribute: true
-			},
-			direction: String
-		},
-		
-		listeners: {
-			'dragstart': 'onDragStart',
-			'dragover': 'onDragOver',
-			'dragenter': 'onDragEnter',
-			'dragleave': 'onDragLeave',
-			'drop': 'onDrop',
-			'dragend': 'onDragEnd'
-		},
-		
-		setId: function(nodeId) {
-			return this.type + nodeId; // node id sollte unique bleiben, TODO enforce davon
-		},
-
-		addComment: function(text) {
-			var comment = new Comment(this, this.comments.length + 1);
-			if(text !== undefined)
-				comment.setText(text);
-			this.push("comments", comment);
-        	Polymer.dom(this.$$("comments")).appendChild(comment, this.$$("comments"));
-		},
-
-		removeComment: function(index) {
-			console.log("remove Comment");
-			var comment = this.splice("comments", index - 1, 1)[0]; // splice liefert ein array
-			Polymer.dom(this.$$("comments")).removeChild(comment); // die remove child erwartet eine node, deswegen über comment und nicht über id
-		},
-
+        created: function() {
+            this.comments = [];
+            this.links = {};
+        },
+        
 		createLink: function(to) {
 			if(!(to.id in this.links)) {
-				if(this.type == "ObjectiveNode") {
-					this.links[to.id] = new QuestLink(this, to);
-				}
-				if(this.type == "TalkNode") {
-					this.links[to.id] = new DialogueLink(this, to);	
-				}
+				this.links[to.id] = new QuestLink(this, to);
 				document.getElementsByTagName("body")[0].appendChild(this.links[to.id]);
 			}
 		},
 
-		//http://www.quirksmode.org/blog/archives/2009/09/the_html5_drag.html Ja verdammt, drag and drop ist fürn arsch, und das wird auch in HTML 5.1 so bleiben
-		onDragStart: function(event) {
-			event.dataTransfer.effectsAllowed = 'link';
-			event.dataTransfer.setData("id", this.id); // type could be anything, as long as it is string, oh and data have to be string too …
-			this.direction = "from";
-		},
 
-		onDragEnter: function(event) {
-			event.preventDefault();
-		},
-
-		onDragOver: function(event) {
-			event.preventDefault();
-			// todo nur typgleiche verlinken
-			event.dataTransfer.dropEffect = 'link';
-			if(this.direction !== "from") {
-				this.direction = "to";
-			}
-		},
-
-		onDragLeave: function(event) {
-			if(this.direction !== "from") {
-				this.direction = "";
-			}
-		},
-
-		onDrop: function(event) {
-			event.preventDefault();
-			// todo: handling für verschiedene nodes, prototypisch für überhaupt links
-			// todo: links sind nur in eine richtung zu ziehen
-			if(event.dataTransfer.getData("id") !== this.id) { // selbst linken ist nicht
-				var from = document.getElementById(event.dataTransfer.getData("id"));
-				from.createLink(this);
-			}
-			this.direction = ""; // drag target
-		},
-
-		onDragEnd: function(event) {
-			console.log("Fin");
-			this.direction = ""; // drag source
-		},
 
 		fromXML: function(xml) {
 			if(xml.hasChildNodes()) {
@@ -162,7 +101,76 @@
 			}
 			result += "</Comments>";
 			result += "<PackageID>1</PackageID>"; // siehe xsd, 1 steht für base game und ist momentan der Einzige sinnvolle Wert 
+            result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
+            result += "<Links>";
+            for(link in this.links) {
+				result += link.toXML();
+			}
+            result += "</Links>";
 			return result + "</FlowChartNode>";
 		}
 	});
+
+    TalkNode = Polymer({
+        is: "TalkNode-element",
+		behaviors: [FlowChartNodeBehavior],
+
+        created: function() {
+            this.comments = [];
+            this.links = {};
+        },
+
+        createLink: function(to) {
+			if(!(to.id in this.links)) {
+				this.links[to.id] = new DialogueLink(this, to);	
+				document.getElementsByTagName("body")[0].appendChild(this.links[to.id]);
+			}
+		},
+
+        createTempLink: function(toID) {
+            
+        },
+
+		fromXML: function(xml) {
+			if(xml.hasChildNodes()) {
+				this.type = xml.attributes[0].value;
+				var node;
+				for(node of xml.childNodes) {
+					if(node.nodeName == "NodeID") {
+						this.nodeId = node.childNodes[0].nodeValue;
+					}
+					if(node.nodeName == "Comments") {
+						var cnode;
+						for(cnode of node.childNodes) {
+							this.addComment(cnode.textContent);
+						}
+					}
+                    if(node.nodeName == "Links") {
+                        var lnode;
+                        for(lnode of node.childNodes) {
+                            //this.createLink(?); // node existiert noch nicht
+                        }
+                    }
+					// andere werte
+				}
+			}	
+		},
+
+		toXML: function() {
+			var result = '<FlowChartNode xsi:type="' + this.type + '">'
+						+ "<NodeID>" + this.nodeId + "</NodeID><Comments>";
+			for(comment of this.comments) {
+				result += comment.toXML();
+			}
+			result += "</Comments>";
+			result += "<PackageID>1</PackageID>"; // siehe xsd, 1 steht für base game und ist momentan der Einzige sinnvolle Wert
+            result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
+            result += "<Links>";
+            for(link in this.links) {
+				result += link.toXML();
+			}
+            result += "</Links>";
+			return result + "</FlowChartNode>";
+		}
+    });
 </script>

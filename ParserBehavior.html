@@ -3,15 +3,34 @@ ParserBehavior = {
     properties: {
             type: String,
 			nextNodeId: Number,
-			nodes: {
-				type: Array,
-				value: []
-			},
+			nodes: Array, // jeder Typ braucht einen eigenen Array, nicht vorinitialisieren
 			parser: {
 				type: Object,
 				value: new window.DOMParser()
 			}
 		},
+
+
+        cleanFormatting: function(node) {
+            var reBlank = /^\s*$/;
+            var child, next;
+            switch (node.nodeType) {
+                case 3: // Text node
+                    if (reBlank.test(node.nodeValue)) {
+                        node.parentNode.removeChild(node);
+                    }
+                break;
+                case 1: // Element node
+                case 9: // Document node
+                    child = node.firstChild;
+                    while (child) {
+                        next = child.nextSibling;
+                        this.cleanFormatting(child);
+                        child = next;
+                    }
+                break;
+            }
+        },
 
         basetypecontent_toXML: function() {
 			var result = '<?xml version="1.0" encoding="utf-8"?><' + this.type + ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';

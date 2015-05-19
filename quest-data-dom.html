@@ -8,16 +8,19 @@
 
 		created: function() {
             this.type = "QuestData";
+			this.nodes = [];
         },
 
 		// geht erstmal von text aus, hab noch kein file handling
 		fromXML: function(xml) {
-			if(typeof(xml) == "string") // schon geparstes ist object
+			if(typeof(xml) == "string") { // schon geparstes ist object
 				xml = this.parser.parseFromString(xml, 'text/xml');
-			
+                this.cleanFormatting(xml);
+			}
 			if(xml.hasChildNodes()) {
                 var item;
                 for(item of xml.childNodes) {					
+					if(item.nodeName == "#text") { continue; }
 					if(item.nodeName == this.type) {
 						this.fromXML(item); // remove outer layer
 					}
@@ -29,7 +32,7 @@
 						var node, element;
 						for(node of item.childNodes) {
 							if(node.nodeName == "FlowChartNode") {
-								element = new FlowChartNode();
+								element = new ObjectiveNode();
 								element.fromXML(node);
 							}
 							// bookmarks, classextender, usw.
@@ -57,15 +60,17 @@
 
         created: function() {
             this.type = "ConversationData";
+			this.nodes = [];
         },
 
         fromXML: function(xml) {
-			if(typeof(xml) == "string") // schon geparstes ist object
+			if(typeof(xml) == "string") { // schon geparstes ist object
 				xml = this.parser.parseFromString(xml, 'text/xml');
-			
+                this.cleanFormatting(xml);
+			}
 			if(xml.hasChildNodes()) {
                 var item;
-                for(item of xml.childNodes) {					
+                for(item of xml.childNodes) {
 					if(item.nodeName == this.type) {
 						this.fromXML(item); // remove outer layer
 					}
@@ -77,7 +82,7 @@
 						var node, element;
 						for(node of item.childNodes) {
 							if(node.nodeName == "FlowChartNode") {
-								element = new FlowChartNode();
+								element = new TalkNode();
 								element.fromXML(node);
 							}
 							// bookmarks, classextender, usw.

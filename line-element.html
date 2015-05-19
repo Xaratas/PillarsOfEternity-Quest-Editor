@@ -12,12 +12,16 @@
 		factoryImpl: function(startElement, endElement) {
 			this.startElement = startElement;
 			this.endElement = endElement;
-			this.connect();
 		},
-       
+      
+		created: function() {
+			this.connect();
+		}, 
 
 		fromXML: function(xml) {
+            if(xml.hasChildNodes()) {
 
+            }
 		},
 
 		toXML: function() {
@@ -41,13 +45,15 @@
             playQuestionNodeVO: Boolean,
             questionNodeTextDisplay: String
 		},
-
+		// ist vor dem Behavior dran
 		factoryImpl: function(startElement, endElement) {
 			this.startElement = startElement;
 			this.endElement = endElement;
-			this.connect();
 		},
        
+		created: function() {
+			this.connect();
+		},
 
 		fromXML: function(xml) {
 

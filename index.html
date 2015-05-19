@@ -28,10 +28,11 @@
 +'          <RequiredToExitObjective>false</RequiredToExitObjective>'
 +'        </FlowChartLink>'
 +'      </Links>'
++'    </FlowChartNode>'
 +'   </Nodes>'
 +'</QuestData>';
 
-			var conversationStub = +'<?xml version="1.0" encoding="utf-8"?>'
+			var conversationStub = '<?xml version="1.0" encoding="utf-8"?>'
 +'<ConversationData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">'
 +'  <NextNodeID>115</NextNodeID>                                                                                       '
 +'  <Nodes>                                                                                                            '
@@ -52,7 +53,7 @@
 +'          <PlayQuestionNodeVO>true</PlayQuestionNodeVO>                                                              '
 +'          <QuestionNodeTextDisplay>ShowOnce</QuestionNodeTextDisplay>                                                '
 +'        </FlowChartLink>                                                                                             '
-+'   </Nodes>'
++'</Links></FlowChartNode>   </Nodes>'
 +'</ConversationData>';
 
 
@@ -70,6 +71,7 @@
   <body>
 	Juhu, ersten Browser Bug getriggert. In FF degenerieren input elemente in drag containern. Seit Jahren.
 	https://stackoverflow.com/questions/21680363/prevent-drag-event-to-interfere-with-input-elements-in-firefox-using-html5-drag
-	<flowChartNode2-element type="TalkNode" node-id="4"></flowChartNode2-element>
+	<TalkNode-element type="TalkNode" node-id="4"></TalkNode-element>
+	<ObjectiveNode-element type="ObjectiveNode" node-id="9"></ObjectiveNode-element>
   </body>
 </html>

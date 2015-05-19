@@ -1,12 +1,12 @@
-
+<link rel="import" href="FlowChartLink-behavior.html">
 <script>
-	Line = Polymer({
-		is: "line-element",
+	QuestLink = Polymer({
+		is: "questLink-element",
 		extends: "canvas",
+        behaviors: [FlowChartLinkBehavior],
 
 		properties: {
-			startElement: Object,
-			endElement: Object
+			requiredToExitObjective: Boolean
 		},
 
 		factoryImpl: function(startElement, endElement) {
@@ -14,40 +14,55 @@
 			this.endElement = endElement;
 			this.connect();
 		},
+       
 
-		connect: function() {
-			// find offset positions for both elements
-	        var offsetStart = {
-    	        x: this.startElement.offsetLeft + this.startElement.offsetWidth / 2,
-        	    y: this.startElement.offsetTop + this.startElement.offsetHeight / 2
-	        };
-	        var offsetEnd = {
-    	        x: this.endElement.offsetLeft + this.endElement.offsetWidth / 2,
-        	    y: this.endElement.offsetTop + this.endElement.offsetHeight / 2
-	        };
-    
-    	    // x,y = top left corner
-	        // x1,y1 = bottom right corner
-    	    var p = {
-        	    x:  offsetStart.x < offsetEnd.x ? offsetStart.x : offsetEnd.x,
-	            x1: offsetStart.x > offsetEnd.x ? offsetStart.x : offsetEnd.x,
-	            y:  offsetStart.y < offsetEnd.y ? offsetStart.y : offsetEnd.y,
-	            y1: offsetStart.y > offsetEnd.y ? offsetStart.y : offsetEnd.y
-	        };
-			// straight lines should be visible
-	        this.setAttribute("width", Math.max(p.x1 - p.x, 2));
-			this.setAttribute('height', Math.max(p.y1 - p.y, 2));
-	        
-			this.setAttribute("style", "position: absolute; left: " + p.x + "px; top: " + p.y + "px; z-index: -1");
-			drawContext = this.getContext('2d'); 
-			
-        	// draw line on this canvas, line goes from center to center, -1 z-index hides the unneded parts
-	        drawContext.strokeStyle = '#f00';
-    	    drawContext.lineWidth = 2;
-        	drawContext.beginPath();
-	        drawContext.moveTo(offsetStart.x - p.x, offsetStart.y - p.y);
-    	    drawContext.lineTo(offsetEnd.x - p.x, offsetEnd.y - p.y);
-	        drawContext.stroke();
+		fromXML: function(xml) {
+
+		},
+
+		toXML: function() {
+			var xml = '<FlowChartLink xsi:type="QuestLink">'
+				+ '<FromNodeID>' + this.startElement.nodeId + '</FromNodeID>'
+				+ '<ToNodeID>' + this.endElement.nodeId + '</ToNodeID>'
+				+ '<PointsToGhost>false</PointsToGhost>' // todo
+				+ '<ClassExtender><ExtendedProperties /></ClassExtender>' // immer leer
+                + '<RequiredToExitObjective>' + this.requiredToExitObjective + '</RequiredToExitObjective>'; // TODO
+			return xml	+ '</FlowChartLink>';
+		}
+	});
+
+    DialogueLink = Polymer({
+		is: "dialogueLink-element",
+		extends: "canvas",
+        behaviors: [FlowChartLinkBehavior],
+
+		properties: {
+			randomWeight: Number,
+            playQuestionNodeVO: Boolean,
+            questionNodeTextDisplay: String
+		},
+
+		factoryImpl: function(startElement, endElement) {
+			this.startElement = startElement;
+			this.endElement = endElement;
+			this.connect();
+		},
+       
+
+		fromXML: function(xml) {
+
+		},
+
+		toXML: function() {
+			var xml = '<FlowChartLink xsi:type="DialogueLink">'
+				+ '<FromNodeID>' + this.startElement.nodeId + '</FromNodeID>'
+				+ '<ToNodeID>' + this.endElement.nodeId + '</ToNodeID>'
+				+ '<PointsToGhost>false</PointsToGhost>' // todo
+				+ '<ClassExtender><ExtendedProperties /></ClassExtender>' // immer leer
+			    + '<RandomWeight>' + this.randomWeight + '</RandomWeight>' // todo
+                + '<PlayQuestionNodeVO>' + this.playQuestionNodeVO + '</PlayQuestionNodeVO>' // todo
+                + '<QuestionNodeTextDisplay>' + this.questionNodeTextDisplay + '</QuestionNodeTextDisplay>'; // todo
+			return xml	+ '</FlowChartLink>';
 		}
 	});
 </script>

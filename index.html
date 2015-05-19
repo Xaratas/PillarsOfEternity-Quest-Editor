@@ -8,11 +8,62 @@
 	<link rel="import" href="line-element.html">
 	<script>
 		 document.addEventListener('WebComponentsReady', function() {
-			var aaa = '<?xml version="1.0" encoding="utf-8"?><QuestData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><NextNodeID>6</NextNodeID><Nodes><FlowChartNode xsi:type="QuestNode"><NodeID>0</NodeID><Comments><Comment>AA</Comment></Comments></FlowChartNode></Nodes></QuestData>';
+			var questStub = '<?xml version="1.0" encoding="utf-8"?>'
++'<QuestData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">'
++'  <NextNodeID>6</NextNodeID>'
++'  <Nodes>'
++'    <FlowChartNode xsi:type="QuestNode">'
++'      <NodeID>0</NodeID>'
++'      <Comments />'
++'      <PackageID>1</PackageID>'
++'      <ContainerNodeID>-1</ContainerNodeID>'
++'      <Links>'
++'        <FlowChartLink xsi:type="QuestLink">'
++'          <FromNodeID>0</FromNodeID>'
++'          <ToNodeID>1</ToNodeID>'
++'          <PointsToGhost>false</PointsToGhost>'
++'          <ClassExtender>'
++'            <ExtendedProperties />'
++'          </ClassExtender>'
++'          <RequiredToExitObjective>false</RequiredToExitObjective>'
++'        </FlowChartLink>'
++'      </Links>'
++'   </Nodes>'
++'</QuestData>';
+
+			var conversationStub = +'<?xml version="1.0" encoding="utf-8"?>'
++'<ConversationData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">'
++'  <NextNodeID>115</NextNodeID>                                                                                       '
++'  <Nodes>                                                                                                            '
++'    <FlowChartNode xsi:type="TalkNode">                                                                              '
++'      <NodeID>0</NodeID>                                                                                             '
++'      <Comments />                                                                                                   '
++'      <PackageID>1</PackageID>                                                                                       '
++'      <ContainerNodeID>-1</ContainerNodeID>                                                                          '
++'      <Links>                                                                                                        '
++'        <FlowChartLink xsi:type="DialogueLink">                                                                      '
++'          <FromNodeID>0</FromNodeID>                                                                                 '
++'          <ToNodeID>95</ToNodeID>                                                                                    '
++'          <PointsToGhost>false</PointsToGhost>                                                                       '
++'          <ClassExtender>                                                                                            '
++'            <ExtendedProperties />                                                                                   '
++'          </ClassExtender>                                                                                           '
++'          <RandomWeight>1</RandomWeight>                                                                             '
++'          <PlayQuestionNodeVO>true</PlayQuestionNodeVO>                                                              '
++'          <QuestionNodeTextDisplay>ShowOnce</QuestionNodeTextDisplay>                                                '
++'        </FlowChartLink>                                                                                             '
++'   </Nodes>'
++'</ConversationData>';
+
+
 			var questData = new QuestData();
-			questData.fromXML(aaa);
+			questData.fromXML(questStub);
+			var conversationData = new ConversationData();
+			conversationData.fromXML(conversationStub);
 			console.log(questData.toXML());
+			console.log(conversationData.toXML());
 			document.getElementsByTagName("body")[0].appendChild(questData);
+			document.getElementsByTagName("body")[0].appendChild(conversationData);
 		});
 	</script>
   </head>

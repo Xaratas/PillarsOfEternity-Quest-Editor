@@ -38,6 +38,10 @@
 				type: Array,
 				value: []
 			},
+			links: { // todo links abhängig vom typ
+				type: Object,
+				value: {}
+			},
 
 			draggable: {
 				value: "true",
@@ -77,8 +81,16 @@
 			Polymer.dom(this.$$("comments")).removeChild(comment); // die remove child erwartet eine node, deswegen über comment und nicht über id
 		},
 
-		createLink: function(from, to) {
-			// FlowChartLink eintragen.
+		createLink: function(to) {
+			if(!(to.id in this.links)) {
+				if(this.type == "ObjectiveNode") {
+					this.links[to.id] = new QuestLink(this, to);
+				}
+				if(this.type == "TalkNode") {
+					this.links[to.id] = new DialogueLink(this, to);	
+				}
+				document.getElementsByTagName("body")[0].appendChild(this.links[to.id]);
+			}
 		},
 
 		//http://www.quirksmode.org/blog/archives/2009/09/the_html5_drag.html Ja verdammt, drag and drop ist fürn arsch, und das wird auch in HTML 5.1 so bleiben
@@ -94,6 +106,7 @@
 
 		onDragOver: function(event) {
 			event.preventDefault();
+			// todo nur typgleiche verlinken
 			event.dataTransfer.dropEffect = 'link';
 			if(this.direction !== "from") {
 				this.direction = "to";
@@ -108,15 +121,11 @@
 
 		onDrop: function(event) {
 			event.preventDefault();
-			// handling für verschiedene nodes
-			// demo:
+			// todo: handling für verschiedene nodes, prototypisch für überhaupt links
+			// todo: links sind nur in eine richtung zu ziehen
 			if(event.dataTransfer.getData("id") !== this.id) { // selbst linken ist nicht
-				// TODO 
-				var element = document.getElementById(event.dataTransfer.getData("id"));
-				//if(!element.linkExist(from, this)) {
-					var line = new Line(element, this);
-					document.getElementsByTagName("body")[0].appendChild(line);
-				}
+				var from = document.getElementById(event.dataTransfer.getData("id"));
+				from.createLink(this);
 			}
 			this.direction = ""; // drag target
 		},
@@ -146,12 +155,14 @@
 		},
 
 		toXML: function() {
-			var result = '<FlowChartNode xsi:type=" + this.type + ">'
+			var result = '<FlowChartNode xsi:type="' + this.type + '">'
 						+ "<NodeID>" + this.nodeId + "</NodeID><Comments>";
 			for(comment of this.comments) {
 				result += comment.toXML();
 			}
-			return result + "</Comments></FlowChartNode>";
+			result += "</Comments>";
+			result += "<PackageID>1</PackageID>"; // siehe xsd, 1 steht für base game und ist momentan der Einzige sinnvolle Wert 
+			return result + "</FlowChartNode>";
 		}
 	});
 </script>

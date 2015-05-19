@@ -1,20 +1,14 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="ParserBehavior.html">
 <link rel="import" href="flowChartNode2-element.html">
 <script>
 	QuestData = Polymer({
 		is: "QuestData-dom",
+        behaviors: [ParserBehavior],
 
-		properties: {
-			nextNodeId: Number,
-			nodes: {
-				type: Array,
-				value: []
-			},
-			parser: {
-				type: Object,
-				value: new window.DOMParser()
-			}
-		},
+		created: function() {
+            this.type = "QuestData";
+        },
 
 		// geht erstmal von text aus, hab noch kein file handling
 		fromXML: function(xml) {
@@ -24,7 +18,7 @@
 			if(xml.hasChildNodes()) {
                 var item;
                 for(item of xml.childNodes) {					
-					if(item.nodeName == "QuestData") {
+					if(item.nodeName == this.type) {
 						this.fromXML(item); // remove outer layer
 					}
 					if(item.nodeName == "NextNodeID") {
@@ -51,14 +45,57 @@
 		},
 
 		toXML: function() {
-			var result = '<?xml version="1.0" encoding="utf-8"?><QuestData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
-            result += '<NextNodeID>' + this.nextNodeId + '</NextNodeID>';
-			for(node of this.nodes) {
-				result += '<Nodes>';
-				result += node.toXML();
-				result += '</Nodes>';
-			}
-			return result + '</QuestData>';
+			var result = this.basetypecontent_toXML();
+            // todo nicht gleiches
+			return result + '</' + this.type + '>';
 		}
 	});
+
+    ConversationData = Polymer({
+        is: "ConversationData-dom",
+        behaviors: [ParserBehavior],
+
+        created: function() {
+            this.type = "ConversationData";
+        },
+
+        fromXML: function(xml) {
+			if(typeof(xml) == "string") // schon geparstes ist object
+				xml = this.parser.parseFromString(xml, 'text/xml');
+			
+			if(xml.hasChildNodes()) {
+                var item;
+                for(item of xml.childNodes) {					
+					if(item.nodeName == this.type) {
+						this.fromXML(item); // remove outer layer
+					}
+					if(item.nodeName == "NextNodeID") {
+						this.nextNodeId = item.childNodes[0].nodeValue;
+					}
+					if(item.nodeName == "Nodes") {
+						// über alle
+						var node, element;
+						for(node of item.childNodes) {
+							if(node.nodeName == "FlowChartNode") {
+								element = new FlowChartNode();
+								element.fromXML(node);
+							}
+							// bookmarks, classextender, usw.
+						    this.push("nodes", element);
+						}
+						// dom anpassen
+						for(node of this.nodes) {
+							Polymer.dom(this).appendChild(node, this);
+						}
+					}
+				}
+			}
+		},
+
+        toXML: function() {
+			var result = this.basetypecontent_toXML();
+            // todo nicht gleiches
+			return result + '</' + this.type + '>';
+		}
+    });
 </script>

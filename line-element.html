@@ -15,12 +15,31 @@
 		},
       
 		created: function() {
+            if(this.xml !== undefined) { 
+                this.fromXML(this.xml);
+                this.startElement.links[this.endElement.id] = this; // ganz schön harte koppelung …
+            }
 			this.connect();
 		}, 
 
 		fromXML: function(xml) {
-            if(xml.hasChildNodes()) {
-
+            for(node of xml.childNodes) {
+                if(node.nodeName == "FromNodeID") {
+                    if(node.textContent == 0) {
+                        this.startElement = document.getElementById("QuestNode" + node.textContent);
+                    } else {
+                        this.startElement = document.getElementById("ObjectiveNode" + node.textContent);
+                    }
+                }
+                if(node.nodeName == "ToNodeID") {
+                     this.endElement = document.getElementById("ObjectiveNode" + node.textContent);
+                }
+                if(node.nodeName == "PointsToGhost") {
+                     this.pointsToGhost = node.textContent;
+                }
+                if(node.nodeName == "RequiredToExitObjective") {
+                    this.requiredToExitObjective = node.textContent;
+                }
             }
 		},
 
@@ -28,7 +47,7 @@
 			var xml = '<FlowChartLink xsi:type="QuestLink">'
 				+ '<FromNodeID>' + this.startElement.nodeId + '</FromNodeID>'
 				+ '<ToNodeID>' + this.endElement.nodeId + '</ToNodeID>'
-				+ '<PointsToGhost>false</PointsToGhost>' // todo
+				+ '<PointsToGhost>' + this.pointsToGhost + '</PointsToGhost>' // todo
 				+ '<ClassExtender><ExtendedProperties /></ClassExtender>' // immer leer
                 + '<RequiredToExitObjective>' + this.requiredToExitObjective + '</RequiredToExitObjective>'; // TODO
 			return xml	+ '</FlowChartLink>';

@@ -72,7 +72,20 @@
 			}
 		},
 
-
+        activateLinks: function() { // linkXML in echte links überführen
+            if(this.linkXML.hasChildNodes()) {
+                var node;
+                for(node of this.linkXML.childNodes) {
+                    var dialogueLink;
+                    if(node.nodeName == "FlowChartLink") {
+                        questLink = new QuestLink(); // parameter zum Glück nicht lebenswichtig
+                        questLink.xml = node;
+                        // um den bug drum rum arbeiten, fromXML erst im created aufrufen
+                        document.getElementsByTagName("body")[0].appendChild(questLink);
+                    }
+                }
+            }
+        }, 
 
 		fromXML: function(xml) {
 			if(xml.hasChildNodes()) {
@@ -80,7 +93,7 @@
 				var node;
 				for(node of xml.childNodes) {
 					if(node.nodeName == "NodeID") {
-						this.nodeId = node.childNodes[0].nodeValue;
+						this.nodeId = node.textContent;
 					}
 					if(node.nodeName == "Comments") {
 						var cnode;
@@ -88,6 +101,9 @@
 							this.addComment(cnode.textContent);
 						}
 					}
+                    if(node.nodeName == "Links") {
+                        this.linkXML = node;
+                    }
 					// andere werte
 				}
 			}	
@@ -104,7 +120,7 @@
             result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
             result += "<Links>";
             for(link in this.links) {
-				result += link.toXML();
+				result += this.links[link].toXML();
 			}
             result += "</Links>";
 			return result + "</FlowChartNode>";
@@ -133,7 +149,7 @@
                 for(node of this.linkXML.childNodes) {
                     var dialogueLink;
                     if(node.nodeName == "FlowChartLink") {
-                        dialogueLink = new DialogueLink(this);
+                        dialogueLink = new DialogueLink(); // parameter zum Glück nicht lebenswichtig
                         dialogueLink.xml = node;
                         // um den bug drum rum arbeiten, fromXML erst im created aufrufen
                         document.getElementsByTagName("body")[0].appendChild(dialogueLink);
@@ -148,7 +164,7 @@
 				var node;
 				for(node of xml.childNodes) {
 					if(node.nodeName == "NodeID") {
-						this.nodeId = node.childNodes[0].nodeValue;
+						this.nodeId = node.textContent;
 					}
 					if(node.nodeName == "Comments") {
 						var cnode;

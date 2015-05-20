@@ -49,21 +49,24 @@ FlowChartNodeBehavior = {
 		//http://www.quirksmode.org/blog/archives/2009/09/the_html5_drag.html Ja verdammt, drag and drop ist fürn arsch, und das wird auch in HTML 5.1 so bleiben
 		onDragStart: function(event) {
 			event.dataTransfer.effectsAllowed = 'link';
-			event.dataTransfer.setData("id", this.id); // type could be anything, as long as it is string, oh and data have to be string too …
+			event.dataTransfer.setData(this.type, this.id); // type could be anything, as long as it is string, oh and data have to be string too …
 			this.direction = "from";
 		},
 
 		onDragEnter: function(event) {
-			event.preventDefault();
+            if(event.dataTransfer.types[0] === this.type.toLowerCase()) { // nur gleiche typen lassen sich linken // todo questnode und objective node sind gleich
+    			event.preventDefault();
+            }
 		},
 
 		onDragOver: function(event) {
-			event.preventDefault();
-			// todo nur typgleiche verlinken
-			event.dataTransfer.dropEffect = 'link';
-			if(this.direction !== "from") {
-				this.direction = "to";
-			}
+            if(event.dataTransfer.types[0] === this.type.toLowerCase()) { // nur gleiche typen lassen sich linken
+			    event.preventDefault();
+    			event.dataTransfer.dropEffect = 'link';
+    			if(this.direction !== "from") {
+    				this.direction = "to";
+    			}
+            }
 		},
 
 		onDragLeave: function(event) {
@@ -75,10 +78,11 @@ FlowChartNodeBehavior = {
 		onDrop: function(event) {
 			event.preventDefault();
 			// todo: handling für verschiedene nodes, prototypisch für überhaupt links
-			// todo: links sind nur in eine richtung zu ziehen
-			if(event.dataTransfer.getData("id") !== this.id) { // selbst linken ist nicht
-				var from = document.getElementById(event.dataTransfer.getData("id"));
-				from.createLink(this);
+			if(event.dataTransfer.getData(this.type) !== this.id) { // selbst linken ist nicht
+				var from = document.getElementById(event.dataTransfer.getData(this.type));
+                if(this.links[from.id] === undefined) { // links sind nur in eine richtung zu ziehen // todo sichtbar machen der richtung
+    				from.createLink(this);
+                }
 			}
 			this.direction = ""; // drag target
 		},

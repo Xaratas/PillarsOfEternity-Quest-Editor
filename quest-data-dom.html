@@ -92,6 +92,10 @@
 						for(node of this.nodes) {
 							Polymer.dom(this).appendChild(node, this);
 						}
+                        // links aus dem Temp Status umformen
+                        for(node of this.nodes) {
+                            node.activateLinks();
+                        }
 					}
 				}
 			}

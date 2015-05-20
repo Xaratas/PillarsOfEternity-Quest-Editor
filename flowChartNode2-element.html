@@ -127,9 +127,20 @@
 			}
 		},
 
-        createTempLink: function(toID) {
-            
-        },
+        activateLinks: function() { // linkXML in echte links überführen
+            if(this.linkXML.hasChildNodes()) {
+                var node;
+                for(node of this.linkXML.childNodes) {
+                    var dialogueLink;
+                    if(node.nodeName == "FlowChartLink") {
+                        dialogueLink = new DialogueLink(this);
+                        dialogueLink.xml = node;
+                        // um den bug drum rum arbeiten, fromXML erst im created aufrufen
+                        document.getElementsByTagName("body")[0].appendChild(dialogueLink);
+                    }
+                }
+            }
+        }, 
 
 		fromXML: function(xml) {
 			if(xml.hasChildNodes()) {
@@ -146,10 +157,7 @@
 						}
 					}
                     if(node.nodeName == "Links") {
-                        var lnode;
-                        for(lnode of node.childNodes) {
-                            //this.createLink(?); // node existiert noch nicht
-                        }
+                        this.linkXML = node;
                     }
 					// andere werte
 				}
@@ -167,7 +175,7 @@
             result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
             result += "<Links>";
             for(link in this.links) {
-				result += link.toXML();
+				result += this.links[link].toXML();
 			}
             result += "</Links>";
 			return result + "</FlowChartNode>";

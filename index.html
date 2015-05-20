@@ -61,17 +61,20 @@
 			questData.fromXML(questStub);
 			var conversationData = new ConversationData();
 			conversationData.fromXML(conversationStub);
-			console.log(questData.toXML());
-			console.log(conversationData.toXML());
+			
 			document.getElementsByTagName("body")[0].appendChild(questData);
 			document.getElementsByTagName("body")[0].appendChild(conversationData);
+            
+            // mach das erst nach dem add, das ist sicherer
+            console.log(questData.toXML());
+			console.log(conversationData.toXML());
 		});
 	</script>
   </head>
   <body>
 	Juhu, ersten Browser Bug getriggert. In FF degenerieren input elemente in drag containern. Seit Jahren.
 	https://stackoverflow.com/questions/21680363/prevent-drag-event-to-interfere-with-input-elements-in-firefox-using-html5-drag
-	<TalkNode-element type="TalkNode" node-id="4"></TalkNode-element>
+	<TalkNode-element type="TalkNode" node-id="95"></TalkNode-element>
 	<ObjectiveNode-element type="ObjectiveNode" node-id="9"></ObjectiveNode-element>
   </body>
 </html>

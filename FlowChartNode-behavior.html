@@ -6,12 +6,14 @@ FlowChartNodeBehavior = {
 			comments: Array,
 			links: Object,
 
+            linkXML: Object,
+
 			draggable: {
 				value: "true",
 				reflectToAttribute: true
 			},
 			id: {
-				computed: 'setId(nodeId)',
+				computed: 'setId(type, nodeId)',
 				reflectToAttribute: true
 			},
 			direction: String
@@ -26,8 +28,8 @@ FlowChartNodeBehavior = {
 			'dragend': 'onDragEnd'
 		},
 		
-		setId: function(nodeId) {
-			return this.type + nodeId; // node id sollte unique bleiben, TODO enforce davon
+		setId: function(type, nodeId) {
+			return type + nodeId; // node id sollte unique bleiben, TODO enforce davon
 		},
 
 		addComment: function(text) {

@@ -4,7 +4,9 @@ FlowChartLinkBehavior = {
     properties: {
         startElement: Object,
         endElement: Object,
-        pointsToGhost: Boolean
+        pointsToGhost: Boolean,
+
+        xml: Object // um den bug drum rum arbeiten Polymer #1575
     },
 
     connect: function() {

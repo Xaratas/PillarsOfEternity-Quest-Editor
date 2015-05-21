@@ -1,95 +1,95 @@
 <script>
 FlowChartNodeBehavior = {
 	properties: {
-			type: String,
-			nodeId: Number,
-			comments: Array,
-			links: Object,
+		type: String,
+		nodeId: Number,
+		comments: Array,
+		links: Object,
 
-            linkXML: Object,
+		linkXML: Object,
 
-			draggable: {
-				value: "true",
-				reflectToAttribute: true
-			},
-			id: {
-				computed: 'setId(type, nodeId)',
-				reflectToAttribute: true
-			},
-			direction: String
+		draggable: {
+			value: "true",
+			reflectToAttribute: true
 		},
-
-        listeners: {
-			'dragstart': 'onDragStart',
-			'dragover': 'onDragOver',
-			'dragenter': 'onDragEnter',
-			'dragleave': 'onDragLeave',
-			'drop': 'onDrop',
-			'dragend': 'onDragEnd'
+		id: {
+			computed: 'setId(type, nodeId)',
+			reflectToAttribute: true
 		},
-		
-		setId: function(type, nodeId) {
-			return type + nodeId; // node id sollte unique bleiben, TODO enforce davon
-		},
+		direction: String
+	},
 
-		addComment: function(text) {
-			var comment = new Comment(this, this.comments.length + 1);
-			if(text !== undefined)
-				comment.setText(text);
-			this.push("comments", comment);
-        	Polymer.dom(this.$$("comments")).appendChild(comment, this.$$("comments"));
-		},
+	listeners: {
+		'dragstart': 'onDragStart',
+		'dragover': 'onDragOver',
+		'dragenter': 'onDragEnter',
+		'dragleave': 'onDragLeave',
+		'drop': 'onDrop',
+		'dragend': 'onDragEnd'
+	},
 
-		removeComment: function(index) {
-			console.log("remove Comment");
-			var comment = this.splice("comments", index - 1, 1)[0]; // splice liefert ein array
-			Polymer.dom(this.$$("comments")).removeChild(comment); // die remove child erwartet eine node, deswegen über comment und nicht über id
-		},
+	setId: function(type, nodeId) {
+		return type + nodeId; // node id sollte unique bleiben, TODO enforce davon
+	},
 
-		//http://www.quirksmode.org/blog/archives/2009/09/the_html5_drag.html Ja verdammt, drag and drop ist fürn arsch, und das wird auch in HTML 5.1 so bleiben
-		onDragStart: function(event) {
-			event.dataTransfer.effectsAllowed = 'link';
-			event.dataTransfer.setData(this.type, this.id); // type could be anything, as long as it is string, oh and data have to be string too …
-			this.direction = "from";
-		},
+	addComment: function(text) {
+		var comment = new Comment(this, this.comments.length + 1);
+		if (text !== undefined)
+			comment.setText(text);
+		this.push("comments", comment);
+		Polymer.dom(this.$$("comments")).appendChild(comment, this.$$("comments"));
+	},
 
-		onDragEnter: function(event) {
-            if(event.dataTransfer.types[0] === this.type.toLowerCase()) { // nur gleiche typen lassen sich linken // todo questnode und objective node sind gleich
-    			event.preventDefault();
-            }
-		},
+	removeComment: function(index) {
+		console.log("remove Comment");
+		var comment = this.splice("comments", index - 1, 1)[0]; // splice liefert ein array
+		Polymer.dom(this.$$("comments")).removeChild(comment); // die remove child erwartet eine node, deswegen über comment und nicht über id
+	},
 
-		onDragOver: function(event) {
-            if(event.dataTransfer.types[0] === this.type.toLowerCase()) { // nur gleiche typen lassen sich linken
-			    event.preventDefault();
-    			event.dataTransfer.dropEffect = 'link';
-    			if(this.direction !== "from") {
-    				this.direction = "to";
-    			}
-            }
-		},
+	//http://www.quirksmode.org/blog/archives/2009/09/the_html5_drag.html Ja verdammt, drag and drop ist fürn arsch, und das wird auch in HTML 5.1 so bleiben
+	onDragStart: function(event) {
+		event.dataTransfer.effectsAllowed = 'link';
+		event.dataTransfer.setData(this.type, this.id); // type could be anything, as long as it is string, oh and data have to be string too …
+		this.direction = "from";
+	},
 
-		onDragLeave: function(event) {
-			if(this.direction !== "from") {
-				this.direction = "";
-			}
-		},
-
-		onDrop: function(event) {
+	onDragEnter: function(event) {
+		if (event.dataTransfer.types[0] === this.type.toLowerCase()) { // nur gleiche typen lassen sich linken // todo questnode und objective node sind gleich
 			event.preventDefault();
-			// todo: handling für verschiedene nodes, prototypisch für überhaupt links
-			if(event.dataTransfer.getData(this.type) !== this.id) { // selbst linken ist nicht
-				var from = document.getElementById(event.dataTransfer.getData(this.type));
-                if(this.links[from.id] === undefined) { // links sind nur in eine richtung zu ziehen // todo sichtbar machen der richtung
-    				from.createLink(this);
-                }
-			}
-			this.direction = ""; // drag target
-		},
+		}
+	},
 
-		onDragEnd: function(event) {
-			console.log("Fin");
-			this.direction = ""; // drag source
-		},
+	onDragOver: function(event) {
+		if (event.dataTransfer.types[0] === this.type.toLowerCase()) { // nur gleiche typen lassen sich linken
+			event.preventDefault();
+			event.dataTransfer.dropEffect = 'link';
+			if (this.direction !== "from") {
+				this.direction = "to";
+			}
+		}
+	},
+
+	onDragLeave: function(event) {
+		if (this.direction !== "from") {
+			this.direction = "";
+		}
+	},
+
+	onDrop: function(event) {
+		event.preventDefault();
+		// todo: handling für verschiedene nodes, prototypisch für überhaupt links
+		if (event.dataTransfer.getData(this.type) !== this.id) { // selbst linken ist nicht
+			var from = document.getElementById(event.dataTransfer.getData(this.type));
+			if (this.links[from.id] === undefined) { // links sind nur in eine richtung zu ziehen // todo sichtbar machen der richtung
+				from.createLink(this);
+			}
+		}
+		this.direction = ""; // drag target
+	},
+
+	onDragEnd: function(event) {
+		console.log("Fin");
+		this.direction = ""; // drag source
+	},
 };
 </script>

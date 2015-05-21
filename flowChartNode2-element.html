@@ -8,7 +8,7 @@
 		background-color: #ccc;
 		width: 200px;
 		display: flex;
-	    flex-direction: column;
+		flex-direction: column;
 		margin: 10px;
 		padding: 5px;
 	}
@@ -34,7 +34,7 @@
 		background-color: #aaddaa;
 		width: 200px;
 		display: flex;
-	    flex-direction: column;
+		flex-direction: column;
 		margin: 10px;
 		padding: 5px;
 	}
@@ -60,141 +60,139 @@
 		is: "ObjectiveNode-element",
 		behaviors: [FlowChartNodeBehavior],
 
-        created: function() {
-            this.comments = [];
-            this.links = {};
-        },
-        
+		created: function() {
+			this.comments = [];
+			this.links = {};
+		},
+
 		createLink: function(to) {
-			if(!(to.id in this.links)) {
+			if (!(to.id in this.links)) {
 				this.links[to.id] = new QuestLink(this, to);
 				document.getElementsByTagName("body")[0].appendChild(this.links[to.id]);
 			}
 		},
 
-        activateLinks: function() { // linkXML in echte links überführen
-            if(this.linkXML.hasChildNodes()) {
-                var node;
-                for(node of this.linkXML.childNodes) {
-                    var dialogueLink;
-                    if(node.nodeName == "FlowChartLink") {
-                        questLink = new QuestLink(); // parameter zum Glück nicht lebenswichtig
-                        questLink.xml = node;
-                        // um den bug drum rum arbeiten, fromXML erst im created aufrufen
-                        document.getElementsByTagName("body")[0].appendChild(questLink);
-                    }
-                }
-            }
-        }, 
+		activateLinks: function() { // linkXML in echte links überführen
+			if (this.linkXML.hasChildNodes()) {
+				var node;
+				for (node of this.linkXML.childNodes) {
+					var dialogueLink;
+					if (node.nodeName == "FlowChartLink") {
+						questLink = new QuestLink(); // parameter zum Glück nicht lebenswichtig
+						questLink.xml = node;
+						// um den bug drum rum arbeiten, fromXML erst im created aufrufen
+						document.getElementsByTagName("body")[0].appendChild(questLink);
+					}
+				}
+			}
+		},
 
 		fromXML: function(xml) {
-			if(xml.hasChildNodes()) {
+			if (xml.hasChildNodes()) {
 				this.type = xml.attributes[0].value;
 				var node;
-				for(node of xml.childNodes) {
-					if(node.nodeName == "NodeID") {
+				for (node of xml.childNodes) {
+					if (node.nodeName == "NodeID") {
 						this.nodeId = node.textContent;
 					}
-					if(node.nodeName == "Comments") {
+					if (node.nodeName == "Comments") {
 						var cnode;
-						for(cnode of node.childNodes) {
+						for (cnode of node.childNodes) {
 							this.addComment(cnode.textContent);
 						}
 					}
-                    if(node.nodeName == "Links") {
-                        this.linkXML = node;
-                    }
+					if (node.nodeName == "Links") {
+						this.linkXML = node;
+					}
 					// andere werte
 				}
-			}	
+			}
 		},
 
 		toXML: function() {
-			var result = '<FlowChartNode xsi:type="' + this.type + '">'
-						+ "<NodeID>" + this.nodeId + "</NodeID><Comments>";
-			for(comment of this.comments) {
+			var result = '<FlowChartNode xsi:type="' + this.type + '">' + "<NodeID>" + this.nodeId + "</NodeID><Comments>";
+			for (comment of this.comments) {
 				result += comment.toXML();
 			}
 			result += "</Comments>";
 			result += "<PackageID>1</PackageID>"; // siehe xsd, 1 steht für base game und ist momentan der Einzige sinnvolle Wert 
-            result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
-            result += "<Links>";
-            for(link in this.links) {
+			result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
+			result += "<Links>";
+			for (link in this.links) {
 				result += this.links[link].toXML();
 			}
-            result += "</Links>";
+			result += "</Links>";
 			return result + "</FlowChartNode>";
 		}
 	});
 
-    TalkNode = Polymer({
-        is: "TalkNode-element",
+	TalkNode = Polymer({
+		is: "TalkNode-element",
 		behaviors: [FlowChartNodeBehavior],
 
-        created: function() {
-            this.comments = [];
-            this.links = {};
-        },
+		created: function() {
+			this.comments = [];
+			this.links = {};
+		},
 
-        createLink: function(to) {
-			if(!(to.id in this.links)) {
-				this.links[to.id] = new DialogueLink(this, to);	
+		createLink: function(to) {
+			if (!(to.id in this.links)) {
+				this.links[to.id] = new DialogueLink(this, to);
 				document.getElementsByTagName("body")[0].appendChild(this.links[to.id]);
 			}
 		},
 
-        activateLinks: function() { // linkXML in echte links überführen
-            if(this.linkXML.hasChildNodes()) {
-                var node;
-                for(node of this.linkXML.childNodes) {
-                    var dialogueLink;
-                    if(node.nodeName == "FlowChartLink") {
-                        dialogueLink = new DialogueLink(); // parameter zum Glück nicht lebenswichtig
-                        dialogueLink.xml = node;
-                        // um den bug drum rum arbeiten, fromXML erst im created aufrufen
-                        document.getElementsByTagName("body")[0].appendChild(dialogueLink);
-                    }
-                }
-            }
-        }, 
+		activateLinks: function() { // linkXML in echte links überführen
+			if (this.linkXML.hasChildNodes()) {
+				var node;
+				for (node of this.linkXML.childNodes) {
+					var dialogueLink;
+					if (node.nodeName == "FlowChartLink") {
+						dialogueLink = new DialogueLink(); // parameter zum Glück nicht lebenswichtig
+						dialogueLink.xml = node;
+						// um den bug drum rum arbeiten, fromXML erst im created aufrufen
+						document.getElementsByTagName("body")[0].appendChild(dialogueLink);
+					}
+				}
+			}
+		},
 
 		fromXML: function(xml) {
-			if(xml.hasChildNodes()) {
+			if (xml.hasChildNodes()) {
 				this.type = xml.attributes[0].value;
 				var node;
-				for(node of xml.childNodes) {
-					if(node.nodeName == "NodeID") {
+				for (node of xml.childNodes) {
+					if (node.nodeName == "NodeID") {
 						this.nodeId = node.textContent;
 					}
-					if(node.nodeName == "Comments") {
+					if (node.nodeName == "Comments") {
 						var cnode;
-						for(cnode of node.childNodes) {
+						for (cnode of node.childNodes) {
 							this.addComment(cnode.textContent);
 						}
 					}
-                    if(node.nodeName == "Links") {
-                        this.linkXML = node;
-                    }
+					if (node.nodeName == "Links") {
+						this.linkXML = node;
+					}
 					// andere werte
 				}
-			}	
+			}
 		},
 
 		toXML: function() {
-			var result = '<FlowChartNode xsi:type="' + this.type + '">'
-						+ "<NodeID>" + this.nodeId + "</NodeID><Comments>";
-			for(comment of this.comments) {
+			var result = '<FlowChartNode xsi:type="' + this.type + '">' + "<NodeID>" + this.nodeId + "</NodeID><Comments>";
+			for (comment of this.comments) {
 				result += comment.toXML();
 			}
 			result += "</Comments>";
 			result += "<PackageID>1</PackageID>"; // siehe xsd, 1 steht für base game und ist momentan der Einzige sinnvolle Wert
-            result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
-            result += "<Links>";
-            for(link in this.links) {
+			result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
+			result += "<Links>";
+			for (link in this.links) {
 				result += this.links[link].toXML();
 			}
-            result += "</Links>";
+			result += "</Links>";
 			return result + "</FlowChartNode>";
 		}
-    });
+	});
 </script>

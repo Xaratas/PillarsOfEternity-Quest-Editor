@@ -35,11 +35,11 @@ ParserBehavior = {
 	basetypecontent_toXML: function() {
 		var result = '<?xml version="1.0" encoding="utf-8"?><' + this.type + ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
 		result += '<NextNodeID>' + this.nextNodeId + '</NextNodeID>';
+		result += '<Nodes>';
 		for (node of this.nodes) {
-			result += '<Nodes>';
 			result += node.toXML();
-			result += '</Nodes>';
 		}
+		result += '</Nodes>';
 		// todo gleicher rest
 		return result;
 	}

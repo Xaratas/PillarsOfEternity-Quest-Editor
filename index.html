@@ -29,34 +29,50 @@
 +'        </FlowChartLink>'
 +'      </Links>'
 +'    </FlowChartNode>'
++'    <FlowChartNode xsi:type="ObjectiveNode">'
++'      <NodeID>1</NodeID>'
++'      <Comments />'
++'      <PackageID>1</PackageID>'
++'      <ContainerNodeID>-1</ContainerNodeID>'
++'      <Links />'
++'    </FlowChartNode>'
 +'   </Nodes>'
 +'</QuestData>';
 
 			var conversationStub = '<?xml version="1.0" encoding="utf-8"?>'
 +'<ConversationData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">'
-+'  <NextNodeID>115</NextNodeID>                                                                                       '
-+'  <Nodes>                                                                                                            '
-+'    <FlowChartNode xsi:type="TalkNode">                                                                              '
-+'      <NodeID>0</NodeID>                                                                                             '
-+'      <Comments />                                                                                                   '
-+'      <PackageID>1</PackageID>                                                                                       '
-+'      <ContainerNodeID>-1</ContainerNodeID>                                                                          '
-+'      <Links>                                                                                                        '
-+'        <FlowChartLink xsi:type="DialogueLink">                                                                      '
-+'          <FromNodeID>0</FromNodeID>                                                                                 '
-+'          <ToNodeID>95</ToNodeID>                                                                                    '
-+'          <PointsToGhost>false</PointsToGhost>                                                                       '
-+'          <ClassExtender>                                                                                            '
-+'            <ExtendedProperties />                                                                                   '
-+'          </ClassExtender>                                                                                           '
-+'          <RandomWeight>1</RandomWeight>                                                                             '
-+'          <PlayQuestionNodeVO>true</PlayQuestionNodeVO>                                                              '
-+'          <QuestionNodeTextDisplay>ShowOnce</QuestionNodeTextDisplay>                                                '
-+'        </FlowChartLink>                                                                                             '
-+'</Links></FlowChartNode>   </Nodes>'
++'  <NextNodeID>115</NextNodeID>                       '
++'  <Nodes>                                            '
++'    <FlowChartNode xsi:type="TalkNode">              '
++'      <NodeID>0</NodeID>                        '
++'      <Comments />                                   '
++'      <PackageID>1</PackageID>                       '
++'      <ContainerNodeID>-1</ContainerNodeID>          '
++'     <Links>                                         '
++'        <FlowChartLink xsi:type="DialogueLink">      '
++'          <FromNodeID>0</FromNodeID>                 '
++'          <ToNodeID>95</ToNodeID>                    '
++'          <PointsToGhost>false</PointsToGhost>       '
++'          <ClassExtender>                            '
++'            <ExtendedProperties />                     '
++'          </ClassExtender>                          '
++'          <RandomWeight>1</RandomWeight>             '
++'          <PlayQuestionNodeVO>true</PlayQuestionNodeVO>'
++'          <QuestionNodeTextDisplay>ShowOnce</QuestionNodeTextDisplay>'
++'        </FlowChartLink>                          '
++'      </Links>'
++'    </FlowChartNode>'
++'    <FlowChartNode xsi:type="TalkNode">              '
++'      <NodeID>95</NodeID>                        '
++'      <Comments />                                   '
++'      <PackageID>1</PackageID>                       '
++'      <ContainerNodeID>-1</ContainerNodeID>          '
++'     <Links />                                         '
++'    </FlowChartNode>'
++'  </Nodes>'
 +'</ConversationData>';
 
-
+			
 			var questData = new QuestData();
 			questData.fromXML(questStub);
 			var conversationData = new ConversationData();
@@ -64,6 +80,7 @@
 			
 			document.getElementsByTagName("body")[0].appendChild(questData);
 			document.getElementsByTagName("body")[0].appendChild(conversationData);
+
 		});
 
    
@@ -81,7 +98,5 @@
 	https://stackoverflow.com/questions/21680363/prevent-drag-event-to-interfere-with-input-elements-in-firefox-using-html5-drag
     <br />
     <button onclick="print_content()">to XML</button>
-	<TalkNode-element type="TalkNode" node-id="95"></TalkNode-element>
-	<ObjectiveNode-element type="ObjectiveNode" node-id="1"></ObjectiveNode-element>
   </body>
 </html>

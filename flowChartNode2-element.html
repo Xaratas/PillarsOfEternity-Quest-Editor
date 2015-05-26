@@ -72,16 +72,16 @@
 			}
 		},
 
-		activateLinks: function() { // linkXML in echte links überführen
+		activateLinks: function(nodesMap) { // linkXML in echte links überführen
 			if (this.linkXML.hasChildNodes()) {
 				var node;
 				for (node of this.linkXML.childNodes) {
 					var dialogueLink;
 					if (node.nodeName == "FlowChartLink") {
 						questLink = new QuestLink(); // parameter zum Glück nicht lebenswichtig
-						questLink.xml = node;
-						// um den bug drum rum arbeiten, fromXML erst im created aufrufen
-						document.getElementsByTagName("body")[0].appendChild(questLink);
+						questLink.fromXML(node, nodesMap);
+						this.links[questLink.getTo()] = questLink;
+						document.getElementsByTagName("body")[0].appendChild(this.links[questLink.getTo()]);
 					}
 				}
 			}
@@ -142,16 +142,16 @@
 			}
 		},
 
-		activateLinks: function() { // linkXML in echte links überführen
+		activateLinks: function(nodesMap) { // linkXML in echte links überführen
 			if (this.linkXML.hasChildNodes()) {
 				var node;
 				for (node of this.linkXML.childNodes) {
 					var dialogueLink;
 					if (node.nodeName == "FlowChartLink") {
 						dialogueLink = new DialogueLink(); // parameter zum Glück nicht lebenswichtig
-						dialogueLink.xml = node;
-						// um den bug drum rum arbeiten, fromXML erst im created aufrufen
-						document.getElementsByTagName("body")[0].appendChild(dialogueLink);
+						dialogueLink.fromXML(node, nodesMap);
+						this.links[dialogueLink.getTo()] = dialogueLink;
+						document.getElementsByTagName("body")[0].appendChild(this.links[dialogueLink.getTo()]);
 					}
 				}
 			}

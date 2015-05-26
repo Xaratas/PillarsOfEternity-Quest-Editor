@@ -14,25 +14,23 @@
 			this.endElement = endElement;
 		},
       
-		created: function() {
-            if(this.xml !== undefined) { 
-                this.fromXML(this.xml);
-                this.startElement.links[this.endElement.id] = this; // ganz schön harte koppelung …
-            }
-			this.connect();
+		attached: function() {
+			if(this.startElement !== undefined && this.endElement !== undefined) { 
+				this.connect();
+			}
 		}, 
 
-		fromXML: function(xml) {
+		fromXML: function(xml, nodesMap) {
             for(node of xml.childNodes) {
                 if(node.nodeName == "FromNodeID") {
                     if(node.textContent == 0) {
-                        this.startElement = document.getElementById("QuestNode" + node.textContent);
+                        this.startElement = nodesMap["QuestNode" + node.textContent];
                     } else {
-                        this.startElement = document.getElementById("ObjectiveNode" + node.textContent);
+                        this.startElement = nodesMap["ObjectiveNode" + node.textContent];
                     }
                 }
                 if(node.nodeName == "ToNodeID") {
-                     this.endElement = document.getElementById("ObjectiveNode" + node.textContent);
+                     this.endElement = nodesMap["ObjectiveNode" + node.textContent];
                 }
                 if(node.nodeName == "PointsToGhost") {
                      this.pointsToGhost = node.textContent;
@@ -70,21 +68,19 @@
 			this.endElement = endElement;
 		},
        
-		created: function() {
-            if(this.xml !== undefined) { 
-                this.fromXML(this.xml);
-                this.startElement.links[this.endElement.id] = this; // ganz schön harte koppelung …
-            }
-			this.connect();
+		attached: function() {
+			if(this.startElement !== undefined && this.endElement !== undefined) { 
+				this.connect();
+			}
 		},
 
-		fromXML: function(xml) {
+		fromXML: function(xml, nodesMap) {
              for(node of xml.childNodes) {
                 if(node.nodeName == "FromNodeID") {
-                     this.startElement = document.getElementById("TalkNode" + node.textContent);
+                     this.startElement = nodesMap["TalkNode" + node.textContent];
                 }
                 if(node.nodeName == "ToNodeID") {
-                     this.endElement = document.getElementById("TalkNode" + node.textContent);
+                     this.endElement = nodesMap["TalkNode" + node.textContent];
                 }
                 if(node.nodeName == "PointsToGhost") {
                      this.pointsToGhost = node.textContent;

@@ -9,6 +9,7 @@
 		created: function() {
             this.type = "QuestData";
 			this.nodes = [];
+			this.nodesMap = {};
         },
 
 		// geht erstmal von text aus, hab noch kein file handling
@@ -37,6 +38,7 @@
 							}
 							// bookmarks, classextender, usw.
 						    this.push("nodes", element);
+							this.nodesMap[element.id] = element;
 						}
 						// dom anpassen
 						for(node of this.nodes) {
@@ -44,7 +46,7 @@
 						}
                         // links aus dem Temp Status umformen
                         for(node of this.nodes) {
-                            node.activateLinks();
+                            node.activateLinks(this.nodesMap);
                         }
 					}
 				}
@@ -65,6 +67,7 @@
         created: function() {
             this.type = "ConversationData";
 			this.nodes = [];
+			this.nodesMap = {};
         },
 
         fromXML: function(xml) {
@@ -91,6 +94,7 @@
 							}
 							// bookmarks, classextender, usw.
 						    this.push("nodes", element);
+							this.nodesMap[element.id] = element;
 						}
 						// dom anpassen
 						for(node of this.nodes) {
@@ -98,7 +102,7 @@
 						}
                         // links aus dem Temp Status umformen
                         for(node of this.nodes) {
-                            node.activateLinks();
+                            node.activateLinks(this.nodesMap);
                         }
 					}
 				}

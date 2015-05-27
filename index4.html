@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+<!--	<link rel="import" href="flowChartNode-element.html"> -->
+	<link rel="import" href="quest-data-dom.html">
+	<link rel="import" href="flowChartNode2-element.html">
+	<link rel="import" href="line-element.html">
+	<script>
+		 document.addEventListener('WebComponentsReady', function() {
+			var questStub = '<?xml version="1.0" encoding="utf-8"?>'
++'<QuestData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">'
++'  <NextNodeID>6</NextNodeID>'
++'  <Nodes>'
++'    <FlowChartNode xsi:type="QuestNode">'
++'      <NodeID>0</NodeID>'
++'      <Comments />'
++'      <PackageID>1</PackageID>'
++'      <ContainerNodeID>-1</ContainerNodeID>'
++'      <Links>'
++'        <FlowChartLink xsi:type="QuestLink">'
++'          <FromNodeID>0</FromNodeID>'
++'          <ToNodeID>1</ToNodeID>'
++'          <PointsToGhost>false</PointsToGhost>'
++'          <ClassExtender>'
++'            <ExtendedProperties />'
++'          </ClassExtender>'
++'          <RequiredToExitObjective>false</RequiredToExitObjective>'
++'        </FlowChartLink>'
++'      </Links>'
++'    </FlowChartNode>'
++'    <FlowChartNode xsi:type="ObjectiveNode">'
++'      <NodeID>1</NodeID>'
++'      <Comments />'
++'      <PackageID>1</PackageID>'
++'      <ContainerNodeID>-1</ContainerNodeID>'
++'      <Links />'
++'    </FlowChartNode>'
++'   </Nodes>'
++'</QuestData>';
+
+			var conversationStub = '<?xml version="1.0" encoding="utf-8"?>'
++'<ConversationData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">'
++'  <NextNodeID>115</NextNodeID>                       '
++'  <Nodes>                                            '
++'    <FlowChartNode xsi:type="TalkNode">              '
++'      <NodeID>0</NodeID>                        '
++'      <Comments />                                   '
++'      <PackageID>1</PackageID>                       '
++'      <ContainerNodeID>-1</ContainerNodeID>          '
++'     <Links>                                         '
++'        <FlowChartLink xsi:type="DialogueLink">      '
++'          <FromNodeID>0</FromNodeID>                 '
++'          <ToNodeID>95</ToNodeID>                    '
++'          <PointsToGhost>false</PointsToGhost>       '
++'          <ClassExtender>                            '
++'            <ExtendedProperties />                     '
++'          </ClassExtender>                          '
++'          <RandomWeight>1</RandomWeight>             '
++'          <PlayQuestionNodeVO>true</PlayQuestionNodeVO>'
++'          <QuestionNodeTextDisplay>ShowOnce</QuestionNodeTextDisplay>'
++'        </FlowChartLink>                          '
++'      </Links>'
++'    </FlowChartNode>'
++'    <FlowChartNode xsi:type="TalkNode">              '
++'      <NodeID>95</NodeID>                        '
++'      <Comments />                                   '
++'      <PackageID>1</PackageID>                       '
++'      <ContainerNodeID>-1</ContainerNodeID>          '
++'     <Links />                                         '
++'    </FlowChartNode>'
++'  </Nodes>'
++'</ConversationData>';
+
+			
+			var questData = new QuestData();
+			questData.fromXML(questStub);
+			var conversationData = new ConversationData();
+			conversationData.fromXML(conversationStub);
+// die xml daten müssen beim ready callback bereits vorliegen um es für das template nutzbar zu machen, hmm			
+			document.getElementsByTagName("body")[0].appendChild(questData);
+			document.getElementsByTagName("body")[0].appendChild(conversationData);
+
+		});
+
+   
+	</script>
+<script>
+ function print_content() {
+            // mach das erst auf button click, also sehr spät, das davor dauert …
+            console.log(document.getElementsByTagName("questdata-dom")[0].toXML());
+			console.log(document.getElementsByTagName("conversationdata-dom")[0].toXML());
+    }
+</script>
+  </head>
+  <body>
+	Juhu, ersten Browser Bug getriggert. In FF degenerieren input elemente in drag containern. Seit Jahren.
+	https://stackoverflow.com/questions/21680363/prevent-drag-event-to-interfere-with-input-elements-in-firefox-using-html5-drag
+    <br />
+    <button onclick="print_content()">to XML</button>
+  </body>
+</html>

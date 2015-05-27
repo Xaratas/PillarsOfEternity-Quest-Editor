@@ -77,7 +77,7 @@
 			questData.fromXML(questStub);
 			var conversationData = new ConversationData();
 			conversationData.fromXML(conversationStub);
-			
+// die xml daten müssen beim ready callback bereits vorliegen um es für das template nutzbar zu machen, hmm			
 			document.getElementsByTagName("body")[0].appendChild(questData);
 			document.getElementsByTagName("body")[0].appendChild(conversationData);
 
@@ -87,7 +87,7 @@
 	</script>
 <script>
  function print_content() {
-            // mach das erst nach dem add, das ist sicherer, das ist immernoch viel zu früh
+            // mach das erst auf button click, also sehr spät, das davor dauert …
             console.log(document.getElementsByTagName("questdata-dom")[0].toXML());
 			console.log(document.getElementsByTagName("conversationdata-dom")[0].toXML());
     }

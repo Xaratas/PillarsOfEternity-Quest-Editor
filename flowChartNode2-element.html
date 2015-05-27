@@ -80,8 +80,8 @@
 					if (node.nodeName == "FlowChartLink") {
 						questLink = new QuestLink(); // parameter zum Glück nicht lebenswichtig
 						questLink.fromXML(node, nodesMap);
-						this.links[questLink.getTo()] = questLink;
-						document.getElementsByTagName("body")[0].appendChild(this.links[questLink.getTo()]);
+						this.links[questLink.endElement.id] = questLink;
+						document.getElementsByTagName("body")[0].appendChild(this.links[questLink.endElement.id]);
 					}
 				}
 			}
@@ -150,8 +150,8 @@
 					if (node.nodeName == "FlowChartLink") {
 						dialogueLink = new DialogueLink(); // parameter zum Glück nicht lebenswichtig
 						dialogueLink.fromXML(node, nodesMap);
-						this.links[dialogueLink.getTo()] = dialogueLink;
-						document.getElementsByTagName("body")[0].appendChild(this.links[dialogueLink.getTo()]);
+						this.links[dialogueLink.endElement.id] = dialogueLink;
+						document.getElementsByTagName("body")[0].appendChild(this.links[dialogueLink.endElement.id]);
 					}
 				}
 			}

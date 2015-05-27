@@ -1,6 +1,24 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="ParserBehavior.html">
 <link rel="import" href="flowChartNode2-element.html">
+
+<dom-module id="ConversationData-dom">
+	<style>
+		:host {
+			display: flex;
+		}
+
+		:host > ::content > div {
+			display:flex;
+			flex-direction: column;
+		}
+	</style>
+
+	<template>
+		<content></content>
+	</template>
+</dom-module>
+
 <script>
 	QuestData = Polymer({
 		is: "QuestData-dom",
@@ -70,6 +88,13 @@
 			this.nodesMap = {};
         },
 
+		ready: function() { // created ist zu früh, für das repeat template, aber das verwende ich eh nicht.
+			this.buckets = [];
+		},
+
+		attached: function() {
+		},
+
         fromXML: function(xml) {
 			if(typeof(xml) == "string") { // schon geparstes ist object
 				xml = this.parser.parseFromString(xml, 'text/xml');
@@ -96,9 +121,25 @@
 						    this.push("nodes", element);
 							this.nodesMap[element.id] = element;
 						}
-						// dom anpassen
+						// Gedanke
+						var i = 0;
 						for(node of this.nodes) {
-							Polymer.dom(this).appendChild(node, this);
+							this.buckets[i] = {};
+							if(this.buckets.indexOf(node) == -1) {
+								this.buckets[i][0] = node; // id 0 als anker
+								//this.set('buckets.' + i, node); // mit der push / set api bekommt man das nicht so hin, vielleicht brauch man das auch gar nicht so …
+								//this.buckets.push({i:node});
+								i++;
+								this.place(node.links, i)
+							}
+						}
+						// dom anpassen, quasi eigenes template
+						for(bucket of this.buckets) {
+							var bucketWrapper = document.createElement('div');
+							Polymer.dom(this).appendChild(bucketWrapper);
+							for(node_ in bucket) {
+								Polymer.dom(bucketWrapper).appendChild(bucket[node_]);
+							}
 						}
                         // links aus dem Temp Status umformen
                         for(node of this.nodes) {
@@ -108,7 +149,17 @@
 				}
 			}
 		},
-
+		place: function(links, i) {
+			var a = 0;
+			for(link in links) {
+				this.buckets[i] = {};
+				if(this.buckets.indexOf(link.endElement) == -1) {
+					this.buckets[i][a] = link.endElement;
+					a++;
+					this.place(link.endElement.links, i++);
+				}
+			}
+		},
         toXML: function() {
 			var result = this.basetypecontent_toXML();
             // todo nicht gleiches

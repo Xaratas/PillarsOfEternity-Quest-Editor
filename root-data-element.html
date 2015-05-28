@@ -1,8 +1,8 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
-<link rel="import" href="ParserBehavior.html">
-<link rel="import" href="flowChartNode2-element.html">
+<link rel="import" href="parser-behavior.html">
+<link rel="import" href="flowChartNode-elements.html">
 
-<dom-module id="ConversationData-dom">
+<dom-module id="ConversationData-element">
 	<style>
 		:host {
 			display: flex;
@@ -21,7 +21,7 @@
 
 <script>
 	QuestData = Polymer({
-		is: "QuestData-dom",
+		is: "QuestData-element",
         behaviors: [ParserBehavior],
 
 		created: function() {
@@ -79,7 +79,7 @@
 	});
 
     ConversationData = Polymer({
-        is: "ConversationData-dom",
+        is: "ConversationData-element",
         behaviors: [ParserBehavior],
 
         created: function() {
@@ -121,16 +121,27 @@
 						    this.push("nodes", element);
 							this.nodesMap[element.id] = element;
 						}
-						// Gedanke
+                        // links aus dem Temp Status umformen
+                        for(node of this.nodes) {
+                            node.activateLinks(this.nodesMap);
+                        }
+						// nodes anhand der links sortieren
 						var i = 0;
+						var isIn = false;
 						for(node of this.nodes) {
-							this.buckets[i] = {};
-							if(this.buckets.indexOf(node) == -1) {
+							// contains die komplizierte art, könnte man wohl mit zip lösen
+							for(var a = 0; a < this.buckets.length; a++) {
+								for(b in this.buckets[a]) { 
+									isIn |= (this.buckets[a][b] === node); 
+								}
+							}
+							if(!isIn) {
+								this.buckets[i] = {};
 								this.buckets[i][0] = node; // id 0 als anker
 								//this.set('buckets.' + i, node); // mit der push / set api bekommt man das nicht so hin, vielleicht brauch man das auch gar nicht so …
 								//this.buckets.push({i:node});
 								i++;
-								this.place(node.links, i)
+								this.place(node.links, i);
 							}
 						}
 						// dom anpassen, quasi eigenes template
@@ -141,10 +152,11 @@
 								Polymer.dom(bucketWrapper).appendChild(bucket[node_]);
 							}
 						}
-                        // links aus dem Temp Status umformen
-                        for(node of this.nodes) {
-                            node.activateLinks(this.nodesMap);
-                        }
+
+						// todo attached kommt bevor das hier fertig ist, könnte am document.appendChild in flowchartnode liegen
+//						for(node of this.nodes) {
+//							node.ConversationData_ready(); // event?!
+//						}
 					}
 				}
 			}
@@ -152,11 +164,11 @@
 		place: function(links, i) {
 			var a = 0;
 			for(link in links) {
-				this.buckets[i] = {};
-				if(this.buckets.indexOf(link.endElement) == -1) {
-					this.buckets[i][a] = link.endElement;
+				if(this.buckets[i] === undefined) this.buckets[i] = {};
+				if(this.buckets.indexOf(links[link].endElement) == -1) {
+					this.buckets[i][a] = links[link].endElement;
 					a++;
-					this.place(link.endElement.links, i++);
+					this.place(links[link].endElement.links, i+1); 
 				}
 			}
 		},

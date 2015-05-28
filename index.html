@@ -2,10 +2,9 @@
 <html>
   <head>
     <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
-<!--	<link rel="import" href="flowChartNode-element.html"> -->
-	<link rel="import" href="quest-data-dom.html">
-	<link rel="import" href="flowChartNode2-element.html">
-	<link rel="import" href="line-element.html">
+	<link rel="import" href="root-data-elements.html">
+	<link rel="import" href="flowChartNode-elements.html">
+	<link rel="import" href="flowChartLink-element.html">
 	<script>
 		 document.addEventListener('WebComponentsReady', function() {
 			var questStub = '<?xml version="1.0" encoding="utf-8"?>'
@@ -360,8 +359,8 @@
 <script>
  function print_content() {
             // mach das erst auf button click, also sehr spät, das davor dauert …
-            console.log(document.getElementsByTagName("questdata-dom")[0].toXML());
-			console.log(document.getElementsByTagName("conversationdata-dom")[0].toXML());
+            console.log(document.getElementsByTagName("questdata-element")[0].toXML());
+			console.log(document.getElementsByTagName("conversationdata-element")[0].toXML());
     }
 </script>
   </head>

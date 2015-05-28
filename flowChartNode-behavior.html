@@ -46,6 +46,13 @@ FlowChartNodeBehavior = {
 		Polymer.dom(this.$$("comments")).removeChild(comment); // die remove child erwartet eine node, deswegen über comment und nicht über id
 	},
 
+	/** Add links between elements on attach of the node. Then the calculations of the links will work. */ 
+	attached: function() {
+		for(link in this.links) {
+			document.getElementsByTagName("body")[0].appendChild(this.links[link]);
+		}
+	},
+
 	//http://www.quirksmode.org/blog/archives/2009/09/the_html5_drag.html Ja verdammt, drag and drop ist fürn arsch, und das wird auch in HTML 5.1 so bleiben
 	onDragStart: function(event) {
 		event.dataTransfer.effectsAllowed = 'link';

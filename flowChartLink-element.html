@@ -1,4 +1,6 @@
-<link rel="import" href="FlowChartLink-behavior.html">
+<link rel="import" href="flowChartLink-behavior.html">
+
+<!-- Connects 2 Flowchartnodes via a straight line. Line goes from center to center -->
 <script>
 	QuestLink = Polymer({
 		is: "questLink-element",
@@ -45,9 +47,9 @@
 			var xml = '<FlowChartLink xsi:type="QuestLink">'
 				+ '<FromNodeID>' + this.startElement.nodeId + '</FromNodeID>'
 				+ '<ToNodeID>' + this.endElement.nodeId + '</ToNodeID>'
-				+ '<PointsToGhost>' + this.pointsToGhost + '</PointsToGhost>' // todo
+				+ '<PointsToGhost>' + this.pointsToGhost + '</PointsToGhost>'
 				+ '<ClassExtender><ExtendedProperties /></ClassExtender>' // immer leer
-                + '<RequiredToExitObjective>' + this.requiredToExitObjective + '</RequiredToExitObjective>'; // TODO
+                + '<RequiredToExitObjective>' + this.requiredToExitObjective + '</RequiredToExitObjective>';
 			return xml	+ '</FlowChartLink>';
 		}
 	});
@@ -102,11 +104,11 @@
 			var xml = '<FlowChartLink xsi:type="DialogueLink">'
 				+ '<FromNodeID>' + this.startElement.nodeId + '</FromNodeID>'
 				+ '<ToNodeID>' + this.endElement.nodeId + '</ToNodeID>'
-				+ '<PointsToGhost>' + this.pointsToGhost + '</PointsToGhost>' // todo
+				+ '<PointsToGhost>' + this.pointsToGhost + '</PointsToGhost>'
 				+ '<ClassExtender><ExtendedProperties /></ClassExtender>' // immer leer
-			    + '<RandomWeight>' + this.randomWeight + '</RandomWeight>' // todo
-                + '<PlayQuestionNodeVO>' + this.playQuestionNodeVO + '</PlayQuestionNodeVO>' // todo
-                + '<QuestionNodeTextDisplay>' + this.questionNodeTextDisplay + '</QuestionNodeTextDisplay>'; // todo
+			    + '<RandomWeight>' + this.randomWeight + '</RandomWeight>' 
+                + '<PlayQuestionNodeVO>' + this.playQuestionNodeVO + '</PlayQuestionNodeVO>'
+                + '<QuestionNodeTextDisplay>' + this.questionNodeTextDisplay + '</QuestionNodeTextDisplay>';
 			return xml	+ '</FlowChartLink>';
 		}
 	});

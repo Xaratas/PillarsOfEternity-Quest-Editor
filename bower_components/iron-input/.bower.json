@@ -1,15 +1,13 @@
 {
   "name": "iron-input",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "description": "An input element with data binding",
   "authors": [
     "The Polymer Authors"
   ],
   "keywords": [
     "web-components",
-    "web-component",
     "polymer",
-    "iron",
     "input"
   ],
   "main": [
@@ -20,7 +18,7 @@
     "type": "git",
     "url": "git://github.com/PolymerElements/iron-input.git"
   },
-  "license": "MIT",
+  "license": "http://polymer.github.io/LICENSE.txt",
   "homepage": "https://github.com/PolymerElements/iron-input",
   "ignore": [],
   "dependencies": {
@@ -34,11 +32,11 @@
     "web-component-tester": "*",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
   },
-  "_release": "0.9.7",
+  "_release": "0.9.8",
   "_resolution": {
     "type": "version",
-    "tag": "v0.9.7",
-    "commit": "d62bba40ace3b5e0e021913554e7d97cab882b2d"
+    "tag": "v0.9.8",
+    "commit": "9fff6748e86241ac44ab132be01258f14eeb3251"
   },
   "_source": "git://github.com/PolymerElements/iron-input.git",
   "_target": "~0.9.4",

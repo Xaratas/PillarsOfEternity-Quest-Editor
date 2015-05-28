@@ -5,6 +5,7 @@ ParserBehavior = {
 		type: String,
 		nextNodeId: Number,
 		nodes: Array, // jeder Typ braucht einen eigenen Array, nicht vorinitialisieren
+		buckets: Array, 
 		parser: {
 			type: Object,
 			value: new window.DOMParser()
@@ -43,6 +44,19 @@ ParserBehavior = {
 		result += '</Nodes>';
 		// todo gleicher rest
 		return result;
-	}
+	},
+
+	/** Place link targets in buckets, new reachable elements get in a new bucket */
+	place: function(links, i) {
+		var a = 0;
+		for(link in links) {
+			if(this.buckets[i] === undefined) this.buckets[i] = {};
+			if(this.buckets.indexOf(links[link].endElement) == -1) {
+				this.buckets[i][a] = links[link].endElement;
+				a++;
+				this.place(links[link].endElement.links, i+1); 
+			}
+		}
+	},
 };
 </script>

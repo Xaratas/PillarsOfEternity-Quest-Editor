@@ -2,6 +2,22 @@
 <link rel="import" href="parser-behavior.html">
 <link rel="import" href="flowChartNode-elements.html">
 
+<dom-module id="QuestData-element">
+	<style>
+		:host {
+			display: flex;
+		}
+
+		:host > ::content > div {
+			display:flex;
+			flex-direction: column;
+		}
+	</style>
+	<template>
+		<content></content>
+	</template>
+</dom-module>
+
 <dom-module id="ConversationData-element">
 	<style>
 		:host {
@@ -28,6 +44,7 @@
             this.type = "QuestData";
 			this.nodes = [];
 			this.nodesMap = {};
+			this.buckets = [];
         },
 
 		// geht erstmal von text aus, hab noch kein file handling
@@ -39,7 +56,6 @@
 			if(xml.hasChildNodes()) {
                 var item;
                 for(item of xml.childNodes) {					
-					if(item.nodeName == "#text") { continue; }
 					if(item.nodeName == this.type) {
 						this.fromXML(item); // remove outer layer
 					}
@@ -58,14 +74,35 @@
 						    this.push("nodes", element);
 							this.nodesMap[element.id] = element;
 						}
-						// dom anpassen
-						for(node of this.nodes) {
-							Polymer.dom(this).appendChild(node, this);
-						}
-                        // links aus dem Temp Status umformen
+						// links aus dem Temp Status umformen
                         for(node of this.nodes) {
                             node.activateLinks(this.nodesMap);
                         }
+						// nodes anhand der links sortieren
+						var i = 0;
+						var isIn = false;
+						for(node of this.nodes) {
+							// contains die komplizierte art, könnte man wohl mit zip lösen
+							for(var a = 0; a < this.buckets.length; a++) {
+								for(b in this.buckets[a]) { 
+									isIn |= (this.buckets[a][b] === node); 
+								}
+							}
+							if(!isIn) {
+								this.buckets[i] = {};
+								this.buckets[i][0] = node; // id 0 als anker
+								i++;
+								this.place(node.links, i);
+							}
+						}
+						// dom anpassen, quasi eigenes template
+						for(bucket of this.buckets) {
+							var bucketWrapper = document.createElement('div');
+							Polymer.dom(this).appendChild(bucketWrapper);
+							for(node_ in bucket) {
+								Polymer.dom(bucketWrapper).appendChild(bucket[node_]);
+							}
+						}
 					}
 				}
 			}
@@ -86,14 +123,8 @@
             this.type = "ConversationData";
 			this.nodes = [];
 			this.nodesMap = {};
-        },
-
-		ready: function() { // created ist zu früh, für das repeat template, aber das verwende ich eh nicht.
 			this.buckets = [];
-		},
-
-		attached: function() {
-		},
+        },
 
         fromXML: function(xml) {
 			if(typeof(xml) == "string") { // schon geparstes ist object
@@ -121,7 +152,7 @@
 						    this.push("nodes", element);
 							this.nodesMap[element.id] = element;
 						}
-                        // links aus dem Temp Status umformen
+						// links aus dem Temp Status umformen
                         for(node of this.nodes) {
                             node.activateLinks(this.nodesMap);
                         }
@@ -138,8 +169,6 @@
 							if(!isIn) {
 								this.buckets[i] = {};
 								this.buckets[i][0] = node; // id 0 als anker
-								//this.set('buckets.' + i, node); // mit der push / set api bekommt man das nicht so hin, vielleicht brauch man das auch gar nicht so …
-								//this.buckets.push({i:node});
 								i++;
 								this.place(node.links, i);
 							}
@@ -152,27 +181,12 @@
 								Polymer.dom(bucketWrapper).appendChild(bucket[node_]);
 							}
 						}
-
-						// todo attached kommt bevor das hier fertig ist, könnte am document.appendChild in flowchartnode liegen
-//						for(node of this.nodes) {
-//							node.ConversationData_ready(); // event?!
-//						}
 					}
 				}
 			}
 		},
-		place: function(links, i) {
-			var a = 0;
-			for(link in links) {
-				if(this.buckets[i] === undefined) this.buckets[i] = {};
-				if(this.buckets.indexOf(links[link].endElement) == -1) {
-					this.buckets[i][a] = links[link].endElement;
-					a++;
-					this.place(links[link].endElement.links, i+1); 
-				}
-			}
-		},
-        toXML: function() {
+        
+		toXML: function() {
 			var result = this.basetypecontent_toXML();
             // todo nicht gleiches
 			return result + '</' + this.type + '>';

@@ -1,0 +1,124 @@
+<link rel="import" href="functionCall-data-behavior.html">
+<!-- TODO select element in polymer mit Hinweisen, was die Einträge bewirken -->
+<dom-module id="Condition-element">
+	<style>
+        :host {
+            display: flex;
+            flex-direction: column;         
+        }
+    </style>
+	<template>
+        <div>Operator: <span>{{operator}}</span> <span>{{operator2}}</span></div>
+	    <div>Function:&nbsp;<span>{{not}}</span> <span>{{functionName}}</span></div>
+        <template is="dom-repeat" items="{{parameter}}">
+            <div>Parameter <span>{{index}}</span>: <span>{{item}}</span></div>
+        </template>
+
+        <nestedConditions></nestedConditions>
+	</template>
+</dom-module>
+<script>
+    // muss sachen wie fun1 && (fun2 || fun3) && !(fun4 && !fun5) unterstützen
+	ConditionElement = Polymer({
+		is: "Condition-element",
+        behaviors: [FunctionCallBehavior],
+
+		properties: {
+			operator: String,
+			type: String,
+			not: String,
+			operator2: String,
+            nestedConditions: Array
+		},
+
+        factoryImpl: function() {
+            this.nestedConditions = [];
+            this.parameter = [];
+        },
+        
+		conditionalCall: function(xml) {
+			var node;
+			for (node of xml.childNodes) {
+				if (node.nodeName == "Data") {
+                    this.functionCallFromXML(node);
+				}
+				if (node.nodeName == "Not") {
+                    if(node.textContent == "false") this.not = "";
+                    else this.not = "!";
+				}
+				if (node.nodeName == "Operator") {
+					this.operator2 = node.textContent;
+				}
+			}
+		},
+		conditionalExpression: function(xml) {
+            var node;
+            for(node of xml.childNodes) {
+                if(node.nodeName == "Operator") {
+                    this.operator = node.textContent;
+                }
+                if(node.nodeName == "Components") {
+                    // rekursion, liste von conditionals
+                    var cnode;
+                    if(node.hasChildNodes()) {
+                        for(cnode of node.childNodes) {
+                            conditional = new ConditionElement();
+                            conditional.fromXML(cnode);
+                            this.push('nestedConditions', conditional);
+                            Polymer.dom(this.$$("nestedConditions")).appendChild(conditional);
+                        }
+                    }
+                }
+            }
+		},
+
+		fromXML: function(xml) {
+			if (xml.hasChildNodes()) {
+				if (xml.nodeName == "ExpressionComponent") {
+					this.type = xml.attributes[0].value; // ConditionalCall or ConditionalExpression
+                } else if (xml.nodeName == "Conditionals") {
+                    this.type = "ConditionalExpression"; // outer most layer
+                }
+				if (this.type == "ConditionalCall") {
+					this.conditionalCall(xml);
+				} else if (this.type == "ConditionalExpression") {
+					this.conditionalExpression(xml);
+				}
+			}
+		},
+
+        /** The outermost layer of ConditionalExpression is called Conditionals in the XML 
+         * @param depth - 0 = outermost layer
+         */
+		toXML: function(depth) {
+            if(this.type == "ConditionalCall") {
+    		    var xml = '<ExpressionComponent xsi:type="' + this.type + '">'; 
+                xml += this.functionCallToXML();    
+                xml += '<Not>';
+	    	    if (this.not == "")
+    		        xml += 'false';
+        		else
+	        	    xml += 'true';
+		        xml += '</Not>' 
+                    + '<Operator>' + this.operator2 + '</Operator>';
+        		return xml + '</ExpressionComponent>';
+            }
+            if(this.type == "ConditionalExpression") {
+                var xml = "";
+                if(depth > 0) {
+                     xml += '<ExpressionComponent xsi:type="' + this.type + '">';
+                }
+                xml += '<Operator>' + this.operator + '</Operator>'
+                    + '<Components>';
+                for(condition of this.nestedConditions) {
+                    xml += condition.toXML(depth + 1);
+                }
+                xml += '</Components>';
+                if(depth > 0) {    
+                    xml += '</ExpressionComponent>';
+                }
+                return xml;
+            }
+		}
+	});
+</script>

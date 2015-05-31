@@ -1,0 +1,123 @@
+<link rel="import" href="flowChartLink-behavior.html">
+
+<!-- Connects 2 Flowchartnodes via a straight line. Line goes from center to center -->
+<script>
+	QuestLink = Polymer({
+		is: "questLink-element",
+		extends: "canvas",
+        behaviors: [FlowChartLinkBehavior],
+
+		properties: {
+			requiredToExitObjective: Boolean
+		},
+
+		factoryImpl: function(startElement, endElement) {
+			this.startElement = startElement;
+			this.endElement = endElement;
+		},
+      
+		attached: function() {
+			if(this.startElement !== undefined && this.endElement !== undefined) { 
+				this.connect();
+			}
+		}, 
+
+		fromXML: function(xml, nodesMap) {
+            for(node of xml.childNodes) {
+                if(node.nodeName == "FromNodeID") {
+                    if(node.textContent == 0) {
+                        this.startElement = nodesMap["QuestNode" + node.textContent];
+                    } else {
+                        this.startElement = nodesMap["ObjectiveNode" + node.textContent];
+                    }
+                }
+                if(node.nodeName == "ToNodeID") {
+                     this.endElement = nodesMap["ObjectiveNode" + node.textContent];
+                }
+                if(node.nodeName == "PointsToGhost") {
+                     this.pointsToGhost = node.textContent;
+                }
+                if(node.nodeName == "RequiredToExitObjective") {
+                    this.requiredToExitObjective = node.textContent;
+                }
+            }
+		},
+
+		toXML: function() {
+			var xml = '<FlowChartLink xsi:type="QuestLink">'
+				+ '<FromNodeID>' + this.startElement.nodeId + '</FromNodeID>'
+				+ '<ToNodeID>' + this.endElement.nodeId + '</ToNodeID>'
+				+ '<PointsToGhost>' + this.pointsToGhost + '</PointsToGhost>'
+				+ '<ClassExtender><ExtendedProperties /></ClassExtender>' // immer leer
+                + '<RequiredToExitObjective>' + this.requiredToExitObjective + '</RequiredToExitObjective>';
+			return xml	+ '</FlowChartLink>';
+		}
+	});
+
+    DialogueLink = Polymer({
+		is: "dialogueLink-element",
+		extends: "canvas",
+        behaviors: [FlowChartLinkBehavior],
+
+		properties: {
+			randomWeight: Number,
+            playQuestionNodeVO: Boolean,
+            questionNodeTextDisplay: String
+		},
+		// ist vor dem Behavior dran
+		factoryImpl: function(startElement, endElement) {
+			this.startElement = startElement;
+			this.endElement = endElement;
+		},
+       
+		attached: function() {
+			if(this.startElement !== undefined && this.endElement !== undefined) { 
+				this.connect();
+			}
+		},
+
+		fromXML: function(xml, nodesMap) {
+             for(node of xml.childNodes) {
+                if(node.nodeName == "FromNodeID") {
+					if(nodesMap["TalkNode" + node.textContent] !== undefined) {
+                    	this.startElement = nodesMap["TalkNode" + node.textContent];
+					} else {
+						this.startElement = nodesMap["PlayerResponseNode" + node.textContent];
+					}
+                }
+                if(node.nodeName == "ToNodeID") {
+					if(nodesMap["TalkNode" + node.textContent] !== undefined) {
+				   		this.endElement = nodesMap["TalkNode" + node.textContent];
+					} else {
+						this.endElement = nodesMap["PlayerResponseNode" + node.textContent];
+					}
+                }
+                if(node.nodeName == "PointsToGhost") {
+                     this.pointsToGhost = node.textContent;
+                }
+                // classExtender ignorieren, ist sowieso überall leer
+                if(node.nodeName == "RandomWeight") {
+                      this.randomWeight = node.textContent;
+                }
+                if(node.nodeName == "PlayQuestionNodeVO") {
+                        this.playQuestionNodeVO = node.textContent;
+                }
+                if(node.nodeName == "QuestionNodeTextDisplay") {
+                        this.questionNodeTextDisplay = node.textContent;
+                }
+             }
+		},
+
+		toXML: function() {
+			var xml = '<FlowChartLink xsi:type="DialogueLink">'
+				+ '<FromNodeID>' + this.startElement.nodeId + '</FromNodeID>'
+				+ '<ToNodeID>' + this.endElement.nodeId + '</ToNodeID>'
+				+ '<PointsToGhost>' + this.pointsToGhost + '</PointsToGhost>'
+				+ '<ClassExtender><ExtendedProperties /></ClassExtender>' // immer leer
+			    + '<RandomWeight>' + this.randomWeight + '</RandomWeight>' 
+                + '<PlayQuestionNodeVO>' + this.playQuestionNodeVO + '</PlayQuestionNodeVO>'
+                + '<QuestionNodeTextDisplay>' + this.questionNodeTextDisplay + '</QuestionNodeTextDisplay>';
+			return xml	+ '</FlowChartLink>';
+		}
+	});
+</script>

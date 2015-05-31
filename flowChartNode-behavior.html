@@ -1,0 +1,196 @@
+<link rel="import" href="scripts-element.html">
+<script>
+FlowChartNodeBehavior = {
+	properties: {
+		type: String,
+		nodeId: Number,
+		comments: Array,
+		links: Object,
+		enterScripts: Array,
+		exitScripts: Array,
+
+		linkXML: Object,
+		placed: {
+			type: Boolean,
+			value: false
+		},
+		draggable: {
+			value: "true",
+			reflectToAttribute: true
+		},
+		id: {
+			computed: 'setId(type, nodeId)',
+			reflectToAttribute: true
+		},
+		direction: String
+	},
+
+	listeners: {
+		'dragstart': 'onDragStart',
+		'dragover': 'onDragOver',
+		'dragenter': 'onDragEnter',
+		'dragleave': 'onDragLeave',
+		'drop': 'onDrop',
+		'dragend': 'onDragEnd'
+	},
+
+	setId: function(type, nodeId) {
+		return type + nodeId; // node id sollte unique bleiben, TODO enforce davon
+	},
+
+	addComment: function(event, eventDetail, text) {
+		var comment = new Comment(this, this.comments.length + 1);
+		if (text !== undefined)
+			comment.setText(text);
+		this.push("comments", comment);
+		Polymer.dom(this.$$("comments")).appendChild(comment);
+	},
+
+	removeComment: function(index) {
+		console.log("remove Comment");
+		var comment = this.splice("comments", index - 1, 1)[0]; // splice liefert ein array
+		Polymer.dom(this.$$("comments")).removeChild(comment); // die remove child erwartet eine node, deswegen über comment und nicht über id
+	},
+
+	/** Add links between elements on attach of the node. Then the calculations of the links will work. */ 
+	attached: function() {
+		for(link in this.links) {
+			document.getElementsByTagName("body")[0].appendChild(this.links[link]);
+		}
+	},
+
+	_fromXML: function(xml) {
+		if (xml.hasChildNodes()) {
+			this.type = xml.attributes[0].value;
+			var node;
+			for (node of xml.childNodes) {
+				if (node.nodeName == "NodeID") {
+					this.nodeId = node.textContent;
+				}
+				if (node.nodeName == "Comments") {
+					var cnode;
+					for (cnode of node.childNodes) {
+						this.addComment(_, _, cnode.textContent);
+					}
+				}
+				if (node.nodeName == "Links") {
+					this.linkXML = node;
+				}
+				if (node.nodeName == "Conditionals") {
+					var conditionElement = new ConditionElement();
+					conditionElement.fromXML(node);
+					this.push('conditions', conditionElement);
+					Polymer.dom(this.$$("conditions")).appendChild(conditionElement);
+				}
+				if (node.nodeName == "OnEnterScripts") {
+					this.scriptsFromXML("enterScripts", node);
+				}
+				if (node.nodeName == "OnExitScripts") {
+					this.scriptsFromXML("exitScripts", node);
+				}
+				// onUpdateScripts werden nicht verwendet
+				if (node.nodeName == "IsTempText") {
+					// 
+				}
+			}
+		}
+	},
+
+	_toXML: function() {
+		var result = "<NodeID>" + this.nodeId + "</NodeID><Comments>";
+		for (comment of this.comments) {
+			result += comment.toXML();
+		}
+		result += "</Comments>";
+		result += "<PackageID>1</PackageID>"; // siehe xsd, 1 steht für base game und ist momentan der Einzige sinnvolle Wert
+		result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
+		result += "<Links>";
+		for (link in this.links) {
+			result += this.links[link].toXML();
+		}
+		result += "</Links>";
+		result += "<ClassExtender><ExtendedProperties /></ClassExtender>";
+		result += "<Conditionals>";
+		for (condition of this.conditions) {
+			result += condition.toXML(0);
+		}
+		result += "</Conditionals>";
+		result += "<OnEnterScripts>";
+		for (scriptCall of this.enterScripts) {
+			result += "<ScriptCall>";
+			result += scriptCall.functionCallToXML();
+			result += "</ScriptCall>";
+		}
+		result += "</OnEnterScripts>";
+		result += "<OnExitScripts>";
+		for (scriptCall of this.exitScripts) {
+			result += "<ScriptCall>";
+			result += scriptCall.functionCallToXML();
+			result += "</ScriptCall>";
+		}
+		result += "</OnExitScripts>";
+		result += "<OnUpdateScripts />";
+		return result;
+	},
+
+	/** @param target - Name of Variable enterScripts or exitScripts */
+	scriptsFromXML: function(target, xml) {
+		for(snode of xml.childNodes) {
+			if(snode.hasChildNodes) {
+				for(dnode of snode.childNodes) {
+					var scriptElement = new ScriptElement();
+					scriptElement.functionCallFromXML(dnode);
+					this.push(target, scriptElement);
+					Polymer.dom(this.$$(target)).appendChild(scriptElement);
+				}
+			}
+		}
+	},
+
+	//http://www.quirksmode.org/blog/archives/2009/09/the_html5_drag.html Ja verdammt, drag and drop ist fürn arsch, und das wird auch in HTML 5.1 so bleiben
+	onDragStart: function(event) {
+		event.dataTransfer.effectsAllowed = 'link';
+		event.dataTransfer.setData(this.type, this.id); // type could be anything, as long as it is string, oh and data have to be string too …
+		this.direction = "from";
+	},
+
+	onDragEnter: function(event) {
+		if (event.dataTransfer.types[0] === this.type.toLowerCase()) { // nur gleiche typen lassen sich linken // todo questnode und objective node sind gleich
+			event.preventDefault();
+		}
+	},
+
+	onDragOver: function(event) {
+		if (event.dataTransfer.types[0] === this.type.toLowerCase()) { // nur gleiche typen lassen sich linken
+			event.preventDefault();
+			event.dataTransfer.dropEffect = 'link';
+			if (this.direction !== "from") {
+				this.direction = "to";
+			}
+		}
+	},
+
+	onDragLeave: function(event) {
+		if (this.direction !== "from") {
+			this.direction = "";
+		}
+	},
+
+	onDrop: function(event) {
+		event.preventDefault();
+		// todo: handling für verschiedene nodes, prototypisch für überhaupt links
+		if (event.dataTransfer.getData(this.type) !== this.id) { // selbst linken ist nicht
+			var from = document.getElementById(event.dataTransfer.getData(this.type));
+			if (this.links[from.id] === undefined) { // links sind nur in eine richtung zu ziehen // todo sichtbar machen der richtung
+				from.createLink(this);
+			}
+		}
+		this.direction = ""; // drag target
+	},
+
+	onDragEnd: function(event) {
+		console.log("Fin");
+		this.direction = ""; // drag source
+	},
+};
+</script>

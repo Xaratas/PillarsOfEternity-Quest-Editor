@@ -1,6 +1,7 @@
 <link rel="import" href="bower_components/iron-input/iron-input.html">
 <link rel="import" href="flowChartNode-behavior.html">
 <link rel="import" href="comment-element.html">
+<link rel="import" href="condition-element.html">
 
 <!-- Contains the different kind of FlowChartNodes -->
 <!-- The common base and drag and drop is in flowChartNode-behavior defined -->
@@ -34,26 +35,101 @@
 <dom-module id="TalkNode-element">
 <style>
 	:host {
-		background-color: #aaddaa;
-		width: 200px;
+		background-color: #8FC0A9;
+		width: 260px;
 		display: flex;
-		flex-direction: column;
 		margin: 10px;
-		padding: 5px;
 	}
 
 	.direction {
 		float: right;
 	}
 
+	.left, .right, .leftmiddle {
+		width: 40px;
+		padding: 10px 5px;
+		background-color: #9FD8CB;
+		position: relative;
+	}
+
+	.left {
+		border-top-right-radius: 20px;
+		border-bottom-right-radius: 20px;
+		padding-right: 18px;
+	}
+
+	.right {
+		border-top-left-radius: 20px;
+		border-bottom-left-radius: 20px;
+		padding-right: 18px;
+	}
+
+	.leftmiddle {
+		border-radius: 20px;
+		padding: 12px;
+		margin-left: 3px;
+	}
+	.center {
+		margin: 10px;
+	}
+
+	.left > span, .leftmiddle > span {
+	    position: absolute;
+		transform: translate(0px, -12px) rotate(90deg);
+	    transform-origin: left bottom 0;
+	}
+
+	.leftmiddle > span {
+		transform: translate(-4px, -26px) rotate(90deg);
+	}
+	
+	.left > conditions {
+		display: none;
+		position: absolute;
+		width: 500px;
+		background-color: #ADBF97;
+		z-index: 10;
+		left: 25px;
+		top: 30px;
+		padding: 10px;
+	}
+
+	.left:hover > conditions {
+		display: block;
+	}
+
+	conditions:hover {
+		display: block;
+	}
+	
+	.right > span {
+		position: absolute;
+	    transform: translate(0px, 86px) rotate(270deg);
+	    transform-origin: left top 0;
+	}
+
 	comments {
 	}
 </style>
 <template>
-		<div>Type: <span>{{type}}</span><span class="direction">{{direction}}</span></div>
-		<div>ID: <input is="iron-input" bind-value={{nodeId}}></input></div>
-		<div>Comments: <button on-click="addComment">Add</button></div>
-		<comments></comments>
+		<div class="left">
+			<span>Conditions</span>
+			<conditions></conditions>
+		</div>
+		<div class="leftmiddle">
+			<span>Enter&nbsp;Scripts</span>
+			<enterScripts></enterScripts>
+		</div>
+		<div class="center">
+			<div>Type: <span>{{type}}</span><span class="direction">{{direction}}</span></div>
+			<div>ID: <input is="iron-input" bind-value={{nodeId}}></input></div>
+			<div>Comments: <button on-click="addComment">Add</button></div>
+			<comments></comments>
+		</div>
+		<div class="right" on-click="showEffects">
+			<span>Exit&nbsp;Scripts</span>
+			<exitScripts></exitScripts>
+		</div>
 </template>
 </dom-module>
 
@@ -89,6 +165,14 @@
 			}
 		},
 
+		showConditions: function() {
+			
+		},
+
+		showEffects: function() {
+
+		},
+
 		fromXML: function(xml) {
 			if (xml.hasChildNodes()) {
 				this.type = xml.attributes[0].value;
@@ -100,7 +184,7 @@
 					if (node.nodeName == "Comments") {
 						var cnode;
 						for (cnode of node.childNodes) {
-							this.addComment(cnode.textContent);
+							this.addComment(_, _, cnode.textContent);
 						}
 					}
 					if (node.nodeName == "Links") {
@@ -132,9 +216,19 @@
 		is: "TalkNode-element",
 		behaviors: [FlowChartNodeBehavior],
 
+		properties: {
+			conditions: Array
+		},
+
 		created: function() {
 			this.comments = [];
 			this.links = {};
+			this.conditions = [];
+			this.enterScripts = [];
+			this.exitScripts = [];
+		},
+
+		attached: function() {
 		},
 
 		/** Create Links via Drag and Drop */
@@ -170,13 +264,28 @@
 					if (node.nodeName == "Comments") {
 						var cnode;
 						for (cnode of node.childNodes) {
-							this.addComment(cnode.textContent);
+							this.addComment(_, _, cnode.textContent);
 						}
 					}
 					if (node.nodeName == "Links") {
 						this.linkXML = node;
 					}
-					// andere werte
+					if (node.nodeName == "Conditionals") {
+						var conditionElement = new ConditionElement();
+						conditionElement.fromXML(node);
+						this.push('conditions', conditionElement);
+						Polymer.dom(this.$$("conditions")).appendChild(conditionElement);
+					}
+					if (node.nodeName == "OnEnterScripts") {
+						this.scriptsFromXML("enterScripts", node);
+					}
+					if (node.nodeName == "OnExitScripts") {
+						this.scriptsFromXML("exitScripts", node);
+					}
+					// onUpdateScripts werden nicht verwendet
+					if (node.nodeName == "IsTempText") {
+							// 
+					}
 				}
 			}
 		},
@@ -194,6 +303,27 @@
 				result += this.links[link].toXML();
 			}
 			result += "</Links>";
+			result += "<ClassExtender><ExtendedProperties /></ClassExtender>";
+			result += "<Conditionals>";
+			for (condition of this.conditions) {
+				result += condition.toXML(0);
+			}
+			result += "</Conditionals>";
+			result += "<OnEnterScripts>";
+			for (scriptCall of this.enterScripts) {
+				result += "<ScriptCall>";
+				result += scriptCall.functionCallToXML();
+				result += "</ScriptCall>";
+			}
+			result += "</OnEnterScripts>";
+			result += "<OnExitScripts>";
+			for (scriptCall of this.exitScripts) {
+				result += "<ScriptCall>";
+				result += scriptCall.functionCallToXML();
+				result += "</ScriptCall>";
+			}
+			result += "</OnExitScripts>";
+			result += "<OnUpdateScripts />";
 			return result + "</FlowChartNode>";
 		}
 	});

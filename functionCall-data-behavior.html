@@ -1,0 +1,32 @@
+<script>
+FunctionCallBehavior = {
+	properties: {
+		functionName: String, 
+		parameter: Array,
+	},
+
+	functionCallFromXML: function(xml) {
+		var data;
+		for (data of xml.childNodes) {
+			if (data.nodeName == "FullName") {
+				this.functionName = data.textContent;
+			}
+			if (data.nodeName == "Parameters") {
+				var parameter;
+				for (parameter of data.childNodes) {
+					this.push('parameter', parameter.textContent);
+				}
+			}
+		}
+	},
+
+	functionCallToXML: function() {	
+		var xml = '<Data><FullName>' + this.functionName + '</FullName>' + '<Parameters>';
+    	for (parameter of this.parameter) {
+  	        xml += '<string>' + parameter + '</string>';
+	    }
+   		xml += '</Parameters></Data>';
+		return xml;
+	},
+};
+</script>

@@ -1,0 +1,20 @@
+<dom-module>
+    <style></style>
+    <template>
+	    <div>Script: <span>{{functionName}}</span></div>
+        <template is="dom-repeat" items="{{parameter}}">
+            <div>Parameter <span>{{index}}</span>: <span>{{item}}</span></div>
+        </template>
+    </template>
+</dom-module>
+
+<script>
+    ScriptElement = Polymer({
+        is: "Script-element",
+        behaviors: [FunctionCallBehavior],
+
+        factoryImpl: function() {
+            this.parameter = [];
+        },
+    });
+</script>

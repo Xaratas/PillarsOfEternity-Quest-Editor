@@ -14,8 +14,8 @@ FunctionCallBehavior = {
 			}
 			if (data.nodeName == "Parameters") {
 				var parameter;
-				for (parameter of data.childNodes) {
-					this.push('parameter', parameter.textContent);
+				for (var p = 0; p < data.childNodes.length; p++) {
+					this.push('parameter', data.childNodes[p].textContent);
 				}
 			}
 		}

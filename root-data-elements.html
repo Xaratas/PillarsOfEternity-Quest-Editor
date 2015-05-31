@@ -19,6 +19,16 @@
 		:host > ::content > div {
 			display:flex;
 			flex-direction: column;
+			margin-left: 30px;
+		    margin-right: 30px;
+		}
+
+		:host > ::content > div:first-child {
+			margin-left: 0;	
+		}
+	   
+		:host > ::content > div:last-child {
+			margin-right: 0;
 		}
 	</style>
 	<template>
@@ -43,6 +53,16 @@
 		:host > ::content > div {
 			display:flex;
 			flex-direction: column;
+			margin-left: 30px;
+		    margin-right: 30px;
+		}
+
+		:host > ::content > div:first-child {
+			margin-left: 0;	
+		}
+	   
+		:host > ::content > div:last-child {
+			margin-right: 0;
 		}
 	</style>
 
@@ -96,17 +116,11 @@
                         }
 						// nodes anhand der links sortieren
 						var i = 0;
-						var isIn = false;
 						for(node of this.nodes) {
-							// contains die komplizierte art, könnte man wohl mit zip lösen
-							for(var a = 0; a < this.buckets.length; a++) {
-								for(b in this.buckets[a]) { 
-									isIn |= (this.buckets[a][b] === node); 
-								}
-							}
-							if(!isIn) {
-								this.buckets[i] = {};
-								this.buckets[i][0] = node; // id 0 als anker
+							if(node.placed == false) {
+								if(this.buckets[i] === undefined) this.buckets[i] = [];
+								this.buckets[i].push(node); // id 0 als anker
+								node.placed = true;
 								i++;
 								this.place(node.links, i);
 							}
@@ -115,8 +129,8 @@
 						for(bucket of this.buckets) {
 							var bucketWrapper = document.createElement('div');
 							Polymer.dom(this).appendChild(bucketWrapper);
-							for(node_ in bucket) {
-								Polymer.dom(bucketWrapper).appendChild(bucket[node_]);
+							for(node_ of bucket) {
+								Polymer.dom(bucketWrapper).appendChild(node_);
 							}
 						}
 					}
@@ -174,17 +188,11 @@
                         }
 						// nodes anhand der links sortieren
 						var i = 0;
-						var isIn = false;
 						for(node of this.nodes) {
-							// contains die komplizierte art, könnte man wohl mit zip lösen
-							for(var a = 0; a < this.buckets.length; a++) {
-								for(b in this.buckets[a]) { 
-									isIn |= (this.buckets[a][b] === node); 
-								}
-							}
-							if(!isIn) {
-								this.buckets[i] = {};
-								this.buckets[i][0] = node; // id 0 als anker
+							if(node.placed == false) {
+								if(this.buckets[i] === undefined) this.buckets[i] = [];
+								this.buckets[i].push(node); // id 0 als anker
+								node.placed = true;
 								i++;
 								this.place(node.links, i);
 							}
@@ -193,8 +201,8 @@
 						for(bucket of this.buckets) {
 							var bucketWrapper = document.createElement('div');
 							Polymer.dom(this).appendChild(bucketWrapper);
-							for(node_ in bucket) {
-								Polymer.dom(bucketWrapper).appendChild(bucket[node_]);
+							for(node_ of bucket) {
+								Polymer.dom(bucketWrapper).appendChild(node_);
 							}
 						}
 					}

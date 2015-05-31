@@ -79,10 +79,18 @@
 		fromXML: function(xml, nodesMap) {
              for(node of xml.childNodes) {
                 if(node.nodeName == "FromNodeID") {
-                     this.startElement = nodesMap["TalkNode" + node.textContent];
+					if(nodesMap["TalkNode" + node.textContent] !== undefined) {
+                    	this.startElement = nodesMap["TalkNode" + node.textContent];
+					} else {
+						this.startElement = nodesMap["PlayerResponseNode" + node.textContent];
+					}
                 }
                 if(node.nodeName == "ToNodeID") {
-                     this.endElement = nodesMap["TalkNode" + node.textContent];
+					if(nodesMap["TalkNode" + node.textContent] !== undefined) {
+				   		this.endElement = nodesMap["TalkNode" + node.textContent];
+					} else {
+						this.endElement = nodesMap["PlayerResponseNode" + node.textContent];
+					}
                 }
                 if(node.nodeName == "PointsToGhost") {
                      this.pointsToGhost = node.textContent;

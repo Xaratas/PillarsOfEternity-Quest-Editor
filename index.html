@@ -605,30 +605,53 @@
 +'</ConversationData>';
 
 			
-			var questData = new QuestData();
-			questData.fromXML(questStub);
-			var conversationData = new ConversationData();
-			conversationData.fromXML(conversationStub);
+//			var questData = new QuestData();
+//			questData.fromXML(questStub);
+//			var conversationData = new ConversationData();
+//			conversationData.fromXML(conversationStub);
 // die xml daten müssen beim ready callback bereits vorliegen um es für das template nutzbar zu machen, hmm			
-			document.getElementsByTagName("body")[0].appendChild(questData);
-			document.getElementsByTagName("body")[0].appendChild(conversationData);
+//			document.getElementsByTagName("body")[0].appendChild(questData);
+//			document.getElementsByTagName("body")[0].appendChild(conversationData);
 
 		});
 
    
 	</script>
 <script>
- function print_content() {
-            // mach das erst auf button click, also sehr spät, das davor dauert …
-            console.log(document.getElementsByTagName("questdata-element")[0].toXML());
-			console.log(document.getElementsByTagName("conversationdata-element")[0].toXML());
-    }
+	 function print_content() {
+	     // mach das erst auf button click, also sehr spät, das davor dauert …
+	     console.log(document.getElementsByTagName("questdata-element")[0].toXML());
+	     console.log(document.getElementsByTagName("conversationdata-element")[0].toXML());
+	 };
+
+	 function read_quest() {
+	     var questData = new QuestData();
+	     questData.fromXML(document.getElementById("questXML").value);
+	     document.getElementsByTagName("body")[0].appendChild(questData);
+	 };
+
+	 function read_conversation() {
+	     var conversationData = new ConversationData();
+	     conversationData.fromXML(document.getElementById("conversationXML").value);
+	     document.getElementsByTagName("body")[0].appendChild(conversationData);
+	 };
 </script>
   </head>
   <body>
-	Juhu, ersten Browser Bug getriggert. In FF degenerieren input elemente in drag containern. Seit Jahren.
+	  <h2>Instructions</h2>
+	  Copy the content of a .quest file in the left box. And the content of a conversation file in the right. Hit the buttons.<br />
+	  <h3>Nice examples</h3>
+	  [gamepath]/data/quests/05_defiance_bay_heritage_hill/05_qst_rise_and_fall.quest <br />
+	  [gamepath]/data/conversations/07_gilded_vale/07_bs_rh_ext_guard_01.conversation <br />
+	  <h5>Rants and gotchas</h5>
+	<span style="font-size:0.8em">Juhu, ersten Browser Bug getriggert. In FF degenerieren input elemente in drag containern. Seit Jahren.
 	https://stackoverflow.com/questions/21680363/prevent-drag-event-to-interfere-with-input-elements-in-firefox-using-html5-drag
-    <br />
+	</span>
+	<br /><br />
+	<textarea id="questXML" cols="80" rows="10" placeholder=".quest"></textarea>
+	<button onclick="read_quest()">Read Quest</button>
+	<textarea id="conversationXML" cols="80" rows="10" placeholder=".conversation"></textarea>
+	<button onclick="read_conversation()">Read Conversation</button>
     <button onclick="print_content()">to XML</button>
   </body>
 </html>

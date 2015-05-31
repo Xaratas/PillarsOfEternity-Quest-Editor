@@ -1,5 +1,11 @@
-<dom-module>
-    <style></style>
+<link rel="import" href="functionCall-data-behavior.html">
+<dom-module id="Script-element">
+    <style>
+		:host {
+			display:flex;
+			flex-direction: column;
+		}
+	</style>
     <template>
 	    <div>Script: <span>{{functionName}}</span></div>
         <template is="dom-repeat" items="{{parameter}}">

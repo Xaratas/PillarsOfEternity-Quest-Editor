@@ -48,12 +48,11 @@ ParserBehavior = {
 
 	/** Place link targets in buckets, new reachable elements get in a new bucket */
 	place: function(links, i) {
-		var a = 0;
 		for(link in links) {
-			if(this.buckets[i] === undefined) this.buckets[i] = {};
-			if(this.buckets.indexOf(links[link].endElement) == -1) {
-				this.buckets[i][a] = links[link].endElement;
-				a++;
+			if(this.buckets[i] === undefined) this.buckets[i] = [];
+			if(links[link].endElement.placed == false) {
+				this.buckets[i].push(links[link].endElement);
+				links[link].endElement.placed = true;
 				this.place(links[link].endElement.links, i+1); 
 			}
 		}

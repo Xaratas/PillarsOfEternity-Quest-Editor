@@ -1,3 +1,4 @@
+<link rel="import" href="scripts-element.html">
 <script>
 FlowChartNodeBehavior = {
 	properties: {
@@ -9,7 +10,10 @@ FlowChartNodeBehavior = {
 		exitScripts: Array,
 
 		linkXML: Object,
-
+		placed: {
+			type: Boolean,
+			value: false
+		},
 		draggable: {
 			value: "true",
 			reflectToAttribute: true
@@ -135,7 +139,7 @@ FlowChartNodeBehavior = {
 			if(snode.hasChildNodes) {
 				for(dnode of snode.childNodes) {
 					var scriptElement = new ScriptElement();
-					scriptElement.functionCallFromXML();
+					scriptElement.functionCallFromXML(dnode);
 					this.push(target, scriptElement);
 					Polymer.dom(this.$$(target)).appendChild(scriptElement);
 				}

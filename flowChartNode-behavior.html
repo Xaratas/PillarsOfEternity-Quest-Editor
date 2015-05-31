@@ -55,6 +55,80 @@ FlowChartNodeBehavior = {
 		}
 	},
 
+	_fromXML: function(xml) {
+		if (xml.hasChildNodes()) {
+			this.type = xml.attributes[0].value;
+			var node;
+			for (node of xml.childNodes) {
+				if (node.nodeName == "NodeID") {
+					this.nodeId = node.textContent;
+				}
+				if (node.nodeName == "Comments") {
+					var cnode;
+					for (cnode of node.childNodes) {
+						this.addComment(_, _, cnode.textContent);
+					}
+				}
+				if (node.nodeName == "Links") {
+					this.linkXML = node;
+				}
+				if (node.nodeName == "Conditionals") {
+					var conditionElement = new ConditionElement();
+					conditionElement.fromXML(node);
+					this.push('conditions', conditionElement);
+					Polymer.dom(this.$$("conditions")).appendChild(conditionElement);
+				}
+				if (node.nodeName == "OnEnterScripts") {
+					this.scriptsFromXML("enterScripts", node);
+				}
+				if (node.nodeName == "OnExitScripts") {
+					this.scriptsFromXML("exitScripts", node);
+				}
+				// onUpdateScripts werden nicht verwendet
+				if (node.nodeName == "IsTempText") {
+					// 
+				}
+			}
+		}
+	},
+
+	_toXML: function() {
+		var result = "<NodeID>" + this.nodeId + "</NodeID><Comments>";
+		for (comment of this.comments) {
+			result += comment.toXML();
+		}
+		result += "</Comments>";
+		result += "<PackageID>1</PackageID>"; // siehe xsd, 1 steht für base game und ist momentan der Einzige sinnvolle Wert
+		result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
+		result += "<Links>";
+		for (link in this.links) {
+			result += this.links[link].toXML();
+		}
+		result += "</Links>";
+		result += "<ClassExtender><ExtendedProperties /></ClassExtender>";
+		result += "<Conditionals>";
+		for (condition of this.conditions) {
+			result += condition.toXML(0);
+		}
+		result += "</Conditionals>";
+		result += "<OnEnterScripts>";
+		for (scriptCall of this.enterScripts) {
+			result += "<ScriptCall>";
+			result += scriptCall.functionCallToXML();
+			result += "</ScriptCall>";
+		}
+		result += "</OnEnterScripts>";
+		result += "<OnExitScripts>";
+		for (scriptCall of this.exitScripts) {
+			result += "<ScriptCall>";
+			result += scriptCall.functionCallToXML();
+			result += "</ScriptCall>";
+		}
+		result += "</OnExitScripts>";
+		result += "<OnUpdateScripts />";
+		return result;
+	},
+
 	/** @param target - Name of Variable enterScripts or exitScripts */
 	scriptsFromXML: function(target, xml) {
 		for(snode of xml.childNodes) {

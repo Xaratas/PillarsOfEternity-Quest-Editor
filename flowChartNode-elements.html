@@ -9,26 +9,101 @@
 <dom-module id="ObjectiveNode-element">
 <style>
 	:host {
-		background-color: #ccc;
-		width: 200px;
+		background-color: #96C5F7;
+		width: 260px;
 		display: flex;
-		flex-direction: column;
 		margin: 10px;
-		padding: 5px;
 	}
 
 	.direction {
 		float: right;
 	}
 
+	.left, .right, .leftmiddle {
+		width: 40px;
+		padding: 10px 5px;
+		background-color: #A9D3FF;
+		position: relative;
+	}
+
+	.left {
+		border-top-right-radius: 20px;
+		border-bottom-right-radius: 20px;
+		padding-right: 18px;
+	}
+
+	.right {
+		border-top-left-radius: 20px;
+		border-bottom-left-radius: 20px;
+		padding-right: 18px;
+	}
+
+	.leftmiddle {
+		border-radius: 20px;
+		padding: 12px;
+		margin-left: 3px;
+	}
+	.center {
+		margin: 10px;
+	}
+
+	.left > span, .leftmiddle > span {
+	    position: absolute;
+		transform: translate(0px, -12px) rotate(90deg);
+	    transform-origin: left bottom 0;
+	}
+
+	.leftmiddle > span {
+		transform: translate(-4px, -26px) rotate(90deg);
+	}
+	
+	.left > conditions {
+		display: none;
+		position: absolute;
+		width: 500px;
+		background-color: #75A6C6;
+		z-index: 10;
+		left: 25px;
+		top: 30px;
+		padding: 10px;
+	}
+
+	.left:hover > conditions {
+		display: block;
+	}
+
+	conditions:hover {
+		display: block;
+	}
+	
+	.right > span {
+		position: absolute;
+	    transform: translate(0px, 86px) rotate(270deg);
+	    transform-origin: left top 0;
+	}
+
 	comments {
 	}
 </style>
 <template>
+		<div class="left">
+			<span>Conditions</span>
+			<conditions></conditions>
+		</div>
+		<div class="leftmiddle">
+			<span>Enter&nbsp;Scripts</span>
+			<enterScripts></enterScripts>
+		</div>
+		<div class="center">
 		<div>Type: <span>{{type}}</span><span class="direction">{{direction}}</span></div>
 		<div>ID: <input is="iron-input" bind-value={{nodeId}}></input></div>
 		<div>Comments: <button on-click="addComment">Add</button></div>
 		<comments></comments>
+		</div>
+		<div class="right" on-click="showEffects">
+			<span>Exit&nbsp;Scripts</span>
+			<exitScripts></exitScripts>
+		</div>
 </template>
 </dom-module>
 
@@ -142,6 +217,9 @@
 		created: function() {
 			this.comments = [];
 			this.links = {};
+			this.conditions = [];
+			this.enterScripts = [];
+			this.exitScripts = [];
 		},
 
 		createLink: function(to) {
@@ -174,41 +252,23 @@
 		},
 
 		fromXML: function(xml) {
-			if (xml.hasChildNodes()) {
-				this.type = xml.attributes[0].value;
-				var node;
+			this._fromXML(xml);
+			if (xml.hasChildNodes()) { // TODO rest
 				for (node of xml.childNodes) {
-					if (node.nodeName == "NodeID") {
-						this.nodeId = node.textContent;
+					if (node.nodeName == "EndState") {
 					}
-					if (node.nodeName == "Comments") {
-						var cnode;
-						for (cnode of node.childNodes) {
-							this.addComment(_, _, cnode.textContent);
-						}
+					if (node.nodeName == "ExperienceType") {
 					}
-					if (node.nodeName == "Links") {
-						this.linkXML = node;
+					if (node.nodeName == "ExperienceLevel") {
 					}
-					// andere werte
 				}
 			}
 		},
 
 		toXML: function() {
-			var result = '<FlowChartNode xsi:type="' + this.type + '">' + "<NodeID>" + this.nodeId + "</NodeID><Comments>";
-			for (comment of this.comments) {
-				result += comment.toXML();
-			}
-			result += "</Comments>";
-			result += "<PackageID>1</PackageID>"; // siehe xsd, 1 steht für base game und ist momentan der Einzige sinnvolle Wert 
-			result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
-			result += "<Links>";
-			for (link in this.links) {
-				result += this.links[link].toXML();
-			}
-			result += "</Links>";
-			return result + "</FlowChartNode>";
+			var xml = '<FlowhChartNode xsi:type="' + this.type + '">' + this._toXML();
+			// TODO
+			return xml + '</FlowChartNode>';
 		}
 	});
 
@@ -254,77 +314,33 @@
 		},
 
 		fromXML: function(xml) {
-			if (xml.hasChildNodes()) {
-				this.type = xml.attributes[0].value;
-				var node;
-				for (node of xml.childNodes) {
-					if (node.nodeName == "NodeID") {
-						this.nodeId = node.textContent;
+			this._fromXML(xml);
+			if(xml.hasChildNodes) {
+				for (node of xml.childNodes) { // TODO 
+					if (node.nodeName == "NotSkippable") {
 					}
-					if (node.nodeName == "Comments") {
-						var cnode;
-						for (cnode of node.childNodes) {
-							this.addComment(_, _, cnode.textContent);
-						}
+					if (node.nodeName == "IsQuestionNode") {
 					}
-					if (node.nodeName == "Links") {
-						this.linkXML = node;
-					}
-					if (node.nodeName == "Conditionals") {
-						var conditionElement = new ConditionElement();
-						conditionElement.fromXML(node);
-						this.push('conditions', conditionElement);
-						Polymer.dom(this.$$("conditions")).appendChild(conditionElement);
-					}
-					if (node.nodeName == "OnEnterScripts") {
-						this.scriptsFromXML("enterScripts", node);
-					}
-					if (node.nodeName == "OnExitScripts") {
-						this.scriptsFromXML("exitScripts", node);
-					}
-					// onUpdateScripts werden nicht verwendet
 					if (node.nodeName == "IsTempText") {
-							// 
+					}
+					if (node.nodeName == "PlayVOAs3DSound") {
+					}
+					if (node.nodeName == "PlayType") {
+					}
+					if (node.nodeName == "Persistence") {
+					}
+					if (node.nodeName == "NoPlayRandomWeight") {
+					}
+					if (node.nodeName == "DisplayType") {
 					}
 				}
 			}
 		},
 
 		toXML: function() {
-			var result = '<FlowChartNode xsi:type="' + this.type + '">' + "<NodeID>" + this.nodeId + "</NodeID><Comments>";
-			for (comment of this.comments) {
-				result += comment.toXML();
-			}
-			result += "</Comments>";
-			result += "<PackageID>1</PackageID>"; // siehe xsd, 1 steht für base game und ist momentan der Einzige sinnvolle Wert
-			result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
-			result += "<Links>";
-			for (link in this.links) {
-				result += this.links[link].toXML();
-			}
-			result += "</Links>";
-			result += "<ClassExtender><ExtendedProperties /></ClassExtender>";
-			result += "<Conditionals>";
-			for (condition of this.conditions) {
-				result += condition.toXML(0);
-			}
-			result += "</Conditionals>";
-			result += "<OnEnterScripts>";
-			for (scriptCall of this.enterScripts) {
-				result += "<ScriptCall>";
-				result += scriptCall.functionCallToXML();
-				result += "</ScriptCall>";
-			}
-			result += "</OnEnterScripts>";
-			result += "<OnExitScripts>";
-			for (scriptCall of this.exitScripts) {
-				result += "<ScriptCall>";
-				result += scriptCall.functionCallToXML();
-				result += "</ScriptCall>";
-			}
-			result += "</OnExitScripts>";
-			result += "<OnUpdateScripts />";
-			return result + "</FlowChartNode>";
+			var xml = '<FlowhChartNode xsi:type="' + this.type + '">' + this._toXML();
+			// TODO
+			return xml + '</FlowChartNode>';
 		}
 	});
 </script>

@@ -38,7 +38,8 @@
         
 		conditionalCall: function(xml) {
 			var node;
-			for (node of xml.childNodes) {
+			for (var x = 0; x < xml.childNodes.length; x++) {
+				node = xml.childNodes[x];
 				if (node.nodeName == "Data") {
                     this.functionCallFromXML(node);
 				}
@@ -53,17 +54,17 @@
 		},
 		conditionalExpression: function(xml) {
             var node;
-            for(node of xml.childNodes) {
+            for(var x = 0; x < xml.childNodes.length; x++) {
+				node = xml.childNodes[x];
                 if(node.nodeName == "Operator") {
                     this.operator = node.textContent;
                 }
                 if(node.nodeName == "Components") {
                     // rekursion, liste von conditionals
-                    var cnode;
                     if(node.hasChildNodes()) {
-                        for(cnode of node.childNodes) {
+                        for(var c = 0; c < node.childNodes; c++) {
                             conditional = new ConditionElement();
-                            conditional.fromXML(cnode);
+                            conditional.fromXML(node.childNodes[c]);
                             this.push('nestedConditions', conditional);
                             Polymer.dom(this.$$("nestedConditions")).appendChild(conditional);
                         }

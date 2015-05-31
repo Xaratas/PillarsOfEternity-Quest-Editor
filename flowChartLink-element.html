@@ -23,7 +23,9 @@
 		}, 
 
 		fromXML: function(xml, nodesMap) {
-            for(node of xml.childNodes) {
+			var node;
+            for(var x = 0; x < xml.childNodes.length; x++) {
+				node = xml.childNodes[x];
                 if(node.nodeName == "FromNodeID") {
                     if(node.textContent == 0) {
                         this.startElement = nodesMap["QuestNode" + node.textContent];
@@ -49,12 +51,12 @@
 				+ '<ToNodeID>' + this.endElement.nodeId + '</ToNodeID>'
 				+ '<PointsToGhost>' + this.pointsToGhost + '</PointsToGhost>'
 				+ '<ClassExtender><ExtendedProperties /></ClassExtender>' // immer leer
-                + '<RequiredToExitObjective>' + this.requiredToExitObjective + '</RequiredToExitObjective>';
+				+ '<RequiredToExitObjective>' + this.requiredToExitObjective + '</RequiredToExitObjective>';
 			return xml	+ '</FlowChartLink>';
 		}
 	});
 
-    DialogueLink = Polymer({
+		DialogueLink = Polymer({
 		is: "dialogueLink-element",
 		extends: "canvas",
         behaviors: [FlowChartLinkBehavior],
@@ -77,10 +79,12 @@
 		},
 
 		fromXML: function(xml, nodesMap) {
-             for(node of xml.childNodes) {
-                if(node.nodeName == "FromNodeID") {
+			var node;
+			for(var x = 0; x < xml.childNodes.length; x++) {
+				node = xml.childNodes[x];
+				if(node.nodeName == "FromNodeID") {
 					if(nodesMap["TalkNode" + node.textContent] !== undefined) {
-                    	this.startElement = nodesMap["TalkNode" + node.textContent];
+						this.startElement = nodesMap["TalkNode" + node.textContent];
 					} else {
 						this.startElement = nodesMap["PlayerResponseNode" + node.textContent];
 					}

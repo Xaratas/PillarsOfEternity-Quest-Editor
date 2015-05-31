@@ -232,7 +232,8 @@
 		activateLinks: function(nodesMap) { // linkXML in echte links überführen
 			if (this.linkXML.hasChildNodes()) {
 				var node;
-				for (node of this.linkXML.childNodes) {
+				for (var x = 0; x < this.linkXML.childNodes.length; x++) {
+					node = this.linkXML.childNodes[x];
 					var dialogueLink;
 					if (node.nodeName == "FlowChartLink") {
 						questLink = new QuestLink(); // parameter zum Glück nicht lebenswichtig
@@ -246,7 +247,9 @@
 		fromXML: function(xml) {
 			this._fromXML(xml);
 			if (xml.hasChildNodes()) { // TODO rest
-				for (node of xml.childNodes) {
+				var node;
+				for (var x = 0; x < xml.childNodes.length; x++) {
+					node = xml.childNodes[x];
 					if (node.nodeName == "EndState") {
 					}
 					if (node.nodeName == "ExperienceType") {
@@ -294,7 +297,8 @@
 		activateLinks: function(nodesMap) { // linkXML in echte links überführen
 			if (this.linkXML.hasChildNodes()) {
 				var node;
-				for (node of this.linkXML.childNodes) {
+				for (var x = 0; x < this.linkXML.childNodes.length; x++) {
+					node = this.linkXML.childNodes[x];
 					var dialogueLink;
 					if (node.nodeName == "FlowChartLink") {
 						dialogueLink = new DialogueLink(); // parameter zum Glück nicht lebenswichtig
@@ -308,7 +312,9 @@
 		fromXML: function(xml) {
 			this._fromXML(xml);
 			if(xml.hasChildNodes) {
-				for (node of xml.childNodes) { // TODO 
+				var node;
+				for (var x = 0; x < xml.childNodes.length; x++) { // TODO 
+					node = xml.childNodes[x];
 					if (node.nodeName == "NotSkippable") {
 					}
 					if (node.nodeName == "IsQuestionNode") {

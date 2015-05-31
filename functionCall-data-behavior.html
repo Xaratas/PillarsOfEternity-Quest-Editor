@@ -7,7 +7,8 @@ FunctionCallBehavior = {
 
 	functionCallFromXML: function(xml) {
 		var data;
-		for (data of xml.childNodes) {
+		for (var x = 0; x < xml.childNodes.length; x++) {
+			data = xml.childNodes[x];
 			if (data.nodeName == "FullName") {
 				this.functionName = data.textContent;
 			}

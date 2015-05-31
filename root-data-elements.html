@@ -91,7 +91,8 @@
 			}
 			if(xml.hasChildNodes()) {
                 var item;
-                for(item of xml.childNodes) {					
+                for(var x = 0; x < xml.childNodes.length; x++) {
+					item = xml.childNodes[x];
 					if(item.nodeName == this.type) {
 						this.fromXML(item); // remove outer layer
 					}
@@ -101,7 +102,8 @@
 					if(item.nodeName == "Nodes") {
 						// über alle
 						var node, element;
-						for(node of item.childNodes) {
+						for(var n = 0; n < item.childNodes.length; n++) {
+							node = item.childNodes[n];
 							if(node.nodeName == "FlowChartNode") {
 								element = new ObjectiveNode();
 								element.fromXML(node);
@@ -163,7 +165,8 @@
 			}
 			if(xml.hasChildNodes()) {
                 var item;
-                for(item of xml.childNodes) {
+                for(var x = 0; x < xml.childNodes.length; x++) {
+					item = xml.childNodes[x];
 					if(item.nodeName == this.type) {
 						this.fromXML(item); // remove outer layer
 					}
@@ -173,7 +176,8 @@
 					if(item.nodeName == "Nodes") {
 						// über alle
 						var node, element;
-						for(node of item.childNodes) {
+						for(var n = 0; n < item.childNodes.length; n++) {
+							node = item.childNodes[n];
 							if(node.nodeName == "FlowChartNode") {
 								element = new TalkNode();
 								element.fromXML(node);

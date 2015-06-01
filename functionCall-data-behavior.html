@@ -1,5 +1,5 @@
 <script>
-"use sttrict";
+"use strict";
 var FunctionCallBehavior = {
 	properties: {
 		functionName: String, 
@@ -14,7 +14,6 @@ var FunctionCallBehavior = {
 				this.functionName = data.textContent;
 			}
 			if (data.nodeName == "Parameters") {
-				var parameter;
 				for (var p = 0; p < data.childNodes.length; p++) {
 					this.push('parameter', data.childNodes[p].textContent);
 				}

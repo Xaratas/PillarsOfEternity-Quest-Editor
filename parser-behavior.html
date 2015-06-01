@@ -49,9 +49,9 @@ var ParserBehavior = {
 
 	/** Place link targets in buckets, new reachable elements get in a new bucket */
 	place: function(links, i) {
-		for(var link in links) {
+		for(var link of Object.keys(links)) {
 			if(this.buckets[i] === undefined) this.buckets[i] = [];
-			if(links[link].endElement.placed == false) {
+			if(links[link].endElement.placed === false) {
 				this.buckets[i].push(links[link].endElement);
 				links[link].endElement.placed = true;
 				this.place(links[link].endElement.links, i+1); 

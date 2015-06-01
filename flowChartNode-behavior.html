@@ -55,7 +55,7 @@ var FlowChartNodeBehavior = {
 
 	/** Add links between elements on attach of the node. Then the calculations of the links will work. */ 
 	attached: function() {
-		for(var link in this.links) {
+		for(var link of Object.keys(this.links)) {
 			document.getElementsByTagName("body")[0].appendChild(this.links[link]);
 		}
 	},
@@ -106,7 +106,7 @@ var FlowChartNodeBehavior = {
 		result += "<PackageID>1</PackageID>"; // siehe xsd, 1 steht für base game und ist momentan der Einzige sinnvolle Wert
 		result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
 		result += "<Links>";
-		for (var link in this.links) {
+		for (var link of Object.keys(this.links)) {
 			result += this.links[link].toXML();
 		}
 		result += "</Links>";

@@ -64,7 +64,7 @@
                     // rekursion, liste von conditionals
                     if(node.hasChildNodes()) {
                         for(var c = 0; c < node.childNodes; c++) {
-                            conditional = new ConditionElement();
+                            var conditional = new ConditionElement();
                             conditional.fromXML(node.childNodes[c]);
                             this.push('nestedConditions', conditional);
                             Polymer.dom(this.$$("nestedConditions")).appendChild(conditional);
@@ -93,11 +93,12 @@
          * @param depth - 0 = outermost layer
          */
 		toXML: function(depth) {
+            var xml;
             if(this.type == "ConditionalCall") {
-    		    var xml = '<ExpressionComponent xsi:type="' + this.type + '">'; 
+    		    xml = '<ExpressionComponent xsi:type="' + this.type + '">'; 
                 xml += this.functionCallToXML();    
                 xml += '<Not>';
-	    	    if (this.not == "")
+	    	    if (this.not === "")
     		        xml += 'false';
         		else
 	        	    xml += 'true';
@@ -106,7 +107,7 @@
         		return xml + '</ExpressionComponent>';
             }
             if(this.type == "ConditionalExpression") {
-                var xml = "";
+                xml = "";
                 if(depth > 0) {
                      xml += '<ExpressionComponent xsi:type="' + this.type + '">';
                 }

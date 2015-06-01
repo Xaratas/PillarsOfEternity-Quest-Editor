@@ -121,7 +121,7 @@
 						// nodes anhand der links sortieren
 						var i = 0;
 						for(var node of this.nodes) {
-							if(node.placed == false) {
+							if(node.placed === false) {
 								if(this.buckets[i] === undefined) this.buckets[i] = [];
 								this.buckets[i].push(node); // id 0 als anker
 								node.placed = true;
@@ -195,7 +195,7 @@
 						// nodes anhand der links sortieren
 						var i = 0;
 						for(var node of this.nodes) {
-							if(node.placed == false) {
+							if(node.placed === false) {
 								if(this.buckets[i] === undefined) this.buckets[i] = [];
 								this.buckets[i].push(node); // id 0 als anker
 								node.placed = true;

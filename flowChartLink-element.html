@@ -28,7 +28,7 @@
             for(var x = 0; x < xml.childNodes.length; x++) {
 				node = xml.childNodes[x];
                 if(node.nodeName == "FromNodeID") {
-                    if(node.textContent == 0) {
+                    if(node.textContent === "0") {
                         this.startElement = nodesMap["QuestNode" + node.textContent];
                     } else {
                         this.startElement = nodesMap["ObjectiveNode" + node.textContent];

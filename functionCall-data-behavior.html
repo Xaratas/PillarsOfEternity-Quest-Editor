@@ -1,5 +1,6 @@
 <script>
-FunctionCallBehavior = {
+"use sttrict";
+var FunctionCallBehavior = {
 	properties: {
 		functionName: String, 
 		parameter: Array
@@ -23,7 +24,7 @@ FunctionCallBehavior = {
 
 	functionCallToXML: function() {	
 		var xml = '<Data><FullName>' + this.functionName + '</FullName>' + '<Parameters>';
-    	for (parameter of this.parameter) {
+    	for (var parameter of this.parameter) {
   	        xml += '<string>' + parameter + '</string>';
 	    }
    		xml += '</Parameters></Data>';

@@ -1,6 +1,7 @@
 <link rel="import" href="scripts-element.html">
 <script>
-FlowChartNodeBehavior = {
+"use strict";
+var FlowChartNodeBehavior = {
 	properties: {
 		type: String,
 		nodeId: Number,
@@ -54,7 +55,7 @@ FlowChartNodeBehavior = {
 
 	/** Add links between elements on attach of the node. Then the calculations of the links will work. */ 
 	attached: function() {
-		for(link in this.links) {
+		for(var link in this.links) {
 			document.getElementsByTagName("body")[0].appendChild(this.links[link]);
 		}
 	},
@@ -98,32 +99,32 @@ FlowChartNodeBehavior = {
 
 	_toXML: function() {
 		var result = "<NodeID>" + this.nodeId + "</NodeID><Comments>";
-		for (comment of this.comments) {
+		for (var comment of this.comments) {
 			result += comment.toXML();
 		}
 		result += "</Comments>";
 		result += "<PackageID>1</PackageID>"; // siehe xsd, 1 steht für base game und ist momentan der Einzige sinnvolle Wert
 		result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
 		result += "<Links>";
-		for (link in this.links) {
+		for (var link in this.links) {
 			result += this.links[link].toXML();
 		}
 		result += "</Links>";
 		result += "<ClassExtender><ExtendedProperties /></ClassExtender>";
 		result += "<Conditionals>";
-		for (condition of this.conditions) {
+		for (var condition of this.conditions) {
 			result += condition.toXML(0);
 		}
 		result += "</Conditionals>";
 		result += "<OnEnterScripts>";
-		for (scriptCall of this.enterScripts) {
+		for (var scriptCall of this.enterScripts) {
 			result += "<ScriptCall>";
 			result += scriptCall.functionCallToXML();
 			result += "</ScriptCall>";
 		}
 		result += "</OnEnterScripts>";
 		result += "<OnExitScripts>";
-		for (scriptCall of this.exitScripts) {
+		for (var scriptCall of this.exitScripts) {
 			result += "<ScriptCall>";
 			result += scriptCall.functionCallToXML();
 			result += "</ScriptCall>";

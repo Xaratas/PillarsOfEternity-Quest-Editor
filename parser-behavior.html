@@ -1,6 +1,7 @@
 <script>
+"use strict";
 /** Cleans text xml input of whitespace-elements */
-ParserBehavior = {
+var ParserBehavior = {
 	properties: {
 		type: String,
 		nextNodeId: Number,
@@ -38,7 +39,7 @@ ParserBehavior = {
 		var result = '<?xml version="1.0" encoding="utf-8"?><' + this.type + ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
 		result += '<NextNodeID>' + this.nextNodeId + '</NextNodeID>';
 		result += '<Nodes>';
-		for (node of this.nodes) {
+		for (var node of this.nodes) {
 			result += node.toXML();
 		}
 		result += '</Nodes>';
@@ -48,7 +49,7 @@ ParserBehavior = {
 
 	/** Place link targets in buckets, new reachable elements get in a new bucket */
 	place: function(links, i) {
-		for(link in links) {
+		for(var link in links) {
 			if(this.buckets[i] === undefined) this.buckets[i] = [];
 			if(links[link].endElement.placed == false) {
 				this.buckets[i].push(links[link].endElement);

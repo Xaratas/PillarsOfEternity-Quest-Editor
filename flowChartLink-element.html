@@ -2,7 +2,8 @@
 
 <!-- Connects 2 Flowchartnodes via a straight line. Line goes from center to center -->
 <script>
-	QuestLink = Polymer({
+"use strict";
+	var QuestLink = Polymer({
 		is: "questLink-element",
 		extends: "canvas",
         behaviors: [FlowChartLinkBehavior],
@@ -56,7 +57,7 @@
 		}
 	});
 
-		DialogueLink = Polymer({
+	var DialogueLink = Polymer({
 		is: "dialogueLink-element",
 		extends: "canvas",
         behaviors: [FlowChartLinkBehavior],

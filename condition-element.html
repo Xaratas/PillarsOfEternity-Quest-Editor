@@ -18,8 +18,9 @@
 	</template>
 </dom-module>
 <script>
+"use strict";
     // muss sachen wie fun1 && (fun2 || fun3) && !(fun4 && !fun5) unterstützen
-	ConditionElement = Polymer({
+	var ConditionElement = Polymer({
 		is: "Condition-element",
         behaviors: [FunctionCallBehavior],
 
@@ -111,7 +112,7 @@
                 }
                 xml += '<Operator>' + this.operator + '</Operator>'
                     + '<Components>';
-                for(condition of this.nestedConditions) {
+                for(var condition of this.nestedConditions) {
                     xml += condition.toXML(depth + 1);
                 }
                 xml += '</Components>';

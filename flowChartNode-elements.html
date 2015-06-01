@@ -210,7 +210,8 @@
 
 
 <script>
-	ObjectiveNode = Polymer({
+"use strict";
+	var ObjectiveNode = Polymer({
 		is: "ObjectiveNode-element",
 		behaviors: [FlowChartNodeBehavior],
 
@@ -234,9 +235,8 @@
 				var node;
 				for (var x = 0; x < this.linkXML.childNodes.length; x++) {
 					node = this.linkXML.childNodes[x];
-					var dialogueLink;
 					if (node.nodeName == "FlowChartLink") {
-						questLink = new QuestLink(); // parameter zum Glück nicht lebenswichtig
+						var questLink = new QuestLink(); // parameter zum Glück nicht lebenswichtig
 						questLink.fromXML(node, nodesMap);
 						this.links[questLink.endElement.id] = questLink;
 					}
@@ -267,7 +267,7 @@
 		}
 	});
 
-	TalkNode = Polymer({
+	var TalkNode = Polymer({
 		is: "TalkNode-element",
 		behaviors: [FlowChartNodeBehavior],
 
@@ -299,9 +299,8 @@
 				var node;
 				for (var x = 0; x < this.linkXML.childNodes.length; x++) {
 					node = this.linkXML.childNodes[x];
-					var dialogueLink;
 					if (node.nodeName == "FlowChartLink") {
-						dialogueLink = new DialogueLink(); // parameter zum Glück nicht lebenswichtig
+						var dialogueLink = new DialogueLink(); // parameter zum Glück nicht lebenswichtig
 						dialogueLink.fromXML(node, nodesMap);
 						this.links[dialogueLink.endElement.id] = dialogueLink;
 					}

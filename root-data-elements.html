@@ -72,7 +72,9 @@
 </dom-module>
 
 <script>
-	QuestData = Polymer({
+"use strict";
+
+	var QuestData = Polymer({
 		is: "QuestData-element",
         behaviors: [ParserBehavior],
 
@@ -113,12 +115,12 @@
 							this.nodesMap[element.id] = element;
 						}
 						// links aus dem Temp Status umformen
-                        for(node of this.nodes) {
+                        for(var node of this.nodes) {
                             node.activateLinks(this.nodesMap);
                         }
 						// nodes anhand der links sortieren
 						var i = 0;
-						for(node of this.nodes) {
+						for(var node of this.nodes) {
 							if(node.placed == false) {
 								if(this.buckets[i] === undefined) this.buckets[i] = [];
 								this.buckets[i].push(node); // id 0 als anker
@@ -128,10 +130,10 @@
 							}
 						}
 						// dom anpassen, quasi eigenes template
-						for(bucket of this.buckets) {
+						for(var bucket of this.buckets) {
 							var bucketWrapper = document.createElement('div');
 							Polymer.dom(this).appendChild(bucketWrapper);
-							for(node_ of bucket) {
+							for(var node_ of bucket) {
 								Polymer.dom(bucketWrapper).appendChild(node_);
 							}
 						}
@@ -147,7 +149,7 @@
 		}
 	});
 
-    ConversationData = Polymer({
+    var ConversationData = Polymer({
         is: "ConversationData-element",
         behaviors: [ParserBehavior],
 
@@ -187,12 +189,12 @@
 							this.nodesMap[element.id] = element;
 						}
 						// links aus dem Temp Status umformen
-                        for(node of this.nodes) {
+                        for(var node of this.nodes) {
                             node.activateLinks(this.nodesMap);
                         }
 						// nodes anhand der links sortieren
 						var i = 0;
-						for(node of this.nodes) {
+						for(var node of this.nodes) {
 							if(node.placed == false) {
 								if(this.buckets[i] === undefined) this.buckets[i] = [];
 								this.buckets[i].push(node); // id 0 als anker
@@ -202,10 +204,10 @@
 							}
 						}
 						// dom anpassen, quasi eigenes template
-						for(bucket of this.buckets) {
+						for(var bucket of this.buckets) {
 							var bucketWrapper = document.createElement('div');
 							Polymer.dom(this).appendChild(bucketWrapper);
-							for(node_ of bucket) {
+							for(var node_ of bucket) {
 								Polymer.dom(bucketWrapper).appendChild(node_);
 							}
 						}

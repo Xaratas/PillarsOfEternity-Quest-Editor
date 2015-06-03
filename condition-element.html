@@ -2,51 +2,51 @@
 <!-- TODO select element in polymer mit Hinweisen, was die Einträge bewirken -->
 <dom-module id="Condition-element">
 	<style>
-        :host {
-            display: flex;
-            flex-direction: column;         
-        }
-    </style>
+		:host {
+			display: flex;
+			flex-direction: column;		 
+		}
+	</style>
 	<template>
-        <div>Operator: <span>{{operator}}</span> <span>{{operator2}}</span></div>
-	    <div>Function:&nbsp;<span>{{not}}</span> <span>{{functionName}}</span></div>
-        <template is="dom-repeat" items="{{parameter}}">
-            <div>Parameter <span>{{index}}</span>: <span>{{item}}</span></div>
-        </template>
+		<div>Operator: <span>{{operator}}</span> <span>{{operator2}}</span></div>
+		<div>Function:&nbsp;<span>{{not}}</span> <span>{{functionName}}</span></div>
+		<template is="dom-repeat" items="{{parameter}}">
+			<div>Parameter <span>{{index}}</span>: <span>{{item}}</span></div>
+		</template>
 
-        <nestedConditions></nestedConditions>
+		<nestedConditions></nestedConditions>
 	</template>
 </dom-module>
 <script>
 "use strict";
-    // muss sachen wie fun1 && (fun2 || fun3) && !(fun4 && !fun5) unterstützen
+	// muss sachen wie fun1 && (fun2 || fun3) && !(fun4 && !fun5) unterstützen
 	var ConditionElement = Polymer({
 		is: "Condition-element",
-        behaviors: [FunctionCallBehavior],
+		behaviors: [FunctionCallBehavior],
 
 		properties: {
 			operator: String,
 			type: String,
 			not: String,
 			operator2: String,
-            nestedConditions: Array
+			nestedConditions: Array
 		},
 
-        factoryImpl: function() {
-            this.nestedConditions = [];
-            this.parameter = [];
-        },
-        
+		factoryImpl: function() {
+			this.nestedConditions = [];
+			this.parameter = [];
+		},
+		
 		conditionalCall: function(xml) {
 			var node;
-			for (var x = 0; x < xml.childNodes.length; x++) {
-				node = xml.childNodes[x];
+			for (var x = 0; x < xml.length; x++) {
+				node = xml[x];
 				if (node.nodeName == "Data") {
-                    this.functionCallFromXML(node);
+					this.functionCallFromXML(node);
 				}
 				if (node.nodeName == "Not") {
-                    if(node.textContent == "false") this.not = "";
-                    else this.not = "!";
+					if(node.textContent == "false") this.not = "";
+					else this.not = "!";
 				}
 				if (node.nodeName == "Operator") {
 					this.operator2 = node.textContent;
@@ -54,74 +54,83 @@
 			}
 		},
 		conditionalExpression: function(xml) {
-            var node;
-            for(var x = 0; x < xml.childNodes.length; x++) {
-				node = xml.childNodes[x];
-                if(node.nodeName == "Operator") {
-                    this.operator = node.textContent;
-                }
-                if(node.nodeName == "Components") {
-                    // rekursion, liste von conditionals
-                    if(node.hasChildNodes()) {
-                        for(var c = 0; c < node.childNodes; c++) {
-                            var conditional = new ConditionElement();
-                            conditional.fromXML(node.childNodes[c]);
-                            this.push('nestedConditions', conditional);
-                            Polymer.dom(this.$$("nestedConditions")).appendChild(conditional);
-                        }
-                    }
-                }
-            }
+			if (xml.nodeName == "Operator") {
+				this.operator2 = node.textContent;
+			}
+			if (xml.nodeName == "Components") {
+				// rekursion, liste von conditionals
+				if (xml.hasChildNodes()) {
+					for (var c = 0; c < xml.childNodes; c++) {
+						var conditional = new ConditionElement();
+						conditional.fromXML(xml.childNodes[c]);
+						this.push('nestedConditions', conditional);
+						Polymer.dom(this.$$("nestedConditions")).appendChild(conditional);
+					}
+				}
+			}
 		},
-
 		fromXML: function(xml) {
 			if (xml.hasChildNodes()) {
 				if (xml.nodeName == "ExpressionComponent") {
 					this.type = xml.attributes[0].value; // ConditionalCall or ConditionalExpression
-                } else if (xml.nodeName == "Conditionals") {
-                    this.type = "ConditionalExpression"; // outer most layer
-                }
+				} else if (xml.nodeName == "Conditionals") { // outer most layer
+					var node;
+					for(var x = 0; x < xml.childNodes.length; x++) {
+						node = xml.childNodes[x];
+						if(node.nodeName == "Operator") {
+							this.operator = node.textContent;	
+						}
+						if(node.nodeName == "Components") {
+							if(node.hasChildNodes()) {
+								for(var y = 0; y < node.childNodes.length; y++) {
+									this.fromXML(node.childNodes[y]);
+								}
+							}
+						}
+					}
+				}
 				if (this.type == "ConditionalCall") {
-					this.conditionalCall(xml);
-				} else if (this.type == "ConditionalExpression") {
-					this.conditionalExpression(xml);
+					this.conditionalCall(xml.childNodes);
+				} 
+				if (this.type == "ConditionalExpression") {
+					this.conditionalExpression(xml.childNodes);
 				}
 			}
 		},
 
-        /** The outermost layer of ConditionalExpression is called Conditionals in the XML 
-         * @param depth - 0 = outermost layer
-         */
+		/** The outermost layer of ConditionalExpression is called Conditionals in the XML 
+		 * @param depth - 0 = outermost layer
+		 */
 		toXML: function(depth) {
-            var xml;
-            if(this.type == "ConditionalCall") {
-    		    xml = '<ExpressionComponent xsi:type="' + this.type + '">'; 
-                xml += this.functionCallToXML();    
-                xml += '<Not>';
-	    	    if (this.not === "")
-    		        xml += 'false';
-        		else
-	        	    xml += 'true';
-		        xml += '</Not>' 
-                    + '<Operator>' + this.operator2 + '</Operator>';
-        		return xml + '</ExpressionComponent>';
-            }
-            if(this.type == "ConditionalExpression") {
-                xml = "";
-                if(depth > 0) {
-                     xml += '<ExpressionComponent xsi:type="' + this.type + '">';
-                }
-                xml += '<Operator>' + this.operator + '</Operator>'
-                    + '<Components>';
-                for(var condition of this.nestedConditions) {
-                    xml += condition.toXML(depth + 1);
-                }
-                xml += '</Components>';
-                if(depth > 0) {    
-                    xml += '</ExpressionComponent>';
-                }
-                return xml;
-            }
+			var xml;
+			if(this.type == "ConditionalCall") {
+				xml = '<ExpressionComponent xsi:type="' + this.type + '">'; 
+				xml += this.functionCallToXML();	
+				xml += '<Not>';
+				if (this.not === "")
+					xml += 'false';
+				else
+					xml += 'true';
+				xml += '</Not>' 
+					+ '<Operator>' + this.operator2 + '</Operator>';
+				return xml + '</ExpressionComponent>';
+			}
+			if(this.type == "ConditionalExpression") {
+				xml = "";
+				if(depth > 0) {
+					 xml += '<ExpressionComponent xsi:type="' + this.type + '">';
+				}
+				xml += '<Operator>' + this.operator + '</Operator>'
+					+ '<Components>';
+				for(var condition of this.nestedConditions) {
+					xml += condition.toXML(depth + 1);
+				}
+				xml += '</Components>';
+				if(depth > 0) {	
+					xml += '</ExpressionComponent>';
+				}
+				return xml;
+			}
 		}
 	});
 </script>

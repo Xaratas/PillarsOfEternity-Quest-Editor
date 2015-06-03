@@ -18,9 +18,12 @@
 		},
       
 		attached: function() {
-			if(this.startElement !== undefined && this.endElement !== undefined) { 
-				this.connect();
-			}
+			// noch später: https://github.com/Polymer/polymer/issues/1699#issuecomment-108112212
+			this.async(function() {
+				if(this.startElement !== undefined && this.endElement !== undefined) { 
+					this.connect();
+				}
+			});
 		}, 
 
 		fromXML: function(xml, nodesMap) {

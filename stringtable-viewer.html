@@ -1,0 +1,50 @@
+<link rel="import" href="bower_components/iron-input/iron-input.html">
+
+<dom-module id="stringtable-viewer">
+	<style>
+		:host {
+			position: fixed;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			z-index: 3000;
+		}
+
+		textarea[data-show="true"] {
+ 
+		}
+
+		textarea[data-show="false"] {
+			display: none;
+		}
+	</style>
+	<template>
+		<span>Selected Node: <span>{{nodeid}}</span></span>
+		<input is="iron-input" type="checkbox" bind-value={{showText}} />
+		<input is="iron-input" type="checkbox" bind-value={{showFemaletext}} />
+		<textarea id="text" data-show=[[showText]]></textarea>
+		<textarea id="femaleText" data-show=[[showFemaleText]]></textarea>
+	</template>
+</dom-module>
+
+<script>
+"use strict";
+var StringtableViewer = Polymer({
+	is: "stringtable-viewer",
+	
+	properties: {
+		nodeid: Number,
+		showText: Boolean,
+		showFemaleText: Boolean,
+
+		sourceNode: Object
+	},
+
+	showNodeText: function(node) {
+		this.sourceNode = node;
+		this.nodeid = node.nodeid;
+		this.$.text.value = node.defaultString;
+		this.$.femaleText.value = node.femaleString;
+	}
+});
+</script>

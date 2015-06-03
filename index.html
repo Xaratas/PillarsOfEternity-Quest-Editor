@@ -5,6 +5,7 @@
 	<link rel="import" href="root-data-elements.html">
 	<link rel="import" href="flowChartNode-elements.html">
 	<link rel="import" href="flowChartLink-element.html">
+	<link rel="import" href="stringtable-viewer.html">
 	<script>
 		 document.addEventListener('WebComponentsReady', function() {
 			var questStub = 
@@ -654,5 +655,7 @@
 	<textarea id="conversationXML" cols="80" rows="10" placeholder=".conversation"></textarea>
 	<button onclick="read_conversation()">Read Conversation</button>
     <button onclick="print_content()">to XML</button>
+
+	<stringtable-viewer></stringtable-viewer>
   </body>
 </html>

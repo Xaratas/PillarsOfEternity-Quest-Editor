@@ -77,9 +77,11 @@
 		},
        
 		attached: function() {
-			if(this.startElement !== undefined && this.endElement !== undefined) { 
-				this.connect();
-			}
+			this.async(function() {
+				if(this.startElement !== undefined && this.endElement !== undefined) { 
+					this.connect();
+				}
+			});
 		},
 
 		fromXML: function(xml, nodesMap) {

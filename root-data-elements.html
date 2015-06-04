@@ -220,6 +220,43 @@
 			var result = this.basetypecontent_toXML();
             // todo nicht gleiches
 			return result + '</' + this.type + '>';
+		},
+
+		
+        stringsFromXML: function(xml) { // TODO Als Global definieren
+			var types = ["TalkNode", "PlayerResponseNode", "TriggerConversationNode", "BankNode", "ScriptNode"];
+			if(typeof(xml) == "string") { // schon geparstes ist object
+				xml = this.parser.parseFromString(xml, 'text/xml');
+                this.cleanFormatting(xml);
+			}
+			if(xml.hasChildNodes) {
+				var node;
+				for	(var x = 0; x < xml.childNodes.length; x++) {
+					node = xml.childNodes[x];
+					if(node.nodeName == "StringTableFile") {
+						this.stringsFromXML(node); // outer layer
+					}
+					if(node.nodeName == "Name") {
+						// TODO
+					}
+					if(node.nodeName == "NextEntryID") {
+					}
+					if(node.nodeName == "EntryCount") {
+					}
+					if(node.nodeName == "Entries") {
+						var entry;
+						for(var n = 0; n < node.childNodes.length; n++) {
+							entry = node.childNodes[n];
+							for(var type of types) {
+								var talkNode = this.nodesMap[type + entry.childNodes[0].textContent];
+								if(talkNode !== undefined) {
+									talkNode.setText(entry.childNodes[1].textContent, entry.childNodes[2].textContent);
+								}
+							}
+						}
+					}
+				}
+			}	
 		}
     });
 </script>

@@ -10,6 +10,9 @@ var FlowChartNodeBehavior = {
 		enterScripts: Array,
 		exitScripts: Array,
 
+		defaultText: String, // Texte der Stringtable
+		femaleText: String,
+
 		linkXML: Object,
 		placed: {
 			type: Boolean,
@@ -32,7 +35,8 @@ var FlowChartNodeBehavior = {
 		'dragenter': 'onDragEnter',
 		'dragleave': 'onDragLeave',
 		'drop': 'onDrop',
-		'dragend': 'onDragEnd'
+		'dragend': 'onDragEnd',
+		'tap': 'fireSelectedEvent'
 	},
 
 	setId: function(type, nodeId) {
@@ -51,6 +55,16 @@ var FlowChartNodeBehavior = {
 		console.log("remove Comment");
 		var comment = this.splice("comments", index - 1, 1)[0]; // splice liefert ein array
 		Polymer.dom(this.$$("comments")).removeChild(comment); // die remove child erwartet eine node, deswegen über comment und nicht über id
+	},
+
+	fireSelectedEvent: function(event) {
+		this.fire('iron-signal', {name: "flow-chart-node-selected", data: [this.nodeId, this.defaultText, this.femaleText]});
+		// TODO selected -> parent.selectNone(); this.toggleClass("selected", true); 
+	},
+
+	setText: function(defaultText, femaleText) {
+		this.defaultText = defaultText;
+		this.femaleText = femaleText;
 	},
 
 	/** Add links between elements on attach of the node. Then the calculations of the links will work. */ 
@@ -149,6 +163,10 @@ var FlowChartNodeBehavior = {
 		}
 	},
 
+	/** Parses a Stringtable and attached its Strings to this node. */
+	stringsFromXML: function(xml) {
+		
+	},
 	//http://www.quirksmode.org/blog/archives/2009/09/the_html5_drag.html Ja verdammt, drag and drop ist fürn arsch, und das wird auch in HTML 5.1 so bleiben
 	onDragStart: function(event) {
 		event.dataTransfer.effectsAllowed = 'link';

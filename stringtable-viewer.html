@@ -1,4 +1,5 @@
 <link rel="import" href="bower_components/iron-input/iron-input.html">
+<link rel="import" href="bower_components/iron-signals/iron-signals.html">
 
 <dom-module id="stringtable-viewer">
 	<style>
@@ -10,20 +11,21 @@
 			z-index: 3000;
 		}
 
-		textarea[data-show="true"] {
- 
+		textarea {
+			displad: block; 
 		}
 
-		textarea[data-show="false"] {
+		textarea[data-show=""] {
 			display: none;
 		}
 	</style>
 	<template>
-		<span>Selected Node: <span>{{nodeid}}</span></span>
-		<input is="iron-input" type="checkbox" bind-value={{showText}} />
-		<input is="iron-input" type="checkbox" bind-value={{showFemaletext}} />
-		<textarea id="text" data-show=[[showText]]></textarea>
-		<textarea id="femaleText" data-show=[[showFemaleText]]></textarea>
+		<iron-signals on-iron-signal-flow-chart-node-selected="flowChartNodeSelected" />
+		<span>Selected Node: <span>{{nodeId}}</span></span>
+		<input type="checkbox" checked="{{showText::change}}" />
+		<input type="checkbox" checked="{{showFemaleText::change}}" />
+		<textarea id="text" data-show$="[[showText]]" value="{{defaultText}}"></textarea>
+		<textarea id="femaleText" data-show$="[[showFemaleText]]" value="{{femaleText}}"></textarea>
 	</template>
 </dom-module>
 
@@ -37,14 +39,23 @@ var StringtableViewer = Polymer({
 		showText: Boolean,
 		showFemaleText: Boolean,
 
+		defaultText: String,
+		femaleText: String,
+
 		sourceNode: Object
 	},
 
 	showNodeText: function(node) {
 		this.sourceNode = node;
-		this.nodeid = node.nodeid;
+		this.nodeId = node.nodeId;
 		this.$.text.value = node.defaultString;
 		this.$.femaleText.value = node.femaleString;
+	},
+
+	flowChartNodeSelected: function(e, data, sender) {
+		this.nodeId = data[0];
+		this.defaultText = data[1];
+		this.femaleText = data[2];
 	}
 });
 </script>

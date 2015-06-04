@@ -20,6 +20,7 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.0.0",
-    "iron-input": "git://github.com/PolymerElements/iron-input.git#~0.9.4"
+    "iron-input": "git://github.com/PolymerElements/iron-input.git#~0.9.4",
+    "iron-signals": "PolymerElements/iron-signals#~1.0.0"
   }
 }

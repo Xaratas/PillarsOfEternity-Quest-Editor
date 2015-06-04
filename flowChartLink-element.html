@@ -86,20 +86,21 @@
 
 		fromXML: function(xml, nodesMap) {
 			var node;
+			var types = ["TalkNode", "PlayerResponseNode", "TriggerConversationNode", "BankNode", "ScriptNode"];
 			for(var x = 0; x < xml.childNodes.length; x++) {
 				node = xml.childNodes[x];
 				if(node.nodeName == "FromNodeID") {
-					if(nodesMap["TalkNode" + node.textContent] !== undefined) {
-						this.startElement = nodesMap["TalkNode" + node.textContent];
-					} else {
-						this.startElement = nodesMap["PlayerResponseNode" + node.textContent];
+					for(var type of types) {
+						if(nodesMap[type + node.textContent] !== undefined) {
+							this.startElement = nodesMap[type + node.textContent];
+						}
 					}
                 }
                 if(node.nodeName == "ToNodeID") {
-					if(nodesMap["TalkNode" + node.textContent] !== undefined) {
-				   		this.endElement = nodesMap["TalkNode" + node.textContent];
-					} else {
-						this.endElement = nodesMap["PlayerResponseNode" + node.textContent];
+					for(var type of types) {
+						if(nodesMap[type + node.textContent] !== undefined) {
+					   		this.endElement = nodesMap[type + node.textContent];
+						}
 					}
                 }
                 if(node.nodeName == "PointsToGhost") {

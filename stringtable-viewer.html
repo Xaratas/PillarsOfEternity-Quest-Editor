@@ -9,10 +9,33 @@
 			left: 0;
 			width: 100%;
 			z-index: 3000;
+			background-color: white;
+			height: 140px;
+		}
+		iron-signals {
+			height: inherit;
+		}
+
+		:host wrap {
+			display: flex;
+			height: inherit;
+		}
+
+		.column {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.left {
+			flex-grow: 1;
+		}
+
+		.right {
+			flex-grow: 5;
 		}
 
 		textarea {
-			displad: block; 
+			flex-grow: 1; 
 		}
 
 		textarea[data-show=""] {
@@ -20,12 +43,24 @@
 		}
 	</style>
 	<template>
-		<iron-signals on-iron-signal-flow-chart-node-selected="flowChartNodeSelected" />
-		<span>Selected Node: <span>{{nodeId}}</span></span>
-		<input type="checkbox" checked="{{showText::change}}" />
-		<input type="checkbox" checked="{{showFemaleText::change}}" />
-		<textarea id="text" data-show$="[[showText]]" value="{{defaultText}}"></textarea>
-		<textarea id="femaleText" data-show$="[[showFemaleText]]" value="{{femaleText}}"></textarea>
+		<iron-signals on-iron-signal-flow-chart-node-selected="flowChartNodeSelected"></iron-signals>
+		<wrap>
+			<div class="column left">
+				<span>Selected Node: <span>{{nodeId}}</span></span>
+				<span>
+					<label for="showDefaultText">Default Text</label>
+					<input id="showDefaultText" type="checkbox" checked="{{showText::change}}" />
+				</span>
+				<span>
+					<label for"showFemaleText">Female Text</label>
+					<input id="showFemaleText"type="checkbox" checked="{{showFemaleText::change}}" />
+				</span>
+			</div>
+			<div class="column right">
+			<textarea id="text" data-show$="[[!showText]]" value="{{defaultText::input}}" placeholder="default text"></textarea>
+			<textarea id="femaleText" data-show$="[[!showFemaleText]]" value="{{femaleText::input}}" placeholder="female text"></textarea>
+			</div>
+		</wrap>
 	</template>
 </dom-module>
 
@@ -36,26 +71,40 @@ var StringtableViewer = Polymer({
 	
 	properties: {
 		nodeid: Number,
-		showText: Boolean,
-		showFemaleText: Boolean,
+		showText: {
+			type: Boolean,
+			value: true	
+		},
+		showFemaleText: {
+			type: Boolean,
+			value: true
+		},
 
-		defaultText: String,
-		femaleText: String,
+		defaultText: {
+			type:	String,
+			observer: 'defaultTextChanged'
+		},
+		femaleText: {
+			type: String,
+			observer: 'femaleTextChanged'
+		},
 
 		sourceNode: Object
 	},
 
-	showNodeText: function(node) {
-		this.sourceNode = node;
-		this.nodeId = node.nodeId;
-		this.$.text.value = node.defaultString;
-		this.$.femaleText.value = node.femaleString;
-	},
-
 	flowChartNodeSelected: function(e, data, sender) {
 		this.nodeId = data[0];
+		this.sourceNode = data[3]; // erst this, dann kann der observer oben nichts überschreiben
 		this.defaultText = data[1];
 		this.femaleText = data[2];
+	},
+	
+	defaultTextChanged: function(new_, old) {
+		this.sourceNode.defaultText = new_;
+	},
+
+	femaleTextChanged: function(new_, old) {
+		this.sourceNode.femaleText = new_;
 	}
 });
 </script>

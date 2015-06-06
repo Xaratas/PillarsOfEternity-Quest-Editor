@@ -107,7 +107,7 @@
 						for(var n = 0; n < item.childNodes.length; n++) {
 							node = item.childNodes[n];
 							if(node.nodeName == "FlowChartNode") {
-								element = new ObjectiveNode();
+								element = new ObjectiveNode(this);
 								element.fromXML(node);
 							}
 							// bookmarks, classextender, usw.
@@ -181,7 +181,7 @@
 						for(var n = 0; n < item.childNodes.length; n++) {
 							node = item.childNodes[n];
 							if(node.nodeName == "FlowChartNode") {
-								element = new TalkNode();
+								element = new TalkNode(this);
 								element.fromXML(node);
 							}
 							// bookmarks, classextender, usw.

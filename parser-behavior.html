@@ -57,6 +57,12 @@ var ParserBehavior = {
 				this.place(links[link].endElement.links, i+1); 
 			}
 		}
-	}
+	},
+
+	selectNone: function() {
+		for(var n = 0; n < this.nodes.length; n++) {
+			this.toggleClass("selected", false, this.nodes[n]);
+		}
+	}	
 };
 </script>

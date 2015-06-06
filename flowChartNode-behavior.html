@@ -9,11 +9,15 @@ var FlowChartNodeBehavior = {
 		links: Object,
 		enterScripts: Array,
 		exitScripts: Array,
-
-		defaultText: String, // Texte der Stringtable
+		
+		/** String from Stringtable */
+		defaultText: String,
+		/** Female String from Stringtable */
 		femaleText: String,
 
 		linkXML: Object,
+
+		/** Helper for placing Nodes in Columns */
 		placed: {
 			type: Boolean,
 			value: false
@@ -26,7 +30,10 @@ var FlowChartNodeBehavior = {
 			computed: 'setId(type, nodeId)',
 			reflectToAttribute: true
 		},
-		direction: String
+		/** Direction in Drag and Drop events: from or to */
+		direction: String,
+
+		parent_: Object
 	},
 
 	listeners: {
@@ -41,6 +48,10 @@ var FlowChartNodeBehavior = {
 
 	setId: function(type, nodeId) {
 		return type + nodeId; // node id sollte unique bleiben, TODO enforce davon
+	},
+
+	factoryImpl: function(parent_) {
+		this.parent_ = parent_;
 	},
 
 	addComment: function(event, eventDetail, text) {
@@ -58,8 +69,17 @@ var FlowChartNodeBehavior = {
 	},
 
 	fireSelectedEvent: function(event) {
-		this.fire('iron-signal', {name: "flow-chart-node-selected", data: [this.nodeId, this.defaultText, this.femaleText]});
-		// TODO selected -> parent.selectNone(); this.toggleClass("selected", true); 
+		this.fire('iron-signal', {name: "flow-chart-node-selected", data: [this.nodeId, this.defaultText, this.femaleText, this]});
+		// TODO selected -> 
+		this.parent_.selectNone();
+	   	this.toggleClass("selected", true);
+	   	for(var i = 0; i < this.links.length; i++) {
+			if(this.links[i].startElement == this) { //??
+				// colorSelected	
+			} else {
+
+			}
+		}	
 	},
 
 	setText: function(defaultText, femaleText) {
@@ -163,10 +183,6 @@ var FlowChartNodeBehavior = {
 		}
 	},
 
-	/** Parses a Stringtable and attached its Strings to this node. */
-	stringsFromXML: function(xml) {
-		
-	},
 	//http://www.quirksmode.org/blog/archives/2009/09/the_html5_drag.html Ja verdammt, drag and drop ist fürn arsch, und das wird auch in HTML 5.1 so bleiben
 	onDragStart: function(event) {
 		event.dataTransfer.effectsAllowed = 'link';

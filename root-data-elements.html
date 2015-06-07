@@ -153,11 +153,18 @@
         is: "ConversationData-element",
         behaviors: [ParserBehavior],
 
+		properties: {
+			/** Valid Values: Conversation or Chatter */
+			conversationType: String,
+			characterMappings: Array // array of objects with Guid and InstanceTag
+		},
+
         created: function() {
             this.type = "ConversationData";
 			this.nodes = [];
 			this.nodesMap = {};
 			this.buckets = [];
+			this.characterMappings = [];
         },
 
         fromXML: function(xml) {
@@ -212,6 +219,27 @@
 							}
 						}
 					}
+					if(item.nodeName == "Bookmarks") {} // ignore
+					if(item.nodeName == "ClassExtender") {} // ignore
+					if(item.nodeName == "ConversationType") {
+						this.conversationType = item.textContent;
+					}
+					if(item.nodeName == "Description") {} // ignore
+					if(item.nodeName == "SceneLocation") {} // ignore
+					if(item.nodeName == "SceneTime") {} // ignore
+					if(item.nodeName == "CharacterMappings") {
+						if(item.hasChildNodes) {
+							var node;
+							for(var i = 0; i < item.childNodes.length; i++) {
+								node = item.childNodes[i];
+								if(node.hasChildNodes) {
+									var guid = node.childNodes[0].textContent;
+									var instanceTag = node.childNodes[1].textContent;
+									this.characterMappings[i] = {'guid' : guid, 'instanceTag': instanceTag};
+								}
+							}
+						}
+					}
 				}
 			}
 		},
@@ -219,6 +247,19 @@
 		toXML: function() {
 			var result = this.basetypecontent_toXML();
             // todo nicht gleiches
+			result += '<ConversationType>' + this.conversationType + '</ConversationType>';
+			// Nicht weiter wichtig, solange die Community nicht einen Weg findet die Texte zu vertonen
+			result += '<Description>Scene description.</Description>';
+			result += '<SceneLocation>SCENE LOCATION</SceneLocation>';
+			result += '<SceneTime>SCENE TIME</SceneTime>';
+			result += '<CharacterMappings>';
+			for(var i = 0; i < this.characterMappings.length; i++) {
+				result += '<CharacterMapping>';
+				result += '<Guid>' + this.characterMappings[i].guid + '</Guid>';
+				result += '<InstanceTag>' + this.characterMappings[i].instanceTag + '</InstanceTag>';
+				result += '</CharacterMapping>';
+			}
+			result += '</CharacterMappings>';
 			return result + '</' + this.type + '>';
 		},
 
@@ -237,11 +278,13 @@
 						this.stringsFromXML(node); // outer layer
 					}
 					if(node.nodeName == "Name") {
-						// TODO
+						this.stringTableFileLink = node.textContent;
 					}
 					if(node.nodeName == "NextEntryID") {
+						this.nextEntryID = node.textContent; // nicht wirklich wichtig, vom tool aber es gibt illegale Werte bei Obsidian Files
 					}
 					if(node.nodeName == "EntryCount") {
+						this.entryCount = node.textContent;
 					}
 					if(node.nodeName == "Entries") {
 						var entry;

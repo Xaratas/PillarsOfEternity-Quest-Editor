@@ -10,7 +10,12 @@ var ParserBehavior = {
 		parser: {
 			type: Object,
 			value: new window.DOMParser()
-		}
+		},
+
+		/** Stringtable file data */
+		stringTableFileLink: String,
+		nextEntryID: Number,
+		entryCount: Number
 	},
 
 
@@ -43,7 +48,36 @@ var ParserBehavior = {
 			result += node.toXML();
 		}
 		result += '</Nodes>';
-		// todo gleicher rest
+		// Nur ein Bookmark um den Game Parser zufrieden zu stellen. Der Questeditor hat keine eigenen Bookmarks und ingame sind sie überhaupt nicht relevant
+		result += '<Bookmarks><Bookmark><Type>Unassigned</Type><Name /><NodeID>-1</NodeID><GhostNodeParentID>-1</GhostNodeParentID></Bookmark></Bookmarks>';
+		result += '<ClassExtender><ExtendedProperties /></ClassExtender>';
+		return result;
+	},
+
+	stringsToXML: function() {
+		var result = '<?xml version="1.0" encoding="utf-8"?><StringTableFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
+		result += '<Name>' + this.stringTableFileLink + '</Name>';
+		result += '<NextEntryID>' + this.nextEntryID + '</NextEntryID>'; // Das was Obsidian verhunzt hat ordentlich machen
+		result += '<EntryCount>' + this.nodes.length + '</EntryCount>';
+		result += '<Entries>';
+		for(var i = 0; i < this.nodes.length; i++) {
+			var text = this.nodes[i].defaultText;
+			result += '<Entry>';
+			result += '<ID>' + this.nodes[i].nodeId + '</ID>';
+			if(text !== undefined && text !== "") {
+				result += '<DefaultText>' + text + '</DefaultText>';
+			} else {
+				result += '<DefaultText />';
+			}
+			text = this.nodes[i].femaleText;
+			if(text !== undefined && text !== "") {
+				result += '<FemaleText>' + text + '</FemaleText>';
+			} else {
+				result += '<FemaleText />';
+			}
+			result += '</Entry>';
+		}
+		result += '</Entries>';
 		return result;
 	},
 

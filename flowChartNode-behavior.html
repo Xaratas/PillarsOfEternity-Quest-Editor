@@ -10,6 +10,7 @@ var FlowChartNodeBehavior = {
 		enterScripts: Array,
 		exitScripts: Array,
 		
+		// TODO language	
 		/** String from Stringtable */
 		defaultText: String,
 		/** Female String from Stringtable */
@@ -147,7 +148,7 @@ var FlowChartNodeBehavior = {
 		result += "<ClassExtender><ExtendedProperties /></ClassExtender>";
 		result += "<Conditionals>";
 		for (var condition of this.conditions) {
-			result += condition.toXML(0);
+			result += condition.toXML(0); // TODO falsch, wirft die elemente zusammen, versagt bei empty cond.
 		}
 		result += "</Conditionals>";
 		result += "<OnEnterScripts>";

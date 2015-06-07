@@ -35,6 +35,10 @@
 		// connect somehow, prototypisch
 		document.getElementsByTagName("conversationdata-element")[0].stringsFromXML(document.getElementById("stringTable").value);
 	};
+
+	function write_stringtable() {
+		console.log(document.getElementsByTagName("conversationdata-element")[0].stringsToXML());	
+	}
 	</script>
   </head>
   <body>

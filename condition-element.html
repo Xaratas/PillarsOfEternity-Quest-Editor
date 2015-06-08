@@ -83,7 +83,11 @@
 						if(node.nodeName == "Components") {
 							if(node.hasChildNodes()) {
 								for(var y = 0; y < node.childNodes.length; y++) {
-									this.fromXML(node.childNodes[y]);
+									// liste von conditionals
+									var conditional = new ConditionElement();
+									conditional.fromXML(node.childNodes[y]);
+									this.push('nestedConditions', conditional);
+									Polymer.dom(this.$$("nestedConditions")).appendChild(conditional);
 								}
 							}
 						}
@@ -102,9 +106,17 @@
 		 * @param depth - 0 = outermost layer
 		 */
 		toXML: function(depth) {
-			var xml;
+			var xml = "";
+			if(depth === 0) {
+				xml += '<Operator>' + this.operator + '</Operator>'
+					+ '<Components>';
+			}
+			for(var condition of this.nestedConditions) {
+				xml += condition.toXML(depth + 1);
+			}				
+			
 			if(this.type == "ConditionalCall") {
-				xml = '<ExpressionComponent xsi:type="' + this.type + '">'; 
+				xml += '<ExpressionComponent xsi:type="' + this.type + '">'; 
 				xml += this.functionCallToXML();	
 				xml += '<Not>';
 				if (this.not === "")
@@ -113,24 +125,22 @@
 					xml += 'true';
 				xml += '</Not>' 
 					+ '<Operator>' + this.operator2 + '</Operator>';
-				return xml + '</ExpressionComponent>';
+				xml += '</ExpressionComponent>';
 			}
 			if(this.type == "ConditionalExpression") {
-				xml = "";
-				if(depth > 0) {
-					 xml += '<ExpressionComponent xsi:type="' + this.type + '">';
-				}
+				xml += '<ExpressionComponent xsi:type="' + this.type + '">';
 				xml += '<Operator>' + this.operator + '</Operator>'
 					+ '<Components>';
 				for(var condition of this.nestedConditions) {
 					xml += condition.toXML(depth + 1);
-				}
+				}				
 				xml += '</Components>';
-				if(depth > 0) {	
-					xml += '</ExpressionComponent>';
-				}
-				return xml;
+				xml += '</ExpressionComponent>';
 			}
+			if(depth === 0) {	
+				xml += '</Components>';
+			}
+			return xml;
 		}
 	});
 </script>

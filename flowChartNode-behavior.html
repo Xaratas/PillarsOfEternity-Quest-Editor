@@ -74,11 +74,11 @@ var FlowChartNodeBehavior = {
 		// TODO selected -> 
 		this.parent_.selectNone();
 	   	this.toggleClass("selected", true);
-	   	for(var i = 0; i < this.links.length; i++) {
-			if(this.links[i].startElement == this) { //??
-				// colorSelected	
+	   	for(var link of Object.keys(this.links)) {
+			if(this.links[link].startElement == this) { // die node hat nur ausgehende links, deswegen kann die 2. farbe so nicht greifen
+				this.links[link].connect("#22cc00");	
 			} else {
-
+				this.links[link].connect("#ee00cc");
 			}
 		}	
 	},

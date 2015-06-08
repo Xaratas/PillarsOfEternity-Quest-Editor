@@ -94,8 +94,11 @@ var ParserBehavior = {
 	},
 
 	selectNone: function() {
-		for(var n = 0; n < this.nodes.length; n++) {
-			this.toggleClass("selected", false, this.nodes[n]);
+		for(var node of this.nodes) {
+			this.toggleClass("selected", false, node);
+			for(var link of Object.keys(node.links)) {
+				node.links[link].connect('#f00');
+			}
 		}
 	}	
 };

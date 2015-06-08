@@ -8,7 +8,8 @@ var FlowChartLinkBehavior = {
 		pointsToGhost: Boolean
 	},
 
-	connect: function() {
+	/** color: html valid colorstring */
+	connect: function(color) {
 		// find offset positions for both elements
 		var offsetStart = {
 			x: this.startElement.offsetLeft + this.startElement.offsetWidth / 2,
@@ -35,7 +36,7 @@ var FlowChartLinkBehavior = {
 		var drawContext = this.getContext('2d');
 
 		// draw line on this canvas, line goes from center to center, -1 z-index hides the unneded parts
-		drawContext.strokeStyle = '#f00';
+		drawContext.strokeStyle = color;
 		drawContext.lineWidth = 2;
 		drawContext.beginPath();
 		drawContext.moveTo(offsetStart.x - p.x, offsetStart.y - p.y);

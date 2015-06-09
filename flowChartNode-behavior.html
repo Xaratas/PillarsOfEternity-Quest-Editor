@@ -173,7 +173,7 @@ var FlowChartNodeBehavior = {
 	scriptsFromXML: function(target, xml) {
 		
 		for(var s = 0; s < xml.childNodes.length; s++) {
-			if(xml.childNodes[s].hasChildNodes) {
+			if(xml.childNodes[s].hasChildNodes()) {
 				for(var d = 0; d < xml.childNodes[s].childNodes.length; d++) {
 					var scriptElement = new ScriptElement();
 					scriptElement.functionCallFromXML(xml.childNodes[s].childNodes[d]);

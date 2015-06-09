@@ -314,7 +314,7 @@
 
 		fromXML: function(xml) {
 			this._fromXML(xml);
-			if(xml.hasChildNodes) {
+			if(xml.hasChildNodes()) {
 				var node;
 				for (var x = 0; x < xml.childNodes.length; x++) { // TODO 
 					node = xml.childNodes[x];

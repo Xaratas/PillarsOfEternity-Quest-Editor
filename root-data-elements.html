@@ -228,11 +228,11 @@
 					if(item.nodeName == "SceneLocation") {} // ignore
 					if(item.nodeName == "SceneTime") {} // ignore
 					if(item.nodeName == "CharacterMappings") {
-						if(item.hasChildNodes) {
+						if(item.hasChildNodes()) {
 							var node;
 							for(var i = 0; i < item.childNodes.length; i++) {
 								node = item.childNodes[i];
-								if(node.hasChildNodes) {
+								if(node.hasChildNodes()) {
 									var guid = node.childNodes[0].textContent;
 									var instanceTag = node.childNodes[1].textContent;
 									this.characterMappings[i] = {'guid' : guid, 'instanceTag': instanceTag};
@@ -270,7 +270,7 @@
 				xml = this.parser.parseFromString(xml, 'text/xml');
                 this.cleanFormatting(xml);
 			}
-			if(xml.hasChildNodes) {
+			if(xml.hasChildNodes()) {
 				var node;
 				for	(var x = 0; x < xml.childNodes.length; x++) {
 					node = xml.childNodes[x];

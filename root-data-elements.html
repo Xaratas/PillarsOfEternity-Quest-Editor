@@ -107,7 +107,13 @@
 						for(var n = 0; n < item.childNodes.length; n++) {
 							node = item.childNodes[n];
 							if(node.nodeName == "FlowChartNode") {
-								element = new ObjectiveNode(this);
+								// type rausfiddeln
+								switch(node.attributes[0].value) {
+									case "QuestNode": element = new QuestNode(this);
+													  break;
+									case "ObjectiveNode": element = new ObjectiveNode(this);
+														  break;
+								}
 								element.fromXML(node);
 							}
 							// bookmarks, classextender, usw.
@@ -116,7 +122,7 @@
 						}
 						// links aus dem Temp Status umformen
                         for(var node of this.nodes) {
-                            node.activateLinks(this.nodesMap);
+                            node.$.flowchartnode.activateLinks(this.nodesMap);
                         }
 						// nodes anhand der links sortieren
 						var i = 0;
@@ -126,7 +132,7 @@
 								this.buckets[i].push(node); // id 0 als anker
 								node.placed = true;
 								i++;
-								this.place(node.links, i);
+								this.place(node.$.flowchartnode.links, i);
 							}
 						}
 						// dom anpassen, quasi eigenes template
@@ -214,7 +220,7 @@
 						}
 						// links aus dem Temp Status umformen
                         for(var node of this.nodes) {
-							// type abhängig?, nein, da es sich nicht tiefer schachtelt: type -> dialoguenode -> talknode
+							// type abhängig?, nein, da es sich nicht tiefer schachtelt: type -> dialoguenode -> talknode; doch, für die nicht dialoguenode wrappen
                             node.$.dialoguenode.$.flowchartnode.activateLinks(this.nodesMap);
                         }
 						// nodes anhand der links sortieren

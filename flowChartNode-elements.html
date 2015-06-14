@@ -214,37 +214,37 @@
 
 <dom-module id="DialogueNode-element">
 	<template>
-		<flowchartnode-element id="flowchartnode"></flowchartnode-element>
+		<flowchartnode-element id="flowchartnode" direction="{{direction}}"></flowchartnode-element>
 	</template>
 </dom-module>
 
 <dom-module id="TalkNode-element">
 	<template>
-		<dialoguenode-element id="dialoguenode"></dialoguenode-element>
+		<dialoguenode-element id="dialoguenode" direction="{{direction}}"></dialoguenode-element>
 	</template>
 </dom-module>
 
 <dom-module id="PlayerResponseNode-element">
 	<template>
-		<dialoguenode-element id="dialoguenode"></dialoguenode-element>
+		<dialoguenode-element id="dialoguenode" direction="{{direction}}"></dialoguenode-element>
 	</template>
 </dom-module>
 
 <dom-module id="TriggerConversationNode-element">
 	<template>
-		<dialoguenode id="dialoguenode"></dialoguenode>
+		<dialoguenode-element id="dialoguenode" direction="{{direction}}"></dialoguenode-element>
 	</template>
 </dom-module>
 
-<dom-module id="BankNode">
+<dom-module id="BankNode-element">
 	<template>
-		<flowchartnode-element id="flowchartnode"></flowchartnode-element>
+		<flowchartnode-element id="flowchartnode" direction="{{direction}}"></flowchartnode-element>
 	</template>
 </dom-module>
 
 <dom-module id="ScriptNode-element">
 	<template>
-		<dialoguenode-element id="dialoguenode"></dialoguenode-element>
+		<dialoguenode-element id="dialoguenode" direction="{{direction}}"></dialoguenode-element>
 	</template>
 </dom-module>
 
@@ -450,9 +450,9 @@
 		toXML: function() {
 			var xml = "";
 			xml += '<ActorDirection>' + this.actorDirection + '</ActorDirection>';
-			xml += '<SpeakerGuid>' + this.speakerGuid + '</SpeakerGuiid>';
+			xml += '<SpeakerGuid>' + this.speakerGuid + '</SpeakerGuid>';
 			xml += '<ListenerGuid>' + this.listenerGuid + '</ListenerGuid>';
-			return this.$.dialoguenode.toXML(xml);
+			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.dialoguenode.toXML(xml) + '</FlowChartNode>';
 		}
 	});
 
@@ -466,10 +466,12 @@
 			}
 		},
 
+
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_;
 			this.links = this.$.dialoguenode.$.flowchartnode.links;
 		},
+
 		createLink: function(to) {
 			this.$.dialoguenode.createLink(to);
 		},
@@ -478,7 +480,7 @@
 		},
 
 		toXML: function() {
-			return this.$.dialoguenode.toXml("");
+			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.dialoguenode.toXML("") + '</FlowChartNode>';
 		}
 	});
 
@@ -517,8 +519,8 @@
 
 		toXML: function() {
 			var xml = '<ConversationFilename>' + this.conversationFilename + '</ConversationFilename>';
-			xml += '<StartNodeID>' + this.startNodeId + '</StartNodeId>';
-			return this.$.dialoguenode.toXml(xml);
+			xml += '<StartNodeID>' + this.startNodeId + '</StartNodeID>';
+			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.dialoguenode.toXML(xml) + '</FlowChartNode>';
 		}
 	});
 
@@ -571,7 +573,7 @@
 				xml += '<int>' + node + '</int>';
 			}
 			xml += '</ChildNodesIDs>';
-			return this.$.flowchartnode.toXml(xml);
+			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.flowchartnode.toXML(xml) + '</FlowChartNode>';
 		}
 	});
 
@@ -598,7 +600,7 @@
 		},
 
 		toXML: function() {
-			return this.$.dialoguenode.toXml("");
+			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.dialoguenode.toXML("") + '</FlowChartNode>';
 		}
 	});
 </script>

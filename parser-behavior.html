@@ -95,7 +95,11 @@ var ParserBehavior = {
 
 	selectNone: function() {
 		for(var node of this.nodes) {
-			this.toggleClass("selected", false, node);
+			if(node.$.dialoguenode !== undefined) {
+				this.toggleClass("selected", false, node.$.dialoguenode.$.flowchartnode);
+			} else {
+				this.toggleClass("selected", false, node.$.flowchartnode);
+			}
 			for(var link of Object.keys(node.links)) {
 				node.links[link].connect('#f00');
 			}

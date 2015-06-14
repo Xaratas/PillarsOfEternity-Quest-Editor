@@ -10,14 +10,14 @@
 <dom-module id="FlowChartNode-element">
 <style>
 	:host {
-		background-color: #8FC0A9;
+		background-color: var(--FlowChartNode-element-background-color);
 		width: 260px;
 		display: flex;
 		margin: 10px;
 	}
 	
 	:host.selected {
-		background-color: #E2EB98;
+		background-color: var(--FlowChartNode-element-selected-color);
 	}
 
 	.direction {
@@ -27,7 +27,7 @@
 	.left, .right, .leftmiddle {
 		width: 40px;
 		padding: 10px 5px;
-		background-color: #9FD8CB;
+		background-color: var(--FlowChartNode-element-popup-target-color);
 		position: relative;
 	}
 
@@ -113,12 +113,26 @@
 </dom-module>
 
 <dom-module id="QuestNode-element">
+	<style>
+		:host {
+			--FlowChartNode-element-background-color: #96C5F7;
+			--FlowChartNode-element-popup-target-color: #A9D3FF;
+			--FlowChartNode-element-selected-color: #6782A7;
+		}	
+	</style>
 	<template>
 		<flowchartnode-element id="flowchartnode" direction="{{direction}}"></flowchartnode-element>
 	</template>
 </dom-module>
 
 <dom-module id="ObjectiveNode-element">
+	<style>
+		:host {
+			--FlowChartNode-element-background-color: #96C5F7;
+			--FlowChartNode-element-popup-target-color: #A9D3FF;
+			--FlowChartNode-element-selected-color: #6782A7;
+		}	
+	</style>
 	<template>
 		<flowchartnode-element id="flowchartnode" direction="{{direction}}"></flowchartnode-element>
 	</template>
@@ -131,30 +145,65 @@
 </dom-module>
 
 <dom-module id="TalkNode-element">
+	<style>
+		:host {
+			--FlowChartNode-element-background-color: #8FC0A9;
+			--FlowChartNode-element-popup-target-color: #9FD8CB;
+			--FlowChartNode-element-selected-color: #E2EB98;
+		}	
+	</style>
 	<template>
 		<dialoguenode-element id="dialoguenode" direction="{{direction}}"></dialoguenode-element>
 	</template>
 </dom-module>
 
 <dom-module id="PlayerResponseNode-element">
+	<style>
+		:host {
+			--FlowChartNode-element-background-color: #8FC0A9;
+			--FlowChartNode-element-popup-target-color: #9FD8CB;
+			--FlowChartNode-element-selected-color: #E2EB98;
+		}	
+	</style>
 	<template>
 		<dialoguenode-element id="dialoguenode" direction="{{direction}}"></dialoguenode-element>
 	</template>
 </dom-module>
 
 <dom-module id="TriggerConversationNode-element">
+	<style>
+		:host {
+			--FlowChartNode-element-background-color: #8FC0A9;
+			--FlowChartNode-element-popup-target-color: #9FD8CB;
+			--FlowChartNode-element-selected-color: #E2EB98;
+		}	
+	</style>
 	<template>
 		<dialoguenode-element id="dialoguenode" direction="{{direction}}"></dialoguenode-element>
 	</template>
 </dom-module>
 
 <dom-module id="BankNode-element">
+	<style>
+		:host {
+			--FlowChartNode-element-background-color: #8FC0A9;
+			--FlowChartNode-element-popup-target-color: #9FD8CB;
+			--FlowChartNode-element-selected-color: #E2EB98;
+		}	
+	</style>
 	<template>
 		<flowchartnode-element id="flowchartnode" direction="{{direction}}"></flowchartnode-element>
 	</template>
 </dom-module>
 
 <dom-module id="ScriptNode-element">
+	<style>
+		:host {
+			--FlowChartNode-element-background-color: #8FC0A9;
+			--FlowChartNode-element-popup-target-color: #9FD8CB;
+			--FlowChartNode-element-selected-color: #E2EB98;
+		}	
+	</style>
 	<template>
 		<dialoguenode-element id="dialoguenode" direction="{{direction}}"></dialoguenode-element>
 	</template>
@@ -162,6 +211,58 @@
 
 <script>
 "use strict";
+	var FlowChartNode = Polymer({
+		is: "FlowChartNode-element",
+		behaviors: [FlowChartNodeBehavior],
+
+
+		created: function() {
+			this.comments = [];
+			this.links = {};
+			this.conditions = [];
+			this.enterScripts = [];
+			this.exitScripts = [];
+			this.conditions = [];
+		},
+
+
+		/** Create Links via Drag and Drop */
+		createLink: function(to) {
+			if (!(to.id in this.links)) {
+				this.links[to.id] = new DialogueLink(this, to);
+				document.getElementsByTagName("body")[0].appendChild(this.links[to.id]);
+			}
+		},
+
+		activateLinks: function(nodesMap) { // linkXML in echte links überführen
+			if (this.linkXML.hasChildNodes()) {
+				var node;
+				for (var x = 0; x < this.linkXML.childNodes.length; x++) {
+					node = this.linkXML.childNodes[x];
+					if (node.nodeName == "FlowChartLink") {
+						var link;
+						switch(this.type) {
+							case "TalkNode":
+							case "PlayerResponseNode":
+							case "TriggerConversationNode":
+							case "BankNode":
+							case "ScriptNode": link = new DialogueLink();
+											   link.fromXML(node, nodesMap);
+											   break;
+							case "QuestNode":
+							case "ObjectiveNode": link = new QuestLink();
+												  link.fromXML(node, nodesMap);
+												  break;
+						}
+						this.links[link.endElement.id] = link;
+					}
+				}
+			}
+		},
+
+	});
+
+
 	var QuestNode = Polymer({
 		is: "QuestNode-element",
 		behaviors: [UIBehavior],
@@ -293,61 +394,20 @@
 		}
 	});
 
-	var FlowChartNode = Polymer({
-		is: "FlowChartNode-element",
-		behaviors: [FlowChartNodeBehavior],
-
-
-		created: function() {
-			this.comments = [];
-			this.links = {};
-			this.conditions = [];
-			this.enterScripts = [];
-			this.exitScripts = [];
-			this.conditions = [];
-		},
-
-
-		/** Create Links via Drag and Drop */
-		createLink: function(to) {
-			if (!(to.id in this.links)) {
-				this.links[to.id] = new DialogueLink(this, to);
-				document.getElementsByTagName("body")[0].appendChild(this.links[to.id]);
-			}
-		},
-
-		activateLinks: function(nodesMap) { // linkXML in echte links überführen
-			if (this.linkXML.hasChildNodes()) {
-				var node;
-				for (var x = 0; x < this.linkXML.childNodes.length; x++) {
-					node = this.linkXML.childNodes[x];
-					if (node.nodeName == "FlowChartLink") {
-						var link;
-						switch(this.type) {
-							case "TalkNode":
-							case "PlayerRepsonseNode":
-							case "TriggerConversationNode":
-							case "BankNode":
-							case "ScriptNode": link = new DialogueLink();
-											   link.fromXML(node, nodesMap);
-											   break;
-							case "QuestNode":
-							case "ObjectiveNode": link = new QuestLink();
-												  link.fromXML(node, nodesMap);
-												  break;
-						}
-						this.links[link.endElement.id] = link;
-					}
-				}
-			}
-		},
-
-	});
-
 	var DialogueNode = Polymer({
 		is: "DialogueNode-element",
 
-		behaviors: [DialogueNodeBehavior],
+		properties: {
+			// elements of DialogueNode, all Strings for now
+			notSkippable: String,
+			isQuestionNode: String,
+			isTempText: String,
+			playVOAs3DSound: String,
+			playType: String,
+			persistence: String,
+			noPlayRandomWeight: String,
+			displayType: String,
+		},
 
 		createLink: function(to) {
 			this.$.flowchartnode.createLink(to);

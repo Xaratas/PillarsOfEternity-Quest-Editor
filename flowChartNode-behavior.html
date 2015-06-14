@@ -45,7 +45,11 @@ var UIBehavior = {
 		this.fire('iron-signal', {name: "flow-chart-node-selected", data: [this.nodeId, this.defaultText, this.femaleText, this]});
 		// TODO selected -> 
 		this.parent_.selectNone();
-	   	this.toggleClass("selected", true);
+		if(this.$.dialoguenode !== undefined) {
+		   	this.toggleClass("selected", true, this.$.dialoguenode.$.flowchartnode);
+		} else {
+		   	this.toggleClass("selected", true, this.$.flowchartnode);
+		}
 	   	for(var link of Object.keys(this.links)) {
 			if(this.links[link].startElement == this) { // die node hat nur ausgehende links, deswegen kann die 2. farbe so nicht greifen
 				this.links[link].connect("#22cc00");	
@@ -241,21 +245,4 @@ var FlowChartNodeBehavior = {
 		}
 	},
 };
-var DialogueNodeBehavior = {
-	
-
-		properties: {
-			// elements of DialogueNode, all Strings for now
-			notSkippable: String,
-			isQuestionNode: String,
-			isTempText: String,
-			playVOAs3DSound: String,
-			playType: String,
-			persistence: String,
-			noPlayRandomWeight: String,
-			displayType: String,
-		}
-
-};
-
 </script>

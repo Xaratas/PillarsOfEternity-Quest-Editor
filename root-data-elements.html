@@ -220,8 +220,11 @@
 						}
 						// links aus dem Temp Status umformen
                         for(var node of this.nodes) {
-							// type abhängig?, nein, da es sich nicht tiefer schachtelt: type -> dialoguenode -> talknode; doch, für die nicht dialoguenode wrappen
-                            node.$.dialoguenode.$.flowchartnode.activateLinks(this.nodesMap);
+							if(node.$.dialoguenode !== undefined) {
+	                            node.$.dialoguenode.$.flowchartnode.activateLinks(this.nodesMap);
+							} else {
+								node.$.flowchartnode.activateLinks(this.nodesMap);
+							}
                         }
 						// nodes anhand der links sortieren
 						var i = 0;
@@ -231,7 +234,11 @@
 								this.buckets[i].push(node); // id 0 als anker
 								node.placed = true;
 								i++;
-								this.place(node.$.dialoguenode.$.flowchartnode.links, i);
+								if(node.$.dialoguenode !== undefined) {
+									this.place(node.$.dialoguenode.$.flowchartnode.links, i);
+								} else {
+									this.place(node.$.flowchartnode.links, i);
+								}
 							}
 						}
 						// dom anpassen, quasi eigenes template

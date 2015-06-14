@@ -1,23 +1,8 @@
 <link rel="import" href="scripts-element.html">
 <script>
 "use strict";
-var FlowChartNodeBehavior = {
+var UIBehavior = {
 	properties: {
-		type: String,
-		nodeId: Number,
-		comments: Array,
-		links: Object,
-		enterScripts: Array,
-		exitScripts: Array,
-		
-		// TODO language	
-		/** String from Stringtable */
-		defaultText: String,
-		/** Female String from Stringtable */
-		femaleText: String,
-
-		linkXML: Object,
-
 		/** Helper for placing Nodes in Columns */
 		placed: {
 			type: Boolean,
@@ -33,7 +18,7 @@ var FlowChartNodeBehavior = {
 		},
 		/** Direction in Drag and Drop events: from or to */
 		direction: String,
-
+		/** Parent Quest or Conversation element, limits the range of selectNone() */
 		parent_: Object
 	},
 
@@ -55,19 +40,6 @@ var FlowChartNodeBehavior = {
 		this.parent_ = parent_;
 	},
 
-	addComment: function(event, eventDetail, text) {
-		var comment = new Comment(this, this.comments.length + 1);
-		if (text !== undefined)
-			comment.setText(text);
-		this.push("comments", comment);
-		Polymer.dom(this.$$("comments")).appendChild(comment);
-	},
-
-	removeComment: function(index) {
-		console.log("remove Comment");
-		var comment = this.splice("comments", index - 1, 1)[0]; // splice liefert ein array
-		Polymer.dom(this.$$("comments")).removeChild(comment); // die remove child erwartet eine node, deswegen über comment und nicht über id
-	},
 
 	fireSelectedEvent: function(event) {
 		this.fire('iron-signal', {name: "flow-chart-node-selected", data: [this.nodeId, this.defaultText, this.femaleText, this]});
@@ -95,94 +67,6 @@ var FlowChartNodeBehavior = {
 		}
 	},
 
-	_fromXML: function(xml) {
-		if (xml.hasChildNodes()) {
-			this.type = xml.attributes[0].value;
-			var node;
-			for (var x = 0; x < xml.childNodes.length; x++) {
-				node = xml.childNodes[x];
-				if (node.nodeName == "NodeID") {
-					this.nodeId = node.textContent;
-				}
-				if (node.nodeName == "Comments") {
-					for (var c = 0; c < node.childNodes.length; c++) {
-						this.addComment(_, _, node.childNodes[c].textContent);
-					}
-				}
-				if (node.nodeName == "Links") {
-					this.linkXML = node;
-				}
-				if (node.nodeName == "Conditionals") {
-					var conditionElement = new ConditionElement();
-					conditionElement.fromXML(node);
-					this.push('conditions', conditionElement);
-					Polymer.dom(this.$$("conditions")).appendChild(conditionElement);
-				}
-				if (node.nodeName == "OnEnterScripts") {
-					this.scriptsFromXML("enterScripts", node);
-				}
-				if (node.nodeName == "OnExitScripts") {
-					this.scriptsFromXML("exitScripts", node);
-				}
-				// onUpdateScripts werden nicht verwendet
-				if (node.nodeName == "IsTempText") {
-					// 
-				}
-			}
-		}
-	},
-
-	_toXML: function() {
-		var result = "<NodeID>" + this.nodeId + "</NodeID><Comments>";
-		for (var comment of this.comments) {
-			result += comment.toXML();
-		}
-		result += "</Comments>";
-		result += "<PackageID>1</PackageID>"; // siehe xsd, 1 steht für base game und ist momentan der Einzige sinnvolle Wert
-		result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
-		result += "<Links>";
-		for (var link of Object.keys(this.links)) {
-			result += this.links[link].toXML();
-		}
-		result += "</Links>";
-		result += "<ClassExtender><ExtendedProperties /></ClassExtender>";
-		result += "<Conditionals>";
-		for (var condition of this.conditions) {
-			result += condition.toXML(0); // TODO falsch, wirft die elemente zusammen, versagt bei empty cond.
-		}
-		result += "</Conditionals>";
-		result += "<OnEnterScripts>";
-		for (var scriptCall of this.enterScripts) {
-			result += "<ScriptCall>";
-			result += scriptCall.functionCallToXML();
-			result += "</ScriptCall>";
-		}
-		result += "</OnEnterScripts>";
-		result += "<OnExitScripts>";
-		for (var scriptCall of this.exitScripts) {
-			result += "<ScriptCall>";
-			result += scriptCall.functionCallToXML();
-			result += "</ScriptCall>";
-		}
-		result += "</OnExitScripts>";
-		result += "<OnUpdateScripts />";
-		return result;
-	},
-
-	/** @param target - Name of Variable enterScripts or exitScripts */
-	scriptsFromXML: function(target, xml) {
-		
-		for(var s = 0; s < xml.childNodes.length; s++) {
-			if(xml.childNodes[s].hasChildNodes()) {
-				for(var d = 0; d < xml.childNodes[s].childNodes.length; d++) {
-					var scriptElement = new ScriptElement();
-					scriptElement.functionCallFromXML(xml.childNodes[s].childNodes[d]);
-					this.push(target, scriptElement);
-					Polymer.dom(this.$$(target)).appendChild(scriptElement);
-				}
-			}
-		}
-	},
 
 	//http://www.quirksmode.org/blog/archives/2009/09/the_html5_drag.html Ja verdammt, drag and drop ist fürn arsch, und das wird auch in HTML 5.1 so bleiben
 	onDragStart: function(event) {
@@ -230,4 +114,145 @@ var FlowChartNodeBehavior = {
 		this.direction = ""; // drag source
 	}
 };
+
+var FlowChartNodeBehavior = {
+	properties: {
+		type: String,
+		nodeId: Number,
+		comments: Array,
+		links: Object,
+		enterScripts: Array,
+		exitScripts: Array,
+		conditions: Array,
+		
+		// TODO language	
+		/** String from Stringtable */
+		defaultText: String,
+		/** Female String from Stringtable */
+		femaleText: String,
+
+		linkXML: Object
+	},
+
+	addComment: function(event, eventDetail, text) {
+		var comment = new Comment(this, this.comments.length + 1);
+		if (text !== undefined)
+			comment.setText(text);
+		this.push("comments", comment);
+		Polymer.dom(this.$$("comments")).appendChild(comment);
+	},
+
+	removeComment: function(index) {
+		console.log("remove Comment");
+		var comment = this.splice("comments", index - 1, 1)[0]; // splice liefert ein array
+		Polymer.dom(this.$$("comments")).removeChild(comment); // die remove child erwartet eine node, deswegen über comment und nicht über id
+	},
+
+	fromXML: function(xml) {
+		if (xml.hasChildNodes()) {
+			this.type = xml.attributes[0].value;
+			var node;
+			for (var x = 0; x < xml.childNodes.length; x++) {
+				node = xml.childNodes[x];
+				if (node.nodeName == "NodeID") {
+					this.nodeId = node.textContent;
+				}
+				if (node.nodeName == "Comments") {
+					for (var c = 0; c < node.childNodes.length; c++) {
+						this.addComment(_, _, node.childNodes[c].textContent);
+					}
+				}
+				if (node.nodeName == "Links") {
+					this.linkXML = node;
+				}
+				if (node.nodeName == "Conditionals") {
+					var conditionElement = new ConditionElement();
+					conditionElement.fromXML(node);
+					this.push('conditions', conditionElement);
+					Polymer.dom(this.$$("conditions")).appendChild(conditionElement);
+				}
+				if (node.nodeName == "OnEnterScripts") {
+					this.scriptsFromXML("enterScripts", node);
+				}
+				if (node.nodeName == "OnExitScripts") {
+					this.scriptsFromXML("exitScripts", node);
+				}
+				// onUpdateScripts werden nicht verwendet
+				if (node.nodeName == "IsTempText") {
+					// 
+				}
+			}
+		}
+		return this.nodeId;
+	},
+
+	toXML: function(xmlstring) {
+		var result = "<NodeID>" + this.nodeId + "</NodeID><Comments>";
+		for (var comment of this.comments) {
+			result += comment.toXML();
+		}
+		result += "</Comments>";
+		result += "<PackageID>1</PackageID>"; // siehe xsd, 1 steht für base game und ist momentan der Einzige sinnvolle Wert
+		result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
+		result += "<Links>";
+		for (var link of Object.keys(this.links)) {
+			result += this.links[link].toXML();
+		}
+		result += "</Links>";
+		result += "<ClassExtender><ExtendedProperties /></ClassExtender>";
+		result += "<Conditionals>";
+		for (var condition of this.conditions) {
+			result += condition.toXML(0); 
+		}
+		result += "</Conditionals>";
+		result += "<OnEnterScripts>";
+		for (var scriptCall of this.enterScripts) {
+			result += "<ScriptCall>";
+			result += scriptCall.functionCallToXML();
+			result += "</ScriptCall>";
+		}
+		result += "</OnEnterScripts>";
+		result += "<OnExitScripts>";
+		for (var scriptCall of this.exitScripts) {
+			result += "<ScriptCall>";
+			result += scriptCall.functionCallToXML();
+			result += "</ScriptCall>";
+		}
+		result += "</OnExitScripts>";
+		result += "<OnUpdateScripts />";
+		return result + xmlstring;
+	},
+
+	/** @param target - Name of Variable enterScripts or exitScripts */
+	scriptsFromXML: function(target, xml) {
+		
+		for(var s = 0; s < xml.childNodes.length; s++) {
+			if(xml.childNodes[s].hasChildNodes()) {
+				for(var d = 0; d < xml.childNodes[s].childNodes.length; d++) {
+					var scriptElement = new ScriptElement();
+					scriptElement.functionCallFromXML(xml.childNodes[s].childNodes[d]);
+					this.push(target, scriptElement);
+					Polymer.dom(this.$$(target)).appendChild(scriptElement);
+				}
+			}
+		}
+	},
+};
+var DialogueNodeBehavior = {
+	
+
+		properties: {
+			// elements of DialogueNode, all Strings for now
+			notSkippable: String,
+			isQuestionNode: String,
+			isTempText: String,
+			playVOAs3DSound: String,
+			playType: String,
+			persistence: String,
+			noPlayRandomWeight: String,
+			displayType: String,
+		}
+
+};
+
 </script>

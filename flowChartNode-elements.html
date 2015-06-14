@@ -107,7 +107,7 @@
 </template>
 </dom-module>
 
-<dom-module id="TalkNode-element">
+<dom-module id="FlowChartNode-element">
 <style>
 	:host {
 		background-color: #8FC0A9;
@@ -212,6 +212,41 @@
 </template>
 </dom-module>
 
+<dom-module id="DialogueNode-element">
+	<template>
+		<flowchartnode-element id="flowchartnode"></flowchartnode-element>
+	</template>
+</dom-module>
+
+<dom-module id="TalkNode-element">
+	<template>
+		<dialoguenode-element id="dialoguenode"></dialoguenode-element>
+	</template>
+</dom-module>
+
+<dom-module id="PlayerResponseNode-element">
+	<template>
+		<dialoguenode-element id="dialoguenode"></dialoguenode-element>
+	</template>
+</dom-module>
+
+<dom-module id="TriggerConversationNode-element">
+	<template>
+		<dialoguenode id="dialoguenode"></dialoguenode>
+	</template>
+</dom-module>
+
+<dom-module id="BankNode">
+	<template>
+		<flowchartnode-element id="flowchartnode"></flowchartnode-element>
+	</template>
+</dom-module>
+
+<dom-module id="ScriptNode-element">
+	<template>
+		<dialoguenode-element id="dialoguenode"></dialoguenode-element>
+	</template>
+</dom-module>
 
 <script>
 "use strict";
@@ -271,13 +306,10 @@
 		}
 	});
 
-	var TalkNode = Polymer({
-		is: "TalkNode-element",
+	var FlowChartNode = Polymer({
+		is: "FlowChartNode-element",
 		behaviors: [FlowChartNodeBehavior],
 
-		properties: {
-			conditions: Array
-		},
 
 		created: function() {
 			this.comments = [];
@@ -285,10 +317,9 @@
 			this.conditions = [];
 			this.enterScripts = [];
 			this.exitScripts = [];
+			this.conditions = [];
 		},
 
-		attached: function() {
-		},
 
 		/** Create Links via Drag and Drop */
 		createLink: function(to) {
@@ -312,36 +343,262 @@
 			}
 		},
 
+	});
+
+	var DialogueNode = Polymer({
+		is: "DialogueNode-element",
+
+		behaviors: [DialogueNodeBehavior],
+
+		createLink: function(to) {
+			this.$.flowchartnode.createLink(to);
+		},
+
 		fromXML: function(xml) {
-			this._fromXML(xml);
+			this.nodeId = this.$.flowchartnode.fromXML(xml);
 			if(xml.hasChildNodes()) {
 				var node;
-				for (var x = 0; x < xml.childNodes.length; x++) { // TODO 
+				for (var x = 0; x < xml.childNodes.length; x++) {
 					node = xml.childNodes[x];
 					if (node.nodeName == "NotSkippable") {
+						this.notSkippable = node.textContent;
 					}
 					if (node.nodeName == "IsQuestionNode") {
+						this.isQuestionNode = node.textContent;
 					}
 					if (node.nodeName == "IsTempText") {
+						this.isTempText = node.textContent;
 					}
 					if (node.nodeName == "PlayVOAs3DSound") {
+						this.playVOAs3DSound = node.textContent;
 					}
 					if (node.nodeName == "PlayType") {
+						this.playType = node.textContent;
 					}
 					if (node.nodeName == "Persistence") {
+						this.persistence = node.textContent;
 					}
 					if (node.nodeName == "NoPlayRandomWeight") {
+						this.noPlayRandomWeight = node.textContent;
 					}
 					if (node.nodeName == "DisplayType") {
+						this.displayType = node.textContent;
+					}
+					// other tags of type DialogueNode are allways empty.
+				}
+			}
+			return this.nodeId;
+		},
+
+		toXML: function(xmlstring) {
+			var xml = "";
+			xml += '<NotSkippable>' + this.notSkippable + '</NotSkippable>';
+			xml += '<IsQuestionNode>' + this.isQuestionNode + '</IsQuestionNode>';
+			xml += '<IsTempText>' + this.isTempText + '</IsTempText>';
+			xml += '<PlayVOAs3DSound>' + this.playVOAs3DSound + '</PlayVOAs3DSound>';
+			xml += '<PlayType>' + this.playType + '</PlayType>';
+			xml += '<Persistence>' + this.persistence + '</Persistence>';
+			xml += '<NoPlayRandomWeight>' + this.noPlayRandomWeight + '</NoPlayRandomWeight>';
+			xml += '<DisplayType>' + this.displayType + '</DisplayType>';
+			// Allways empty, just here to stay valid against the xsd
+			xml += '<VOFilename /><VoiceType /><ExcludedSpeakerClasses /><ExcludedListenerClasses />  <IncludedSpeakerClasses /><IncludedListenerClasses />';
+			xml += xmlstring;
+			return this.$.flowchartnode.toXML(xml);
+		}
+	});
+
+
+	var TalkNode = Polymer({
+		is: 'TalkNode-element',
+		
+		behaviors: [UIBehavior],
+		properties: {
+			actorDirection: String,
+			speakerGuid: String,
+			listenerGuid: String,
+			type: {
+				value: 'TalkNode'
+			}
+		},
+		// hoffentlich ist das nen pointer
+		factoryImpl: function(parent_) {
+			this.parent_ = parent_; // da das den UIBehavior konstruktor überschreibt, und man über this.behaviors nicht gehen kann
+			this.links = this.$.dialoguenode.$.flowchartnode.links;
+		},
+		createLink: function(to) {
+			this.$.dialoguenode.createLink(to);
+		},
+		fromXML: function(xml) {
+			this.nodeId = this.$.dialoguenode.fromXML(xml);
+			if(xml.hasChildNodes()) {
+				var node;
+				for (var x = 0; x < xml.childNodes.length; x++) {
+					node = xml.childNodes[x];
+					if (node.nodeName == "ActorDirection") {
+						this.actorDirection = node.textContent;
+					}
+					if(node.nodeName == "SpeakerGuid") {
+						this.speakerGuid = node.textContent;
+					}
+					if(node.nodeName == "ListenerGuid") {
+						this.listenerGuid = node.textContent;
 					}
 				}
 			}
 		},
 
 		toXML: function() {
-			var xml = '<FlowChartNode xsi:type="' + this.type + '">' + this._toXML();
-			// TODO
-			return xml + '</FlowChartNode>';
+			var xml = "";
+			xml += '<ActorDirection>' + this.actorDirection + '</ActorDirection>';
+			xml += '<SpeakerGuid>' + this.speakerGuid + '</SpeakerGuiid>';
+			xml += '<ListenerGuid>' + this.listenerGuid + '</ListenerGuid>';
+			return this.$.dialoguenode.toXML(xml);
+		}
+	});
+
+	var PlayerResponseNode = Polymer({
+		is: 'PlayerResponseNode-element',
+		behaviors: [UIBehavior],
+
+		properties: {
+			type: {
+				value: 'PlayerResponseNode'
+			}
+		},
+
+		factoryImpl: function(parent_) {
+			this.parent_ = parent_;
+			this.links = this.$.dialoguenode.$.flowchartnode.links;
+		},
+		createLink: function(to) {
+			this.$.dialoguenode.createLink(to);
+		},
+		fromXML: function(xml) {
+			this.nodeId = this.$.dialoguenode.fromXML(xml);
+		},
+
+		toXML: function() {
+			return this.$.dialoguenode.toXml("");
+		}
+	});
+
+	var TriggerConversationNode = Polymer({
+		is: 'TriggerConversationNode-element',
+		behaviors: [UIBehavior],
+
+		properties: {
+			conversationFilename: String,
+			startNodeId: Number,
+
+			type: {
+				value: 'TriggerConversationNode'
+			}
+		},
+
+		factoryImpl: function(parent_) {
+			this.parent_ = parent_;
+			this.links = this.$.dialoguenode.$.flowchartnode.links;
+		},
+		fromXML: function(xml) {
+			this.nodeId = this.$.dialoguenode.fromXML(xml);
+			if(xml.hasChildNodes()) {
+				var node;
+				for (var x = 0; x < xml.childNodes.length; x++) {
+					node = xml.childNodes[x];
+					if (node.nodeName == "ConversationFilename") {
+						this.conversationFilename = node.textContent;
+					}
+					if(node.nodeName == "StartNodeID") {
+						this.startNodeId = node.textContent;
+					}
+				}
+			}
+		},
+
+		toXML: function() {
+			var xml = '<ConversationFilename>' + this.conversationFilename + '</ConversationFilename>';
+			xml += '<StartNodeID>' + this.startNodeId + '</StartNodeId>';
+			return this.$.dialoguenode.toXml(xml);
+		}
+	});
+
+	var BankNode = Polymer({
+		is: 'BankNode-element',
+
+		behaviors: [UIBehavior],
+
+		properties: {
+			bankNodePlayType: String,
+			childNodeIds: Array,
+			type: {
+				value: 'BankNode'
+			}
+		},
+		
+		created: function() {
+			this.childNodeIds = [];
+		},
+
+		factoryImpl: function(parent_) {
+			this.parent_ = parent_;
+			this.links = this.$.flowchartnode.links;
+		},
+		createLink: function(to) {
+			this.$.flowchartnode.createLink(to);
+		},
+		fromXML: function(xml) {
+			this.nodeId = this.$.flowchartnode.fromXML(xml);
+			if(xml.hasChildNodes()) {
+				var node;
+				for (var x = 0; x < xml.childNodes.length; x++) {
+					node = xml.childNodes[x];
+					if (node.nodeName == "BankNodePlayType") {
+						this.bankNodePlayType = node.textContent;
+					}
+					if(node.nodeName == "ChildNodesIDs") {
+						for(var i = 0; i < node.childNodes.length; i++) {
+							this.push('childNodeIds', node.childNodes[i].textContent); 
+						}
+					}
+				}
+			}
+		},
+
+		toXML: function() {
+			var xml = '<BankNodePlayType>' + this.bankNodePlayType + '</BankNodePlayType>';
+			xml += '<ChildNodeIDs>';
+			for(var node of this.childNodeIds) {
+				xml += '<int>' + node + '</int>';
+			}
+			xml += '</ChildNodesIDs>';
+			return this.$.flowchartnode.toXml(xml);
+		}
+	});
+
+	var ScriptNode = Polymer({
+		is: 'ScriptNode-element',
+
+		behaviors: [UIBehavior],
+
+		properties: {
+			type: {
+				value: 'ScriptNode'
+			}
+		},
+		
+		factoryImpl: function(parent_) {
+			this.parent_ = parent_;	
+			this.links = this.$.dialoguenode.$.flowchartnode.links;
+		},
+		createLink: function(to) {
+			this.$.dialoguenode.createLink(to);
+		},
+		fromXML: function(xml) {
+			this.nodeId = this.$.dialoguenode.fromXML(xml);
+		},
+
+		toXML: function() {
+			return this.$.dialoguenode.toXml("");
 		}
 	});
 </script>

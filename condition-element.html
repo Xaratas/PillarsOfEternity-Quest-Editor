@@ -38,8 +38,8 @@
 		
 		conditionalCall: function(xml) {
 			var node;
-			for (var x = 0; x < xml.length; x++) {
-				node = xml[x];
+			for (var x = 0; x < xml.childNodes.length; x++) {
+				node = xml.childNodes[x];
 				if (node.nodeName == "Data") {
 					this.functionCallFromXML(node);
 				}
@@ -53,17 +53,19 @@
 			}
 		},
 		conditionalExpression: function(xml) {
-			if (xml[0].nodeName == "Operator") {
-				this.operator = xml[0].textContent;
-			}
-			if (xml[1].nodeName == "Components") {
-				// rekursion, liste von conditionals
-				if (xml[1].hasChildNodes()) {
-					for (var c = 0; c < xml[1].childNodes.length; c++) {
-						var conditional = new ConditionElement();
-						conditional.fromXML(xml[1].childNodes[c]);
-						this.push('nestedConditions', conditional);
-						Polymer.dom(this.$$("nestedConditions")).appendChild(conditional);
+			for(var i = 0; i < xml.childNodes.length; i++) {
+				if (xml.childNodes[i].nodeName == "Operator") {
+					this.operator = xml.childNodes[i].textContent;
+				}
+				if (xml.childNodes[i].nodeName == "Components") {
+					// rekursion, liste von conditionals
+					if (xml.childNodes[i].hasChildNodes()) {
+						for (var c = 0; c < xml.childNodes[i].childNodes.length; c++) {
+							var conditional = new ConditionElement();
+							conditional.fromXML(xml.childNodes[i].childNodes[c]);
+							this.push('nestedConditions', conditional);
+							Polymer.dom(this.$$("nestedConditions")).appendChild(conditional);
+						}
 					}
 				}
 			}
@@ -77,10 +79,10 @@
 					this.type = "ConditionalExpression";
 				}
 				if (this.type == "ConditionalCall") {
-					this.conditionalCall(xml.childNodes);
+					this.conditionalCall(xml);
 				} 
 				if (this.type == "ConditionalExpression") {
-					this.conditionalExpression(xml.childNodes);
+					this.conditionalExpression(xml);
 				}
 			}
 		},

@@ -381,9 +381,9 @@
 
 		toXML: function() {
 			var xml = '<AddendumIDs>';
-			for(var id of this.addendumIds) {
+			this.addendumIds.forEach(function(id) {
 				xml += '<int>' + id + '</int>';
-			}
+			});
 			xml += '</AddendumIDs>';
 			xml += '<ExperienceWeight>' + this.experienceWeight + '</ExperienceWeight>';
 			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.flowchartnode.toXML(xml) + '</FlowChartNode>';
@@ -623,9 +623,9 @@
 		toXML: function() {
 			var xml = '<BankNodePlayType>' + this.bankNodePlayType + '</BankNodePlayType>';
 			xml += '<ChildNodeIDs>';
-			for(var node of this.childNodeIds) {
+			this.childNodeIds.forEach(function(node) {
 				xml += '<int>' + node + '</int>';
-			}
+			});
 			xml += '</ChildNodesIDs>';
 			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.flowchartnode.toXML(xml) + '</FlowChartNode>';
 		}

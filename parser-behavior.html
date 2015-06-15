@@ -100,9 +100,9 @@ var ParserBehavior = {
 			} else {
 				this.toggleClass("selected", false, node.$.flowchartnode);
 			}
-			for(var link of Object.keys(node.links)) {
+			Object.keys(node.links).forEach(function(link) {
 				node.links[link].connect('#f00');
-			}
+			});
 		}, this);
 	}	
 };

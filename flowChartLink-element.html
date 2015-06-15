@@ -3,8 +3,7 @@
 <!-- Connects 2 Flowchartnodes via a straight line. Line goes from center to center -->
 <script>
 "use strict";
-document.addEventListener('WebComponentsReady', function() {
-	window.QuestLink = Polymer({
+	var QuestLink = Polymer({
 		is: "questLink-element",
 		extends: "canvas",
 		behaviors: [FlowChartLinkBehavior],
@@ -60,7 +59,7 @@ document.addEventListener('WebComponentsReady', function() {
 		}
 	});
 
-	window.DialogueLink = Polymer({
+	var DialogueLink = Polymer({
 		is: "dialogueLink-element",
 		extends: "canvas",
 		behaviors: [FlowChartLinkBehavior],
@@ -90,18 +89,18 @@ document.addEventListener('WebComponentsReady', function() {
 			for(var x = 0; x < xml.childNodes.length; x++) {
 				node = xml.childNodes[x];
 				if(node.nodeName == "FromNodeID") {
-					for(var type of types) {
+					types.forEach(function (type) {
 						if(nodesMap[type + node.textContent] !== undefined) {
 							this.startElement = nodesMap[type + node.textContent];
 						}
-					}
+					}, this);
 				}
 				if(node.nodeName == "ToNodeID") {
-					for(var type of types) {
+					types.forEach(function (type) {
 						if(nodesMap[type + node.textContent] !== undefined) {
 							this.endElement = nodesMap[type + node.textContent];
 						}
-					}
+					}, this);
 				}
 				if(node.nodeName == "PointsToGhost") {
 					 this.pointsToGhost = node.textContent;
@@ -131,5 +130,4 @@ document.addEventListener('WebComponentsReady', function() {
 			return xml	+ '</FlowChartLink>';
 		}
 	});
-});
 </script>

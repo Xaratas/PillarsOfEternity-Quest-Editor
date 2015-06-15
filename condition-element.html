@@ -19,9 +19,8 @@
 </dom-module>
 <script>
 "use strict";
-document.addEventListener('WebComponentsReady', function() {
 // muss sachen wie fun1 && (fun2 || fun3) && !(fun4 && !fun5) unterstützen
-	window.ConditionElement = Polymer({
+	var ConditionElement = Polymer({
 		is: "Condition-element",
 		behaviors: [FunctionCallBehavior],
 
@@ -111,9 +110,9 @@ document.addEventListener('WebComponentsReady', function() {
 				}
 				xml += '<Operator>' + this.operator + '</Operator>'
 					+ '<Components>';
-				for(var condition of this.nestedConditions) {
+				this.nestedConditions.forEach(function(condition) {
 					xml += condition.toXML(depth + 1);
-				}				
+				});			
 				xml += '</Components>';
 				if(depth > 0) {
 					xml += '</ExpressionComponent>';
@@ -122,5 +121,4 @@ document.addEventListener('WebComponentsReady', function() {
 			return xml;
 		}
 	});
-});
 </script>

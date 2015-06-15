@@ -16,8 +16,7 @@
 
 <script>
 "use strict";
-document.addEventListener('WebComponentsReady', function() {
-	window.ScriptElement = Polymer({
+	var ScriptElement = Polymer({
 		is: "Script-element",
 		behaviors: [FunctionCallBehavior],
 
@@ -25,5 +24,4 @@ document.addEventListener('WebComponentsReady', function() {
 			this.parameter = [];
 		}
 	});
-});
 </script>

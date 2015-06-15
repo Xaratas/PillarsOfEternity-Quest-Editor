@@ -73,8 +73,7 @@
 
 <script>
 "use strict";
-document.addEventListener('WebComponentsReady', function() {
-	window.QuestData = Polymer({
+	var QuestData = Polymer({
 		is: "QuestData-element",
 		behaviors: [ParserBehavior],
 
@@ -121,12 +120,12 @@ document.addEventListener('WebComponentsReady', function() {
 							this.nodesMap[element.id] = element;
 						}
 						// links aus dem Temp Status umformen
-						for(var node of this.nodes) {
+						this.nodes.forEach(function(node) {
 							node.$.flowchartnode.activateLinks(this.nodesMap);
-						}
+						}, this);
 						// nodes anhand der links sortieren
 						var i = 0;
-						for(var node of this.nodes) {
+						this.nodes.forEach(function(node) {
 							if(node.placed === false) {
 								if(this.buckets[i] === undefined) this.buckets[i] = [];
 								this.buckets[i].push(node); // id 0 als anker
@@ -134,15 +133,15 @@ document.addEventListener('WebComponentsReady', function() {
 								i++;
 								this.place(node.$.flowchartnode.links, i);
 							}
-						}
+						}, this);
 						// dom anpassen, quasi eigenes template
-						for(var bucket of this.buckets) {
+						this.buckets.forEach(function(bucket) {
 							var bucketWrapper = document.createElement('div');
 							Polymer.dom(this).appendChild(bucketWrapper);
-							for(var node_ of bucket) {
+							bucket.forEach(function(node_) {
 								Polymer.dom(bucketWrapper).appendChild(node_);
-							}
-						}
+							});
+						}, this);
 					}
 				}
 			}
@@ -155,7 +154,7 @@ document.addEventListener('WebComponentsReady', function() {
 		}
 	});
 
-	window.ConversationData = Polymer({
+	var ConversationData = Polymer({
 		is: "ConversationData-element",
 		behaviors: [ParserBehavior],
 
@@ -219,16 +218,16 @@ document.addEventListener('WebComponentsReady', function() {
 							this.nodesMap[element.id] = element;
 						}
 						// links aus dem Temp Status umformen
-						for(var node of this.nodes) {
+						this.nodes.forEach(function(node) {
 							if(node.$.dialoguenode !== undefined) {
 								node.$.dialoguenode.$.flowchartnode.activateLinks(this.nodesMap);
 							} else {
 								node.$.flowchartnode.activateLinks(this.nodesMap);
 							}
-						}
+						}, this);
 						// nodes anhand der links sortieren
 						var i = 0;
-						for(var node of this.nodes) {
+						this.nodes.forEach(function(node) {
 							if(node.placed === false) {
 								if(this.buckets[i] === undefined) this.buckets[i] = [];
 								this.buckets[i].push(node); // id 0 als anker
@@ -240,15 +239,15 @@ document.addEventListener('WebComponentsReady', function() {
 									this.place(node.$.flowchartnode.links, i);
 								}
 							}
-						}
+						}, this);
 						// dom anpassen, quasi eigenes template
-						for(var bucket of this.buckets) {
+						this.buckets.forEach(function(bucket) {
 							var bucketWrapper = document.createElement('div');
 							Polymer.dom(this).appendChild(bucketWrapper);
-							for(var node_ of bucket) {
+							bucket.forEach(function(node_) {
 								Polymer.dom(bucketWrapper).appendChild(node_);
-							}
-						}
+							});
+						}, this);
 					}
 					if(item.nodeName == "Bookmarks") {} // ignore
 					if(item.nodeName == "ClassExtender") {} // ignore
@@ -321,17 +320,16 @@ document.addEventListener('WebComponentsReady', function() {
 						var entry;
 						for(var n = 0; n < node.childNodes.length; n++) {
 							entry = node.childNodes[n];
-							for(var type of types) {
+							types.forEach(function(type) {
 								var talkNode = this.nodesMap[type + entry.childNodes[0].textContent];
 								if(talkNode !== undefined) {
 									talkNode.setText(entry.childNodes[1].textContent, entry.childNodes[2].textContent);
 								}
-							}
+							}, this);
 						}
 					}
 				}
 			}
 		}
 	});
-});
 </script>

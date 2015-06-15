@@ -53,13 +53,13 @@
 			} else {
 				this.toggleClass("selected", true, this.$.flowchartnode);
 			}
-			for (var link of Object.keys(this.links)) {
+			Object.keys(this.links).forEach(function(link) {
 				if (this.links[link].startElement == this) { // die node hat nur ausgehende links, deswegen kann die 2. farbe so nicht greifen
 					this.links[link].connect("#22cc00");
 				} else {
 					this.links[link].connect("#ee00cc");
 				}
-			}
+			}, this);
 		},
 
 		setText: function(defaultText, femaleText) {
@@ -69,9 +69,9 @@
 
 		/** Add links between elements on attach of the node. Then the calculations of the links will work. */
 		attached: function() {
-			for (var link of Object.keys(this.links)) {
+			Object.keys(this.links).forEach(function(link) {
 				document.getElementsByTagName("body")[0].appendChild(this.links[link]);
-			}
+			}, this);
 		},
 
 
@@ -198,36 +198,36 @@
 
 		toXML: function(xmlstring) {
 			var result = "<NodeID>" + this.nodeId + "</NodeID><Comments>";
-			for (var comment of this.comments) {
+			this.comments.forEach(function (comment) {
 				result += comment.toXML();
-			}
+			});
 			result += "</Comments>";
 			result += "<PackageID>1</PackageID>"; // siehe xsd, 1 steht für base game und ist momentan der Einzige sinnvolle Wert
 			result += "<ContainerNodeID>-1</ContainerNodeID>"; // todo ?
 			result += "<Links>";
-			for (var link of Object.keys(this.links)) {
+			Object.keys(this.links).forEach(function (link) {
 				result += this.links[link].toXML();
-			}
+			}, this);
 			result += "</Links>";
 			result += "<ClassExtender><ExtendedProperties /></ClassExtender>";
 			result += "<Conditionals>";
-			for (var condition of this.conditions) {
+			this.conditions.forEach(function(condition) {
 				result += condition.toXML(0);
-			}
+			});
 			result += "</Conditionals>";
 			result += "<OnEnterScripts>";
-			for (var scriptCall of this.enterScripts) {
+			this.enterScripts.forEach(function(scriptCall) {
 				result += "<ScriptCall>";
 				result += scriptCall.functionCallToXML();
 				result += "</ScriptCall>";
-			}
+			});
 			result += "</OnEnterScripts>";
 			result += "<OnExitScripts>";
-			for (var scriptCall of this.exitScripts) {
+			this.exitScripts.forEach(function(scriptCall) {
 				result += "<ScriptCall>";
 				result += scriptCall.functionCallToXML();
 				result += "</ScriptCall>";
-			}
+			});
 			result += "</OnExitScripts>";
 			result += "<OnUpdateScripts />";
 			return result + xmlstring;

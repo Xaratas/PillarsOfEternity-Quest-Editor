@@ -211,8 +211,7 @@
 
 <script>
 "use strict";
-document.addEventListener('WebComponentsReady', function() {
-	window.FlowChartNode = Polymer({
+	var FlowChartNode = Polymer({
 		is: "FlowChartNode-element",
 		behaviors: [FlowChartNodeBehavior],
 
@@ -260,7 +259,7 @@ document.addEventListener('WebComponentsReady', function() {
 		}
 	});
 
-	window.QuestNode = Polymer({
+	var QuestNode = Polymer({
 		is: "QuestNode-element",
 		behaviors: [UIBehavior],
 		
@@ -333,7 +332,7 @@ document.addEventListener('WebComponentsReady', function() {
 		}
 	});
 
-	window.ObjectiveNode = Polymer({
+	var ObjectiveNode = Polymer({
 		is: "ObjectiveNode-element",
 		behaviors: [UIBehavior],
 
@@ -391,7 +390,7 @@ document.addEventListener('WebComponentsReady', function() {
 		}
 	});
 
-	window.DialogueNode = Polymer({
+	var DialogueNode = Polymer({
 		is: "DialogueNode-element",
 
 		properties: {
@@ -464,7 +463,7 @@ document.addEventListener('WebComponentsReady', function() {
 	});
 
 
-	window.TalkNode = Polymer({
+	var TalkNode = Polymer({
 		is: 'TalkNode-element',
 		
 		behaviors: [UIBehavior],
@@ -512,7 +511,7 @@ document.addEventListener('WebComponentsReady', function() {
 		}
 	});
 
-	window.PlayerResponseNode = Polymer({
+	var PlayerResponseNode = Polymer({
 		is: 'PlayerResponseNode-element',
 		behaviors: [UIBehavior],
 
@@ -539,7 +538,7 @@ document.addEventListener('WebComponentsReady', function() {
 		}
 	});
 
-	window.TriggerConversationNode = Polymer({
+	var TriggerConversationNode = Polymer({
 		is: 'TriggerConversationNode-element',
 		behaviors: [UIBehavior],
 
@@ -579,7 +578,7 @@ document.addEventListener('WebComponentsReady', function() {
 		}
 	});
 
-	window.BankNode = Polymer({
+	var BankNode = Polymer({
 		is: 'BankNode-element',
 
 		behaviors: [UIBehavior],
@@ -632,7 +631,7 @@ document.addEventListener('WebComponentsReady', function() {
 		}
 	});
 
-	window.ScriptNode = Polymer({
+	var ScriptNode = Polymer({
 		is: 'ScriptNode-element',
 
 		behaviors: [UIBehavior],
@@ -658,5 +657,4 @@ document.addEventListener('WebComponentsReady', function() {
 			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.dialoguenode.toXML("") + '</FlowChartNode>';
 		}
 	});
-});
 </script>

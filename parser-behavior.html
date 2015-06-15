@@ -44,9 +44,9 @@ var ParserBehavior = {
 		var result = '<?xml version="1.0" encoding="utf-8"?><' + this.type + ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
 		result += '<NextNodeID>' + this.nextNodeId + '</NextNodeID>';
 		result += '<Nodes>';
-		for (var node of this.nodes) {
+		this.nodes.forEach(function(node) {
 			result += node.toXML();
-		}
+		});
 		result += '</Nodes>';
 		// Nur ein Bookmark um den Game Parser zufrieden zu stellen. Der Questeditor hat keine eigenen Bookmarks und ingame sind sie überhaupt nicht relevant
 		result += '<Bookmarks><Bookmark><Type>Unassigned</Type><Name /><NodeID>-1</NodeID><GhostNodeParentID>-1</GhostNodeParentID></Bookmark></Bookmarks>';
@@ -83,18 +83,18 @@ var ParserBehavior = {
 
 	/** Place link targets in buckets, new reachable elements get in a new bucket */
 	place: function(links, i) {
-		for(var link of Object.keys(links)) {
+		Object.keys(links).forEach(function(link) {
 			if(this.buckets[i] === undefined) this.buckets[i] = [];
 			if(links[link].endElement.placed === false) {
 				this.buckets[i].push(links[link].endElement);
 				links[link].endElement.placed = true;
 				this.place(links[link].endElement.links, i+1); 
 			}
-		}
+		}, this);
 	},
 
 	selectNone: function() {
-		for(var node of this.nodes) {
+		this.nodes.forEach(function(node) {
 			if(node.$.dialoguenode !== undefined) {
 				this.toggleClass("selected", false, node.$.dialoguenode.$.flowchartnode);
 			} else {
@@ -103,7 +103,7 @@ var ParserBehavior = {
 			for(var link of Object.keys(node.links)) {
 				node.links[link].connect('#f00');
 			}
-		}
+		}, this);
 	}	
 };
 </script>

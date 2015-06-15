@@ -66,45 +66,47 @@
 
 <script>
 "use strict";
-var StringtableViewer = Polymer({
-	is: "stringtable-viewer",
+document.addEventListener('WebComponentsReady', function() {
+	window.StringtableViewer = Polymer({
+		is: "stringtable-viewer",
 	
-	properties: {
-		nodeid: Number,
-		showText: {
-			type: Boolean,
-			value: true	
-		},
-		showFemaleText: {
-			type: Boolean,
-			value: true
+		properties: {
+			nodeid: Number,
+			showText: {
+				type: Boolean,
+				value: true	
+			},
+			showFemaleText: {
+				type: Boolean,
+				value: true
+			},
+
+			defaultText: {
+				type:	String,
+				observer: 'defaultTextChanged'
+			},
+			femaleText: {
+				type: String,
+				observer: 'femaleTextChanged'
+			},
+
+			sourceNode: Object
 		},
 
-		defaultText: {
-			type:	String,
-			observer: 'defaultTextChanged'
+		flowChartNodeSelected: function(e, data, sender) {
+			this.nodeId = data[0];
+			this.sourceNode = data[3]; // erst this, dann kann der observer oben nichts überschreiben
+			this.defaultText = data[1];
+			this.femaleText = data[2];
 		},
-		femaleText: {
-			type: String,
-			observer: 'femaleTextChanged'
-		},
-
-		sourceNode: Object
-	},
-
-	flowChartNodeSelected: function(e, data, sender) {
-		this.nodeId = data[0];
-		this.sourceNode = data[3]; // erst this, dann kann der observer oben nichts überschreiben
-		this.defaultText = data[1];
-		this.femaleText = data[2];
-	},
 	
-	defaultTextChanged: function(new_, old) {
-		this.sourceNode.defaultText = new_;
-	},
+		defaultTextChanged: function(new_, old) {
+			this.sourceNode.defaultText = new_;
+		},
 
-	femaleTextChanged: function(new_, old) {
-		this.sourceNode.femaleText = new_;
-	}
+		femaleTextChanged: function(new_, old) {
+			this.sourceNode.femaleText = new_;
+		}
+	});
 });
 </script>

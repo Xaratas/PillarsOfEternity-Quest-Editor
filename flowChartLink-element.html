@@ -3,10 +3,11 @@
 <!-- Connects 2 Flowchartnodes via a straight line. Line goes from center to center -->
 <script>
 "use strict";
-	var QuestLink = Polymer({
+document.addEventListener('WebComponentsReady', function() {
+	window.QuestLink = Polymer({
 		is: "questLink-element",
 		extends: "canvas",
-        behaviors: [FlowChartLinkBehavior],
+		behaviors: [FlowChartLinkBehavior],
 
 		properties: {
 			requiredToExitObjective: Boolean
@@ -16,7 +17,7 @@
 			this.startElement = startElement;
 			this.endElement = endElement;
 		},
-      
+
 		attached: function() {
 			// noch später: https://github.com/Polymer/polymer/issues/1699#issuecomment-108112212
 			this.async(function() {
@@ -28,27 +29,26 @@
 
 		fromXML: function(xml, nodesMap) {
 			var node;
-            for(var x = 0; x < xml.childNodes.length; x++) {
+			for (var x = 0; x < xml.childNodes.length; x++) {
 				node = xml.childNodes[x];
-                if(node.nodeName == "FromNodeID") {
-                    if(node.textContent === "0") {
-                        this.startElement = nodesMap["QuestNode" + node.textContent];
-                    } else {
-                        this.startElement = nodesMap["ObjectiveNode" + node.textContent];
-                    }
-                }
-                if(node.nodeName == "ToNodeID") {
-                     this.endElement = nodesMap["ObjectiveNode" + node.textContent];
-                }
-                if(node.nodeName == "PointsToGhost") {
-                     this.pointsToGhost = node.textContent;
-                }
-                if(node.nodeName == "RequiredToExitObjective") {
-                    this.requiredToExitObjective = node.textContent;
-                }
-            }
+				if (node.nodeName == "FromNodeID") {
+					if (node.textContent === "0") {
+						this.startElement = nodesMap["QuestNode" + node.textContent];
+					} else {
+						this.startElement = nodesMap["ObjectiveNode" + node.textContent];
+					}
+				}
+				if (node.nodeName == "ToNodeID") {
+					this.endElement = nodesMap["ObjectiveNode" + node.textContent];
+				}
+				if (node.nodeName == "PointsToGhost") {
+					this.pointsToGhost = node.textContent;
+				}
+				if (node.nodeName == "RequiredToExitObjective") {
+					this.requiredToExitObjective = node.textContent;
+				}
+			}
 		},
-
 		toXML: function() {
 			var xml = '<FlowChartLink xsi:type="QuestLink">'
 				+ '<FromNodeID>' + this.startElement.nodeId + '</FromNodeID>'
@@ -60,22 +60,22 @@
 		}
 	});
 
-	var DialogueLink = Polymer({
+	window.DialogueLink = Polymer({
 		is: "dialogueLink-element",
 		extends: "canvas",
-        behaviors: [FlowChartLinkBehavior],
+		behaviors: [FlowChartLinkBehavior],
 
 		properties: {
 			randomWeight: Number,
-            playQuestionNodeVO: Boolean,
-            questionNodeTextDisplay: String
+			playQuestionNodeVO: Boolean,
+			questionNodeTextDisplay: String
 		},
 		// ist vor dem Behavior dran
 		factoryImpl: function(startElement, endElement) {
 			this.startElement = startElement;
 			this.endElement = endElement;
 		},
-       
+
 		attached: function() {
 			this.async(function() {
 				if(this.startElement !== undefined && this.endElement !== undefined) { 
@@ -95,28 +95,28 @@
 							this.startElement = nodesMap[type + node.textContent];
 						}
 					}
-                }
-                if(node.nodeName == "ToNodeID") {
+				}
+				if(node.nodeName == "ToNodeID") {
 					for(var type of types) {
 						if(nodesMap[type + node.textContent] !== undefined) {
-					   		this.endElement = nodesMap[type + node.textContent];
+							this.endElement = nodesMap[type + node.textContent];
 						}
 					}
-                }
-                if(node.nodeName == "PointsToGhost") {
-                     this.pointsToGhost = node.textContent;
-                }
-                // classExtender ignorieren, ist sowieso überall leer
-                if(node.nodeName == "RandomWeight") {
-                      this.randomWeight = node.textContent;
-                }
-                if(node.nodeName == "PlayQuestionNodeVO") {
-                        this.playQuestionNodeVO = node.textContent;
-                }
-                if(node.nodeName == "QuestionNodeTextDisplay") {
-                        this.questionNodeTextDisplay = node.textContent;
-                }
-             }
+				}
+				if(node.nodeName == "PointsToGhost") {
+					 this.pointsToGhost = node.textContent;
+				}
+				// classExtender ignorieren, ist sowieso überall leer
+				if(node.nodeName == "RandomWeight") {
+					  this.randomWeight = node.textContent;
+				}
+				if(node.nodeName == "PlayQuestionNodeVO") {
+						this.playQuestionNodeVO = node.textContent;
+				}
+				if(node.nodeName == "QuestionNodeTextDisplay") {
+						this.questionNodeTextDisplay = node.textContent;
+				}
+			 }
 		},
 
 		toXML: function() {
@@ -125,10 +125,11 @@
 				+ '<ToNodeID>' + this.endElement.nodeId + '</ToNodeID>'
 				+ '<PointsToGhost>' + this.pointsToGhost + '</PointsToGhost>'
 				+ '<ClassExtender><ExtendedProperties /></ClassExtender>' // immer leer
-			    + '<RandomWeight>' + this.randomWeight + '</RandomWeight>' 
-                + '<PlayQuestionNodeVO>' + this.playQuestionNodeVO + '</PlayQuestionNodeVO>'
-                + '<QuestionNodeTextDisplay>' + this.questionNodeTextDisplay + '</QuestionNodeTextDisplay>';
+				+ '<RandomWeight>' + this.randomWeight + '</RandomWeight>' 
+				+ '<PlayQuestionNodeVO>' + this.playQuestionNodeVO + '</PlayQuestionNodeVO>'
+				+ '<QuestionNodeTextDisplay>' + this.questionNodeTextDisplay + '</QuestionNodeTextDisplay>';
 			return xml	+ '</FlowChartLink>';
 		}
 	});
+});
 </script>

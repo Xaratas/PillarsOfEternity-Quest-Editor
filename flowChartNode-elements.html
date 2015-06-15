@@ -211,10 +211,10 @@
 
 <script>
 "use strict";
-	var FlowChartNode = Polymer({
+document.addEventListener('WebComponentsReady', function() {
+	window.FlowChartNode = Polymer({
 		is: "FlowChartNode-element",
 		behaviors: [FlowChartNodeBehavior],
-
 
 		created: function() {
 			this.comments = [];
@@ -224,7 +224,6 @@
 			this.exitScripts = [];
 			this.conditions = [];
 		},
-
 
 		/** Create Links via Drag and Drop */
 		createLink: function(to) {
@@ -247,23 +246,21 @@
 							case "TriggerConversationNode":
 							case "BankNode":
 							case "ScriptNode": link = new DialogueLink();
-											   link.fromXML(node, nodesMap);
-											   break;
+									link.fromXML(node, nodesMap);
+									break;
 							case "QuestNode":
 							case "ObjectiveNode": link = new QuestLink();
-												  link.fromXML(node, nodesMap);
-												  break;
+									link.fromXML(node, nodesMap);
+									break;
 						}
 						this.links[link.endElement.id] = link;
 					}
 				}
 			}
-		},
-
+		}
 	});
 
-
-	var QuestNode = Polymer({
+	window.QuestNode = Polymer({
 		is: "QuestNode-element",
 		behaviors: [UIBehavior],
 		
@@ -336,7 +333,7 @@
 		}
 	});
 
-	var ObjectiveNode = Polymer({
+	window.ObjectiveNode = Polymer({
 		is: "ObjectiveNode-element",
 		behaviors: [UIBehavior],
 
@@ -394,7 +391,7 @@
 		}
 	});
 
-	var DialogueNode = Polymer({
+	window.DialogueNode = Polymer({
 		is: "DialogueNode-element",
 
 		properties: {
@@ -467,7 +464,7 @@
 	});
 
 
-	var TalkNode = Polymer({
+	window.TalkNode = Polymer({
 		is: 'TalkNode-element',
 		
 		behaviors: [UIBehavior],
@@ -515,7 +512,7 @@
 		}
 	});
 
-	var PlayerResponseNode = Polymer({
+	window.PlayerResponseNode = Polymer({
 		is: 'PlayerResponseNode-element',
 		behaviors: [UIBehavior],
 
@@ -524,7 +521,6 @@
 				value: 'PlayerResponseNode'
 			}
 		},
-
 
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_;
@@ -543,7 +539,7 @@
 		}
 	});
 
-	var TriggerConversationNode = Polymer({
+	window.TriggerConversationNode = Polymer({
 		is: 'TriggerConversationNode-element',
 		behaviors: [UIBehavior],
 
@@ -583,7 +579,7 @@
 		}
 	});
 
-	var BankNode = Polymer({
+	window.BankNode = Polymer({
 		is: 'BankNode-element',
 
 		behaviors: [UIBehavior],
@@ -636,7 +632,7 @@
 		}
 	});
 
-	var ScriptNode = Polymer({
+	window.ScriptNode = Polymer({
 		is: 'ScriptNode-element',
 
 		behaviors: [UIBehavior],
@@ -662,4 +658,5 @@
 			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.dialoguenode.toXML("") + '</FlowChartNode>';
 		}
 	});
+});
 </script>

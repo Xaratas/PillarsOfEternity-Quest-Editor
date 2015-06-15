@@ -5,7 +5,8 @@
 </template>
 <script>
 "use strict";
-	var Comment = Polymer({
+document.addEventListener('WebComponentsReady', function() {
+	window.Comment = Polymer({
 		is: "comment-element",
 		properties: {
 			comment: String,
@@ -32,4 +33,5 @@
 			return '<Comment>' + this.comment + '</Comment>';
 		}
 	});
+});
 </script>

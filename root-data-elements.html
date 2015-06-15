@@ -20,13 +20,13 @@
 			display:flex;
 			flex-direction: column;
 			margin-left: 30px;
-		    margin-right: 30px;
+			margin-right: 30px;
 		}
 
 		:host > ::content > div:first-child {
 			margin-left: 0;	
 		}
-	   
+
 		:host > ::content > div:last-child {
 			margin-right: 0;
 		}
@@ -54,7 +54,7 @@
 			display:flex;
 			flex-direction: column;
 			margin-left: 30px;
-		    margin-right: 30px;
+			margin-right: 30px;
 		}
 
 		:host > ::content > div:first-child {
@@ -73,27 +73,27 @@
 
 <script>
 "use strict";
-
-	var QuestData = Polymer({
+document.addEventListener('WebComponentsReady', function() {
+	window.QuestData = Polymer({
 		is: "QuestData-element",
-        behaviors: [ParserBehavior],
+		behaviors: [ParserBehavior],
 
 		created: function() {
-            this.type = "QuestData";
+			this.type = "QuestData";
 			this.nodes = [];
 			this.nodesMap = {};
 			this.buckets = [];
-        },
+		},
 
 		// geht erstmal von text aus, hab noch kein file handling
 		fromXML: function(xml) {
 			if(typeof(xml) == "string") { // schon geparstes ist object
 				xml = this.parser.parseFromString(xml, 'text/xml');
-                this.cleanFormatting(xml);
+				this.cleanFormatting(xml);
 			}
 			if(xml.hasChildNodes()) {
-                var item;
-                for(var x = 0; x < xml.childNodes.length; x++) {
+				var item;
+				for(var x = 0; x < xml.childNodes.length; x++) {
 					item = xml.childNodes[x];
 					if(item.nodeName == this.type) {
 						this.fromXML(item); // remove outer layer
@@ -117,13 +117,13 @@
 								element.fromXML(node);
 							}
 							// bookmarks, classextender, usw.
-						    this.push("nodes", element);
+							this.push("nodes", element);
 							this.nodesMap[element.id] = element;
 						}
 						// links aus dem Temp Status umformen
-                        for(var node of this.nodes) {
-                            node.$.flowchartnode.activateLinks(this.nodesMap);
-                        }
+						for(var node of this.nodes) {
+							node.$.flowchartnode.activateLinks(this.nodesMap);
+						}
 						// nodes anhand der links sortieren
 						var i = 0;
 						for(var node of this.nodes) {
@@ -150,14 +150,14 @@
 
 		toXML: function() {
 			var result = this.basetypecontent_toXML();
-            // todo nicht gleiches
+			// todo nicht gleiches
 			return result + '</' + this.type + '>';
 		}
 	});
 
-    var ConversationData = Polymer({
-        is: "ConversationData-element",
-        behaviors: [ParserBehavior],
+	window.ConversationData = Polymer({
+		is: "ConversationData-element",
+		behaviors: [ParserBehavior],
 
 		properties: {
 			/** Valid Values: Conversation or Chatter */
@@ -165,22 +165,22 @@
 			characterMappings: Array // array of objects with Guid and InstanceTag
 		},
 
-        created: function() {
-            this.type = "ConversationData";
+		created: function() {
+			this.type = "ConversationData";
 			this.nodes = [];
 			this.nodesMap = {};
 			this.buckets = [];
 			this.characterMappings = [];
-        },
+		},
 
-        fromXML: function(xml) {
+		fromXML: function(xml) {
 			if(typeof(xml) == "string") { // schon geparstes ist object
 				xml = this.parser.parseFromString(xml, 'text/xml');
-                this.cleanFormatting(xml);
+				this.cleanFormatting(xml);
 			}
 			if(xml.hasChildNodes()) {
-                var item;
-                for(var x = 0; x < xml.childNodes.length; x++) {
+				var item;
+				for(var x = 0; x < xml.childNodes.length; x++) {
 					item = xml.childNodes[x];
 					if(item.nodeName == this.type) {
 						this.fromXML(item); // remove outer layer
@@ -215,17 +215,17 @@
 								element.fromXML(node);
 							}
 							// bookmarks, classextender, usw.
-						    this.push("nodes", element);
+							this.push("nodes", element);
 							this.nodesMap[element.id] = element;
 						}
 						// links aus dem Temp Status umformen
-                        for(var node of this.nodes) {
+						for(var node of this.nodes) {
 							if(node.$.dialoguenode !== undefined) {
-	                            node.$.dialoguenode.$.flowchartnode.activateLinks(this.nodesMap);
+								node.$.dialoguenode.$.flowchartnode.activateLinks(this.nodesMap);
 							} else {
 								node.$.flowchartnode.activateLinks(this.nodesMap);
 							}
-                        }
+						}
 						// nodes anhand der links sortieren
 						var i = 0;
 						for(var node of this.nodes) {
@@ -274,10 +274,10 @@
 				}
 			}
 		},
-        
+		
 		toXML: function() {
 			var result = this.basetypecontent_toXML();
-            // todo nicht gleiches
+			// todo nicht gleiches
 			result += '<ConversationType>' + this.conversationType + '</ConversationType>';
 			// Nicht weiter wichtig, solange die Community nicht einen Weg findet die Texte zu vertonen
 			result += '<Description>Scene description.</Description>';
@@ -295,11 +295,11 @@
 		},
 
 		
-        stringsFromXML: function(xml) { // TODO Als Global definieren
+		stringsFromXML: function(xml) { // TODO Als Global definieren
 			var types = ["TalkNode", "PlayerResponseNode", "TriggerConversationNode", "BankNode", "ScriptNode"];
 			if(typeof(xml) == "string") { // schon geparstes ist object
 				xml = this.parser.parseFromString(xml, 'text/xml');
-                this.cleanFormatting(xml);
+				this.cleanFormatting(xml);
 			}
 			if(xml.hasChildNodes()) {
 				var node;
@@ -330,7 +330,8 @@
 						}
 					}
 				}
-			}	
+			}
 		}
-    });
+	});
+});
 </script>

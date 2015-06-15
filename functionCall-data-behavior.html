@@ -23,10 +23,10 @@ var FunctionCallBehavior = {
 
 	functionCallToXML: function() {	
 		var xml = '<Data><FullName>' + this.functionName + '</FullName>' + '<Parameters>';
-    	for (var parameter of this.parameter) {
-  	        xml += '<string>' + parameter + '</string>';
-	    }
-   		xml += '</Parameters></Data>';
+		for (var parameter of this.parameter) {
+			xml += '<string>' + parameter + '</string>';
+		}
+		xml += '</Parameters></Data>';
 		return xml;
 	}
 };

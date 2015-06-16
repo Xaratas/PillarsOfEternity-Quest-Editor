@@ -225,9 +225,12 @@
 		},
 
 		/** Create Links via Drag and Drop */
-		createLink: function(to) {
+		createLink: function(to, orginalThis) {
+			if (orginalThis == undefined) {
+				orginalThis = this;
+			}
 			if (!(to.id in this.links)) {
-				this.links[to.id] = new DialogueLink(this, to);
+				this.links[to.id] = new DialogueLink(orginalThis, to);
 				document.getElementsByTagName("body")[0].appendChild(this.links[to.id]);
 			}
 		},
@@ -283,7 +286,7 @@
 		},
 
 		createLink: function(to) {
-			this.$.flowchartnode.creatLink(to);
+			this.$.flowchartnode.creatLink(to, this);
 		},
 
 		fromXML: function(xml) {
@@ -355,7 +358,7 @@
 		},
 
 		createLink: function(to) {
-			this.$.flowchartnode.creatLink(to);
+			this.$.flowchartnode.creatLink(to, this);
 		},
 
 		// TODO linktypen vereinheitlichen
@@ -405,8 +408,11 @@
 			displayType: String,
 		},
 
-		createLink: function(to) {
-			this.$.flowchartnode.createLink(to);
+		createLink: function(to, orginalThis) {
+			if(orginalThis == undefined) {
+				orginalThis = this;
+			}
+			this.$.flowchartnode.createLink(to, orginalThis);
 		},
 
 		fromXML: function(xml) {
@@ -481,7 +487,7 @@
 			this.links = this.$.dialoguenode.$.flowchartnode.links;
 		},
 		createLink: function(to) {
-			this.$.dialoguenode.createLink(to);
+			this.$.dialoguenode.createLink(to, this);
 		},
 		fromXML: function(xml) {
 			this.nodeId = this.$.dialoguenode.fromXML(xml);
@@ -527,7 +533,7 @@
 		},
 
 		createLink: function(to) {
-			this.$.dialoguenode.createLink(to);
+			this.$.dialoguenode.createLink(to, this);
 		},
 		fromXML: function(xml) {
 			this.nodeId = this.$.dialoguenode.fromXML(xml);
@@ -600,7 +606,7 @@
 			this.links = this.$.flowchartnode.links;
 		},
 		createLink: function(to) {
-			this.$.flowchartnode.createLink(to);
+			this.$.flowchartnode.createLink(to, this);
 		},
 		fromXML: function(xml) {
 			this.nodeId = this.$.flowchartnode.fromXML(xml);
@@ -647,7 +653,7 @@
 			this.links = this.$.dialoguenode.$.flowchartnode.links;
 		},
 		createLink: function(to) {
-			this.$.dialoguenode.createLink(to);
+			this.$.dialoguenode.createLink(to, this);
 		},
 		fromXML: function(xml) {
 			this.nodeId = this.$.dialoguenode.fromXML(xml);

@@ -78,18 +78,36 @@
 		//http://www.quirksmode.org/blog/archives/2009/09/the_html5_drag.html Ja verdammt, drag and drop ist fürn arsch, und das wird auch in HTML 5.1 so bleiben
 		onDragStart: function(event) {
 			event.dataTransfer.effectsAllowed = 'link';
-			event.dataTransfer.setData(this.type, this.id); // type could be anything, as long as it is string, oh and data have to be string too …
+			//event.dataTransfer.setData(this.type, this.id); // type could be anything, as long as it is string, oh and data have to be string too …, haha! exeption IE there type MUST be 'text', so this yust dont work, great!
+			event.dataTransfer.setData('text', this.type);
+			localStorage.setItem(this.type, this.id);
 			this.direction = "from";
 		},
 
 		onDragEnter: function(event) {
-			if (event.dataTransfer.types[0] === this.type.toLowerCase()) { // nur gleiche typen lassen sich linken // todo questnode und objective node sind gleich
+			var knownTypes = ["TalkNode", "PlayerResponseNode"]; // usw.
+			var type = {val: 0};
+			knownTypes.some(function(knownType) {
+				this.val = localStorage.getItem(knownType);
+				return this.val != undefined;
+			}, type);
+
+//			if (type === this.type) { // nur gleiche typen lassen sich linken // todo questnode und objective node sind gleich
+			if (type.val != undefined) {
 				event.preventDefault();
 			}
 		},
 
 		onDragOver: function(event) {
-			if (event.dataTransfer.types[0] === this.type.toLowerCase()) { // nur gleiche typen lassen sich linken
+			var knownTypes = ["TalkNode", "PlayerResponseNode"]; // usw.
+			var type = {val: 0};
+			knownTypes.some(function(knownType) {
+				this.val = localStorage.getItem(knownType);
+				return this.val != undefined;
+			}, type);
+
+//			if (type === this.type) { // nur gleiche typen lassen sich linken
+			if (type.val != undefined) {
 				event.preventDefault();
 				event.dataTransfer.dropEffect = 'link';
 				if (this.direction !== "from") {
@@ -107,8 +125,11 @@
 		onDrop: function(event) {
 			event.preventDefault();
 			// todo: handling für verschiedene nodes, prototypisch für überhaupt links
-			if (event.dataTransfer.getData(this.type) !== this.id) { // selbst linken ist nicht
-				var from = document.getElementById(event.dataTransfer.getData(this.type));
+			var type = event.dataTransfer.getData('text');
+			var id = localStorage.getItem(type);
+			localStorage.removeItem(type);
+			if (id !== this.id) { // selbst linken ist nicht
+				var from = document.getElementById(id);
 				if (this.links[from.id] === undefined) { // links sind nur in eine richtung zu ziehen // todo sichtbar machen der richtung
 					from.createLink(this);
 				}

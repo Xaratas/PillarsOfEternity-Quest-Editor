@@ -5,7 +5,10 @@ var FlowChartLinkBehavior = {
 	properties: {
 		startElement: Object,
 		endElement: Object,
-		pointsToGhost: Boolean
+		pointsToGhost: {
+			type: Boolean,
+			value: false
+		}
 	},
 
 	/** color: html valid colorstring */

@@ -9,7 +9,10 @@
 		behaviors: [FlowChartLinkBehavior],
 
 		properties: {
-			requiredToExitObjective: Boolean
+			requiredToExitObjective: {
+				type: Boolean,
+				value: false
+			}
 		},
 
 		factoryImpl: function(startElement, endElement) {
@@ -65,9 +68,18 @@
 		behaviors: [FlowChartLinkBehavior],
 
 		properties: {
-			randomWeight: Number,
-			playQuestionNodeVO: Boolean,
-			questionNodeTextDisplay: String
+			randomWeight: {
+				type: Number,
+				value: 1
+			},
+			playQuestionNodeVO: {
+				type: Boolean,
+				value: true
+			},
+			questionNodeTextDisplay: {
+				type: String,
+				value: "ShowOnce"
+			}
 		},
 		// ist vor dem Behavior dran
 		factoryImpl: function(startElement, endElement) {

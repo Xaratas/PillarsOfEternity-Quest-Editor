@@ -2,6 +2,7 @@
 <link rel="import" href="flowChartNode-behavior.html">
 <link rel="import" href="comment-element.html">
 <link rel="import" href="condition-element.html">
+<link rel="import" href="betterselect-element.html">
 
 <!-- Contains the different kind of FlowChartNodes -->
 <!-- The common base and drag and drop is in flowChartNode-behavior defined -->
@@ -89,6 +90,10 @@
 
 	comments {
 	}
+
+	.editpanel {
+		display: none;
+	}
 </style>
 <template>
 		<div class="left">
@@ -108,6 +113,9 @@
 		<div class="right" on-click="showEffects">
 			<span>Exit&nbsp;Scripts</span>
 			<exitScripts></exitScripts>
+		</div>
+		<div class="editPanel">
+			<editElements></editElements>
 		</div>
 </template>
 </dom-module>
@@ -413,6 +421,21 @@
 				orginalThis = this;
 			}
 			this.$.flowchartnode.createLink(to, orginalThis);
+		},
+
+		addEditControls: function() {
+			var betterSelect = new BetterSelect(PoeQuestEditor.PlayType, this.playType);
+			betterSelect.setCallback("playType", this.setPropertieCallback, this);
+			Polymer.dom(this.$.flowchartnode.$$("editElements")).appendChild(betterSelect);
+
+			betterSelect = new BetterSelect(PoeQuestEditor.Persistence, this.persistence);
+			betterSelect.setCallback("persistence", this.setPropertieCallback, this);
+			Polymer.dom(this.$.flowchartnode.$$("editElements")).appendChild(betterSelect);
+		},
+
+		/** Can be called via change events, on sub components, which are not attached directly to this. */
+		setPropertieCallback: function(propertyName, newValue, orginalThis) {
+			orginalThis[propertyName] = newValue;
 		},
 
 		fromXML: function(xml) {

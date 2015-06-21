@@ -1,0 +1,47 @@
+<link rel="import" href="bower_components/iron-input/iron-input.html">
+
+<dom-module id="edit-element">
+	<style></style>
+	<template>
+		<div>{{label}}</div>
+		<editControl id="editControl">
+			<input id="input" is="iron-input" bind-value="{{value}}" hidden="true"></input>
+		</editControl>
+		<div>
+			<button>?</button>
+		</div>
+	</template>
+</dom-module>
+
+<script>
+	var EditElement = Polymer({
+		is: 'edit-element',
+
+		properties: {
+			label: String,
+			type: String,
+			helpText: String,
+
+			value: String
+		},
+
+		factoryImpl: function(label, type, helpText) {
+			this.label = label;
+			this.type = type;
+			this.helpText = helpText;
+		},
+			
+		asSelect: function(options, value) {
+			var	betterSelect = new BetterSelect(options, value);
+			this.$.editControl.appendChild(betterSelect);
+		},
+		 
+		asInput: function(value) {
+			this.value = value;
+			this.$.input.hidden = false;
+		},
+
+		asCheckBox: function(value) {
+		}
+	});
+</script>

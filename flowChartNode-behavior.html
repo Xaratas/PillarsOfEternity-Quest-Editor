@@ -147,12 +147,32 @@
 		properties: {
 			type: String,
 			nodeId: Number,
-			comments: Array,
-			links: Object,
-			enterScripts: Array,
-			exitScripts: Array,
-			conditions: Array,
+			comments: {
+				type: Array,
+				value: function() { return []; }
+			},
+			links: {
+				type: Object,
+				value: function() { return {}; }
+			},
+			enterScripts: { 
+				type: Array,
+				value: function() { return []; }
+		   	},
+			exitScripts: {
+				type: Array, 
+				value: function() { return []; }
+			},
+			conditions: {
+				type: Array, 
+				value: function() { return []; }
+			},
 
+			editElements: {
+				type: Array,
+				notify: true,
+				value: function() { return []; }
+			},
 			// TODO language	
 			/** String from Stringtable */
 			defaultText: String,
@@ -177,6 +197,10 @@
 			console.log("remove Comment");
 			var comment = this.splice("comments", index - 1, 1)[0]; // splice liefert ein array
 			Polymer.dom(this.$$("comments")).removeChild(comment); // die remove child erwartet eine node, deswegen über comment und nicht über id
+		},
+
+		toggleEdit: function() {
+			this.$.editpanel.hidden = !this.$.editpanel.hidden;
 		},
 
 		fromXML: function(xml) {

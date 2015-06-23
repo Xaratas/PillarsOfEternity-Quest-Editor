@@ -3,6 +3,7 @@
 <link rel="import" href="comment-element.html">
 <link rel="import" href="condition-element.html">
 <link rel="import" href="betterselect-element.html">
+<link rel="import" href="edit-element.html">
 
 <!-- Contains the different kind of FlowChartNodes -->
 <!-- The common base and drag and drop is in flowChartNode-behavior defined -->
@@ -15,6 +16,7 @@
 		width: 260px;
 		display: flex;
 		margin: 10px;
+		position: relative;
 	}
 	
 	:host.selected {
@@ -91,8 +93,18 @@
 	comments {
 	}
 
-	.editpanel {
-		display: none;
+	.editPanel {
+		background-color: #A9D3FF;
+		height: 400px;
+		left: 0;
+		position: absolute;
+		width: 400px;
+		z-index: 1;
+	}
+
+	.closeButton {
+		position: absoulte;
+		right: 0;
 	}
 </style>
 <template>
@@ -109,13 +121,17 @@
 			<div>ID: <input is="iron-input" bind-value={{nodeId}}></input></div>
 			<div>Comments: <button on-click="addComment">Add</button></div>
 			<comments></comments>
+			<div><button on-click="toggleEdit">edit</button></div>
 		</div>
 		<div class="right" on-click="showEffects">
 			<span>Exit&nbsp;Scripts</span>
 			<exitScripts></exitScripts>
 		</div>
-		<div class="editPanel">
-			<editElements></editElements>
+		<div id="editpanel" class="editPanel" hidden="">
+			<button class="closeButton" on-click="toggleEdit">close</button>
+			<template is="dom-repeat" items="{{editElements}}">
+				<edit-element label="{{item.label}}" set="{{item.set}}" value="{{item.value}}" type="{{item.type}}" helpText="{{item.help}}"></edit-element>
+			</template>
 		</div>
 </template>
 </dom-module>
@@ -148,7 +164,7 @@
 
 <dom-module id="DialogueNode-element">
 	<template>
-		<flowchartnode-element id="flowchartnode" direction="{{direction}}"></flowchartnode-element>
+		<flowchartnode-element id="flowchartnode" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
 	</template>
 </dom-module>
 
@@ -222,15 +238,6 @@
 	var FlowChartNode = Polymer({
 		is: "FlowChartNode-element",
 		behaviors: [FlowChartNodeBehavior],
-
-		created: function() {
-			this.comments = [];
-			this.links = {};
-			this.conditions = [];
-			this.enterScripts = [];
-			this.exitScripts = [];
-			this.conditions = [];
-		},
 
 		/** Create Links via Drag and Drop */
 		createLink: function(to, orginalThis) {
@@ -414,6 +421,26 @@
 			persistence: String,
 			noPlayRandomWeight: String,
 			displayType: String,
+
+			editElements: {
+				type: Array,
+				value: function() { return []; },
+				observe: 'elementsChanged'
+			}
+		},
+
+		// try 2
+		observers: [
+			'elementChanged(editElements.value)'
+		],
+
+		elementChanged: function(newValue) {
+			console.log(newValue);	
+		},
+
+		// try 1
+		elementsChanged: function(newValue, oldValue) {
+			console.log(newValue + " " + oldValue);
 		},
 
 		createLink: function(to, orginalThis) {
@@ -424,13 +451,10 @@
 		},
 
 		addEditControls: function() {
-			var betterSelect = new BetterSelect(PoeQuestEditor.PlayType, this.playType);
-			betterSelect.setCallback("playType", this.setPropertieCallback, this);
-			Polymer.dom(this.$.flowchartnode.$$("editElements")).appendChild(betterSelect);
-
-			betterSelect = new BetterSelect(PoeQuestEditor.Persistence, this.persistence);
-			betterSelect.setCallback("persistence", this.setPropertieCallback, this);
-			Polymer.dom(this.$.flowchartnode.$$("editElements")).appendChild(betterSelect);
+			this.push("editElements", {'label': 'Play Type', 'value': this.playType, 'set': PoeQuestEditor.PlayType, 'type': 'select', 'help': 'Help me'});
+			this.push("editElements", {'label': 'Persistence', 'value': this.persistence, 'set': PoeQuestEditor.Persistence, 'type': 'select', 'help': 'Help me'});
+			this.push("editElements", {'label': 'Display Type', 'value': this.displayType, 'set': PoeQuestEditor.DisplayType,'type': 'select', 'help': 'Help me'});
+			this.push("editElements", {'label': 'Test', 'value': 1234, 'set': PoeQuestEditor.DisplayType,'type': 'input', 'help': 'Help me'});
 		},
 
 		/** Can be called via change events, on sub components, which are not attached directly to this. */
@@ -512,6 +536,12 @@
 		createLink: function(to) {
 			this.$.dialoguenode.createLink(to, this);
 		},
+
+		addEditControls: function() {
+			// speaker = select aus den mappings von ganz woanders
+			this.$.dialoguenode.addEditControls();	
+		},
+
 		fromXML: function(xml) {
 			this.nodeId = this.$.dialoguenode.fromXML(xml);
 			if(xml.hasChildNodes()) {
@@ -558,6 +588,9 @@
 		createLink: function(to) {
 			this.$.dialoguenode.createLink(to, this);
 		},
+		addEditControls: function() {
+			this.$.dialoguenode.addEditControls();	
+		},
 		fromXML: function(xml) {
 			this.nodeId = this.$.dialoguenode.fromXML(xml);
 		},
@@ -584,6 +617,12 @@
 			this.parent_ = parent_;
 			this.links = this.$.dialoguenode.$.flowchartnode.links;
 		},
+		
+		addEditControls: function() {
+			//Polymer.dom(this.$.dialoguenode.$.flowchartnode.$$("editElements")).appendChild(idInput);
+			this.$.dialoguenode.addEditControls();	
+		},
+
 		fromXML: function(xml) {
 			this.nodeId = this.$.dialoguenode.fromXML(xml);
 			if(xml.hasChildNodes()) {
@@ -631,6 +670,9 @@
 		createLink: function(to) {
 			this.$.flowchartnode.createLink(to, this);
 		},
+		addEditControls: function() {
+			this.$.flowchartnode.addEditControls();	
+		},
 		fromXML: function(xml) {
 			this.nodeId = this.$.flowchartnode.fromXML(xml);
 			if(xml.hasChildNodes()) {
@@ -677,6 +719,9 @@
 		},
 		createLink: function(to) {
 			this.$.dialoguenode.createLink(to, this);
+		},
+		addEditControls: function() {
+			this.$.dialoguenode.addEditControls();	
 		},
 		fromXML: function(xml) {
 			this.nodeId = this.$.dialoguenode.fromXML(xml);

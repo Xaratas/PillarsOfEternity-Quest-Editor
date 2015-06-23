@@ -14,15 +14,31 @@
 </dom-module>
 
 <script>
+"use strict";
 	var EditElement = Polymer({
 		is: 'edit-element',
 
 		properties: {
 			label: String,
-			type: String,
+			type: {
+				type: String,
+				observer: 'typeChanged'
+			},
 			helpText: String,
 
-			value: String
+			value: {
+				type: String,
+				notify: true
+			}
+		},
+
+		typeChanged: function(newValue) {
+			if(newValue == "select") {
+				this.asSelect(PoeQuestEditor.PlayType, this.value);
+			}
+			if(newValue == "input") {
+				this.asInput(this.value);
+			}
 		},
 
 		factoryImpl: function(label, type, helpText) {
@@ -43,5 +59,6 @@
 
 		asCheckBox: function(value) {
 		}
+
 	});
 </script>

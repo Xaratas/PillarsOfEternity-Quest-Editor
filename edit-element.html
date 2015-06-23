@@ -1,9 +1,19 @@
 <link rel="import" href="bower_components/iron-input/iron-input.html">
 
 <dom-module id="edit-element">
-	<style></style>
+	<style>
+	:host {
+		display: flex;
+	}
+
+	.label, editControl {
+		flex-grow: 1;
+		width: 30%;
+	}
+
+	</style>
 	<template>
-		<div>{{label}}</div>
+		<div class="label">{{label}}</div>
 		<editControl id="editControl">
 			<input id="input" is="iron-input" bind-value="{{value}}" hidden="true"></input>
 		</editControl>
@@ -29,12 +39,17 @@
 			value: {
 				type: String,
 				notify: true
+			},
+
+			options: {
+				type: Array,
+				value: function() { return []; }
 			}
 		},
 
 		typeChanged: function(newValue) {
 			if(newValue == "select") {
-				this.asSelect(PoeQuestEditor.PlayType, this.value);
+				this.asSelect(this.options, this.value);
 			}
 			if(newValue == "input") {
 				this.asInput(this.value);

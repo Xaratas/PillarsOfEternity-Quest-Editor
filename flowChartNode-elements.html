@@ -130,7 +130,7 @@
 		<div id="editpanel" class="editPanel" hidden="">
 			<button class="closeButton" on-click="toggleEdit">close</button>
 			<template is="dom-repeat" items="{{editElements}}">
-				<edit-element label="{{item.label}}" set="{{item.set}}" value="{{item.value}}" type="{{item.type}}" helpText="{{item.help}}"></edit-element>
+				<edit-element label="{{item.label}}" options="{{item.set}}" value="{{item.value}}" type="{{item.type}}" helpText="{{item.help}}"></edit-element>
 			</template>
 		</div>
 </template>
@@ -424,25 +424,10 @@
 
 			editElements: {
 				type: Array,
-				value: function() { return []; },
-				observe: 'elementsChanged'
+				value: function() { return []; }, // TODO jetzt sind die werte alle da drin, und können hübsch geändert werden im gui, nu überlegen, was man damit macht um die wieder der ausgabe zuzuführen
 			}
 		},
-
-		// try 2
-		observers: [
-			'elementChanged(editElements.value)'
-		],
-
-		elementChanged: function(newValue) {
-			console.log(newValue);	
-		},
-
-		// try 1
-		elementsChanged: function(newValue, oldValue) {
-			console.log(newValue + " " + oldValue);
-		},
-
+		
 		createLink: function(to, orginalThis) {
 			if(orginalThis == undefined) {
 				orginalThis = this;

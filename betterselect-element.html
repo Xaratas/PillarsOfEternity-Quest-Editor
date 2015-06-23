@@ -1,4 +1,4 @@
-<!-- Das könnte alles noch viel cooler werden -->
+
 <dom-module id="betterSelect-element">
 	<style></style>
 	<template>
@@ -15,12 +15,7 @@
 
 		properties: {
 			options: Array,
-
-			propertyName: String,	
-			callback: Function,
-			orginalThis: Object,
-
-			selectedValue: String
+			selectedValue: String,
 		},
 
 		listeners: {
@@ -40,15 +35,7 @@
 		},
 
 		onChange: function() {
-			console.log(this.selectedIndex + " " + this.value);
-			this.callback(this.propertyName, this.value, this.orginalThis);
-		},
-
-		setCallback: function(propertyName, callback, orginalThis) {
-			this.propertyName = propertyName;
-			this.callback = callback;
-			this.orginalThis = orginalThis;
+			this.fire('value-changed', {value: this.value});
 		}
-
 	});
 </script>

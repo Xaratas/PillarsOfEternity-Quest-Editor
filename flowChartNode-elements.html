@@ -145,7 +145,7 @@
 		}	
 	</style>
 	<template>
-		<flowchartnode-element id="flowchartnode" direction="{{direction}}"></flowchartnode-element>
+		<flowchartnode-element id="flowchartnode" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
 	</template>
 </dom-module>
 
@@ -158,13 +158,13 @@
 		}	
 	</style>
 	<template>
-		<flowchartnode-element id="flowchartnode" direction="{{direction}}"></flowchartnode-element>
+		<flowchartnode-element id="flowchartnode" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
 	</template>
 </dom-module>
 
 <dom-module id="DialogueNode-element">
 	<template>
-		<flowchartnode-element id="flowchartnode" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
+		<flowchartnode-element id="flowchartnode" direction="{{direction}}" edit-elements="{{addEditControls(editElements)}}"></flowchartnode-element>
 	</template>
 </dom-module>
 
@@ -203,7 +203,7 @@
 		}	
 	</style>
 	<template>
-		<dialoguenode-element id="dialoguenode" direction="{{direction}}"></dialoguenode-element>
+		<dialoguenode-element id="dialoguenode" direction="{{direction}}" edit-elements="{{editElements}}"></dialoguenode-element>
 	</template>
 </dom-module>
 
@@ -216,7 +216,7 @@
 		}	
 	</style>
 	<template>
-		<flowchartnode-element id="flowchartnode" direction="{{direction}}"></flowchartnode-element>
+		<flowchartnode-element id="flowchartnode" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
 	</template>
 </dom-module>
 
@@ -282,22 +282,38 @@
 		behaviors: [UIBehavior],
 		
 		properties: {
-			endStates: Array,
-			experienceType: String,
-			experienceLevel: Number,
+			endStates: {
+				type: Array,
+				value: function() { return []; }
+			},
+			experienceType: {
+				type: Object, // String
+				value: function() {
+					return {label: "Experience Type", value: PoeQuestEditor.ExperienceType[0], set: PoeQuestEditor.ExperienceType, type: 'select', help: 'Help me'};
+				}
+			},
+			experienceLevel: {
+				type: Object, // Number
+				value: function() {
+					return {label: "Experience Level", value: 0, type: 'input', help: 'Help me'};
+				}
+			},
 
 			type: {
 				value: 'QuestNode'
+			},
+
+			editElements: {
+				type: Array,
+				value: function() { return []; }
 			}
 		},
 		
-		created: function() {
-			this.endStates = [];
-		},
-
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_;
 			this.links = this.$.flowchartnode.links;
+			this.push("editElements", this.experienceType);
+			this.push("editElements", this.experienceLevel);
 		},
 
 		createLink: function(to) {
@@ -325,10 +341,10 @@
 						}
 					}
 					if (node.nodeName == "ExperienceType") {
-						this.experienceType = node.textContent;
+						this.experienceType.value = node.textContent;
 					}
 					if (node.nodeName == "ExperienceLevel") {
-						this.experienceLevel = node.textContent;
+						this.experienceLevel.value = node.textContent;
 					}
 				}
 			}
@@ -344,8 +360,8 @@
 				xml += '</QuestEndState>';
 			}
 			xml += '</EndStates>';
-			xml += '<ExperienceType>' + this.experienceType + '</ExperienceType>';
-			xml += '<ExperienceLevel>' + this.experienceLevel + '</ExperienceLevel>';
+			xml += '<ExperienceType>' + this.experienceType.value + '</ExperienceType>';
+			xml += '<ExperienceLevel>' + this.experienceLevel.value + '</ExperienceLevel>';
 			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.flowchartnode.toXML(xml) + '</FlowChartNode>';
 		}
 	});
@@ -355,21 +371,31 @@
 		behaviors: [UIBehavior],
 
 		properties: {
-			addendumIds: Array,
-			experienceWeight: Number,
+			addendumIds: {
+				type: Array,
+				value: function() { return []; }
+			},
+			experienceWeight: {
+				type: Object, // Number
+				value: function() {
+					return {label: "Experience Weight", value: 0, type: 'input', help: 'Help me'};
+				}
+			},
 		
 			type: {
 				value: 'ObjectiveNode'
-			}
-		},
+			},
 
-		created: function() {
-			this.addendumIds = [];
+			editElements: {
+				type: Array,
+				value: function() { return []; }
+			}
 		},
 
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_;
 			this.links = this.$.flowchartnode.links;
+			this.push("editElements", this.experienceWeight);
 		},
 
 		createLink: function(to) {
@@ -391,7 +417,7 @@
 						}
 					}
 					if (node.nodeName == "ExperienceWeight") {
-						this.experienceWeight = node.textContent;
+						this.experienceWeight.value = node.textContent;
 					}
 				}
 			}
@@ -403,7 +429,7 @@
 				xml += '<int>' + id + '</int>';
 			});
 			xml += '</AddendumIDs>';
-			xml += '<ExperienceWeight>' + this.experienceWeight + '</ExperienceWeight>';
+			xml += '<ExperienceWeight>' + this.experienceWeight.value + '</ExperienceWeight>';
 			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.flowchartnode.toXML(xml) + '</FlowChartNode>';
 		}
 	});
@@ -417,14 +443,29 @@
 			isQuestionNode: String,
 			isTempText: String,
 			playVOAs3DSound: String,
-			playType: String,
-			persistence: String,
+			playType: {
+				type: Object,
+				value: function() { 
+					return {'label': 'Play Type', 'value': PoeQuestEditor.PlayType[0], 'set': PoeQuestEditor.PlayType, 'type': 'select', 'help': 'Help me'};
+				}
+			},
+			persistence: {
+				type: Object,
+				value: function() {
+					return { 'label': 'Persistence', 'value': PoeQuestEditor.Persistence[0], 'set': PoeQuestEditor.Persistence, 'type': 'select', 'help': 'Help me'}
+				}
+			},
 			noPlayRandomWeight: String,
-			displayType: String,
+			displayType: {
+				type: Object,
+				value: function() {
+					return {'label': 'Display Type', 'value': PoeQuestEditor.DisplayType[0], 'set': PoeQuestEditor.DisplayType,'type': 'select', 'help': 'Help me'}
+				}
+			},
 
 			editElements: {
 				type: Array,
-				value: function() { return []; }, // TODO jetzt sind die werte alle da drin, und können hübsch geändert werden im gui, nu überlegen, was man damit macht um die wieder der ausgabe zuzuführen
+				value: function() { return []; }, 
 			}
 		},
 		
@@ -435,11 +476,12 @@
 			this.$.flowchartnode.createLink(to, orginalThis);
 		},
 
-		addEditControls: function() {
-			this.push("editElements", {'label': 'Play Type', 'value': this.playType, 'set': PoeQuestEditor.PlayType, 'type': 'select', 'help': 'Help me'});
-			this.push("editElements", {'label': 'Persistence', 'value': this.persistence, 'set': PoeQuestEditor.Persistence, 'type': 'select', 'help': 'Help me'});
-			this.push("editElements", {'label': 'Display Type', 'value': this.displayType, 'set': PoeQuestEditor.DisplayType,'type': 'select', 'help': 'Help me'});
-			this.push("editElements", {'label': 'Test', 'value': 1234, 'set': PoeQuestEditor.DisplayType,'type': 'input', 'help': 'Help me'});
+		addEditControls: function(editElements) {
+			this.editElements = editElements;
+			this.push("editElements", this.playType);
+			this.push("editElements", this.persistence);
+			this.push("editElements", this.displayType);
+			return this.editElements;
 		},
 
 		/** Can be called via change events, on sub components, which are not attached directly to this. */
@@ -466,16 +508,16 @@
 						this.playVOAs3DSound = node.textContent;
 					}
 					if (node.nodeName == "PlayType") {
-						this.playType = node.textContent;
+						this.playType.value = node.textContent;
 					}
 					if (node.nodeName == "Persistence") {
-						this.persistence = node.textContent;
+						this.persistence.value = node.textContent;
 					}
 					if (node.nodeName == "NoPlayRandomWeight") {
 						this.noPlayRandomWeight = node.textContent;
 					}
 					if (node.nodeName == "DisplayType") {
-						this.displayType = node.textContent;
+						this.displayType.value = node.textContent;
 					}
 					// other tags of type DialogueNode are allways empty.
 				}
@@ -489,10 +531,10 @@
 			xml += '<IsQuestionNode>' + this.isQuestionNode + '</IsQuestionNode>';
 			xml += '<IsTempText>' + this.isTempText + '</IsTempText>';
 			xml += '<PlayVOAs3DSound>' + this.playVOAs3DSound + '</PlayVOAs3DSound>';
-			xml += '<PlayType>' + this.playType + '</PlayType>';
-			xml += '<Persistence>' + this.persistence + '</Persistence>';
+			xml += '<PlayType>' + this.playType.value + '</PlayType>';
+			xml += '<Persistence>' + this.persistence.value + '</Persistence>';
 			xml += '<NoPlayRandomWeight>' + this.noPlayRandomWeight + '</NoPlayRandomWeight>';
-			xml += '<DisplayType>' + this.displayType + '</DisplayType>';
+			xml += '<DisplayType>' + this.displayType.value + '</DisplayType>';
 			// Allways empty, just here to stay valid against the xsd
 			xml += '<VOFilename /><VoiceType /><ExcludedSpeakerClasses /><ExcludedListenerClasses />  <IncludedSpeakerClasses /><IncludedListenerClasses />';
 			xml += xmlstring;
@@ -506,9 +548,9 @@
 		
 		behaviors: [UIBehavior],
 		properties: {
-			actorDirection: String,
-			speakerGuid: String,
-			listenerGuid: String,
+			actorDirection: String, // not exposing, as its not for ingame stuff but for voice over
+			speakerGuid: String, // TODO
+			listenerGuid: String, // TODO
 			type: {
 				value: 'TalkNode'
 			}
@@ -520,11 +562,6 @@
 		},
 		createLink: function(to) {
 			this.$.dialoguenode.createLink(to, this);
-		},
-
-		addEditControls: function() {
-			// speaker = select aus den mappings von ganz woanders
-			this.$.dialoguenode.addEditControls();	
 		},
 
 		fromXML: function(xml) {
@@ -573,9 +610,7 @@
 		createLink: function(to) {
 			this.$.dialoguenode.createLink(to, this);
 		},
-		addEditControls: function() {
-			this.$.dialoguenode.addEditControls();	
-		},
+		
 		fromXML: function(xml) {
 			this.nodeId = this.$.dialoguenode.fromXML(xml);
 		},
@@ -590,24 +625,36 @@
 		behaviors: [UIBehavior],
 
 		properties: {
-			conversationFilename: String,
-			startNodeId: Number,
+			conversationFilename: {
+				type: Object, // String
+				value: function() {
+					return {label: 'Filename', value: '', type: 'input', help: 'Help me'};
+				}
+			},
+			startNodeId: {
+				type: Object, // Number
+				value: function() {
+					return {label: 'Start nodeId', value: 0, type: 'input', help: 'Help me'};
+				}
+			},
 
 			type: {
 				value: 'TriggerConversationNode'
+			},
+
+			editElements: {
+				type: Array,
+				value: function() { return []; }
 			}
 		},
 
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_;
 			this.links = this.$.dialoguenode.$.flowchartnode.links;
+			this.push("editElements", this.conversationFilename);
+			this.push("editElements", this.startNodeId);
 		},
 		
-		addEditControls: function() {
-			//Polymer.dom(this.$.dialoguenode.$.flowchartnode.$$("editElements")).appendChild(idInput);
-			this.$.dialoguenode.addEditControls();	
-		},
-
 		fromXML: function(xml) {
 			this.nodeId = this.$.dialoguenode.fromXML(xml);
 			if(xml.hasChildNodes()) {
@@ -615,18 +662,18 @@
 				for (var x = 0; x < xml.childNodes.length; x++) {
 					node = xml.childNodes[x];
 					if (node.nodeName == "ConversationFilename") {
-						this.conversationFilename = node.textContent;
+						this.conversationFilename.value = node.textContent;
 					}
 					if(node.nodeName == "StartNodeID") {
-						this.startNodeId = node.textContent;
+						this.startNodeId.value = node.textContent;
 					}
 				}
 			}
 		},
 
 		toXML: function() {
-			var xml = '<ConversationFilename>' + this.conversationFilename + '</ConversationFilename>';
-			xml += '<StartNodeID>' + this.startNodeId + '</StartNodeID>';
+			var xml = '<ConversationFilename>' + this.conversationFilename.value + '</ConversationFilename>';
+			xml += '<StartNodeID>' + this.startNodeId.value + '</StartNodeID>';
 			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.dialoguenode.toXML(xml) + '</FlowChartNode>';
 		}
 	});
@@ -637,27 +684,36 @@
 		behaviors: [UIBehavior],
 
 		properties: {
-			bankNodePlayType: String,
-			childNodeIds: Array,
+			bankNodePlayType: {
+				type: Object, // String
+				value: function() {
+					return {label: "BankNode play type", value: PoeQuestEditor.BankNodePlayType[0], set: PoeQuestEditor.BankNodePlayType, type: 'select', help: 'Help me'};
+				}
+			},
+			childNodeIds: {
+				type: Array, // TODO
+				value: function() { return []; }
+			},
 			type: {
 				value: 'BankNode'
+			},
+
+			editElements: {
+				type: Array,
+				value: function() { return []; }
 			}
 		},
 		
-		created: function() {
-			this.childNodeIds = [];
-		},
-
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_;
 			this.links = this.$.flowchartnode.links;
+			this.push("editElements", this.bankNodePlayType);
 		},
+
 		createLink: function(to) {
 			this.$.flowchartnode.createLink(to, this);
 		},
-		addEditControls: function() {
-			this.$.flowchartnode.addEditControls();	
-		},
+		
 		fromXML: function(xml) {
 			this.nodeId = this.$.flowchartnode.fromXML(xml);
 			if(xml.hasChildNodes()) {
@@ -665,7 +721,7 @@
 				for (var x = 0; x < xml.childNodes.length; x++) {
 					node = xml.childNodes[x];
 					if (node.nodeName == "BankNodePlayType") {
-						this.bankNodePlayType = node.textContent;
+						this.bankNodePlayType.value = node.textContent;
 					}
 					if(node.nodeName == "ChildNodesIDs") {
 						for(var i = 0; i < node.childNodes.length; i++) {
@@ -677,7 +733,7 @@
 		},
 
 		toXML: function() {
-			var xml = '<BankNodePlayType>' + this.bankNodePlayType + '</BankNodePlayType>';
+			var xml = '<BankNodePlayType>' + this.bankNodePlayType.value + '</BankNodePlayType>';
 			xml += '<ChildNodeIDs>';
 			this.childNodeIds.forEach(function(node) {
 				xml += '<int>' + node + '</int>';
@@ -702,12 +758,11 @@
 			this.parent_ = parent_;	
 			this.links = this.$.dialoguenode.$.flowchartnode.links;
 		},
+
 		createLink: function(to) {
 			this.$.dialoguenode.createLink(to, this);
 		},
-		addEditControls: function() {
-			this.$.dialoguenode.addEditControls();	
-		},
+
 		fromXML: function(xml) {
 			this.nodeId = this.$.dialoguenode.fromXML(xml);
 		},

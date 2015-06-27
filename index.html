@@ -79,14 +79,12 @@
 	<body>
 		<h2>Instructions</h2>
 		Copy the content of a .quest file in the light violet box. And the content of a conversation file in the turquise box. Hit the respective buttons. Limitations: write buttons write only the first read quest/ conversation. Stringtable input only for conversation files, quests are more complex.<br />
+		On selecting a Node (Box) all ingoing links get blue, and all outgoing links get green.<br />
+		If a spaker name is "-" then this npc has got no name.
 		<h3>Nice examples</h3>
 		[gamepath]/data/quests/05_defiance_bay_heritage_hill/05_qst_rise_and_fall.quest <br />
 		[gamepath]/data/conversations/07_gilded_vale/07_bs_rh_ext_guard_01.conversation <br />
-		<h5>Rants and gotchas</h5>
-		<span style="font-size:0.8em">Juhu, ersten Browser Bug getriggert. In FF degenerieren input elemente in drag containern. Seit Jahren.
-		https://stackoverflow.com/questions/21680363/prevent-drag-event-to-interfere-with-input-elements-in-firefox-using-html5-drag<br />IE can not drag and drop like all others, therefor i was forced to switch to localstorag to get my data transfered in IE.
-		</span>
-		<br /><br />
+		<h5>Tested and Works on: FF, Chrome, IE11</h5>
 		<div style="display:flex;">
 		<div style="display:flex;flex-direction: column;width: 260px;">
 		<button class="quest" onclick="read_quest()">Read Quest</button>

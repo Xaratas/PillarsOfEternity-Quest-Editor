@@ -1,4 +1,4 @@
-# Pillars of Eternity Quest Editor (im entstehen) v0.2
+# Pillars of Eternity Quest Editor (im entstehen) v0.2.5
 
 Basiert momentan rein auf [Polymer](www.polymer-project.org)
 
@@ -14,8 +14,11 @@ Für UI Verbesserungen und Ideen bitte ein Ticket anlegen.
 * XML Lesen und mit Änderungen wieder ausgeben für Quest, Conversation und Stringtable
 * Verknüpfen von Conversation mit ihren Stringtable Dateien
 * Highlight ausgewählter Nodes
-* Highlight ausgehender Links
+* Highlight ein- und ausgehender Links in verschiedenen Farben
 * Anzeigen der Texte für die ausgewählte Node
+* Edtieren von Playtype, Persistence, DisplayType, Experiencetype, Experience Level und Experience Weight
+* Anzeigen der redenden und zuhörenden NPCs
+
 
 Rest: Muss noch gebaut werden :)
 
@@ -25,9 +28,15 @@ http://xaratas.github.io
 ## Links
 Dokumentation des Quest-/Conversationsystems http://pillarsofeternity.gamepedia.com/Modding
 
+
+Dokumentation NPCs http://pillarsofeternity.gamepedia.com/Modding/Quest/
+
+
 XSD um Quest- und Conversationdateien zu validieren: https://bitbucket.org/ckirschner/poe-modding-framework/src/9c50d164c2ca74162dc39086f97702acd0b9e662/QuestModResources/quest2.xsd?at=QuestModding
 
+
 https://bitbucket.org/ckirschner/poe-modding-framework/src/6f1d5264711c4eafc5ad46641d7829d69966e9cf/QuestModResources/conversation.xsd
+
 
 ### Abhängigkeiten
 Keine, es ist alles im Git enthalten.

@@ -47,17 +47,15 @@
 				data: [this.nodeId, this.defaultText, this.femaleText, this]
 			});
 			// TODO selected für eingehende links
-			this.parent_.selectNone();
+			this.parent_.selectNone(this);
 			if (this.$.dialoguenode !== undefined) {
 				this.toggleClass("selected", true, this.$.dialoguenode.$.flowchartnode);
 			} else {
 				this.toggleClass("selected", true, this.$.flowchartnode);
 			}
 			Object.keys(this.links).forEach(function(link) {
-				if (this.links[link].startElement == this) { // die node hat nur ausgehende links, deswegen kann die 2. farbe so nicht greifen
-					this.links[link].connect("#22cc00");
-				} else {
-					this.links[link].connect("#ee00cc");
+				if (this.links[link].startElement == this) { // die node selbst hat nur ausgehende links
+					this.links[link].connect("#92eb68");
 				}
 			}, this);
 		},

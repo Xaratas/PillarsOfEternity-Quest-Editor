@@ -54,6 +54,9 @@
 			if(newValue == "input") {
 				this.asInput(this.value);
 			}
+			if(newValue == "text") {
+				this.asText(this.options, this.value);
+			}
 		},
 
 		factoryImpl: function(label, type, helpText) {
@@ -72,7 +75,18 @@
 			this.$.input.hidden = false;
 		},
 
-		asCheckBox: function(value) {
+		asText: function(options, value) {
+			var text = "";
+			// momentan ist value eine guid, finde den instancetag dazu
+			for(var i = 0; i < options.length; i++) {
+				if(options[i].guid == value) {
+					text  = options[i].instanceTag;
+					break;
+				}
+			}
+			var span = document.createElement("span");
+			span.innerHTML = text;
+			this.$.editControl.appendChild(span);
 		}
 
 	});

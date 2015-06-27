@@ -177,7 +177,7 @@
 		}	
 	</style>
 	<template>
-		<dialoguenode-element id="dialoguenode" direction="{{direction}}"></dialoguenode-element>
+		<dialoguenode-element id="dialoguenode" direction="{{direction}}" edit-elements="{{editElements}}"></dialoguenode-element>
 	</template>
 </dom-module>
 
@@ -549,17 +549,36 @@
 		behaviors: [UIBehavior],
 		properties: {
 			actorDirection: String, // not exposing, as its not for ingame stuff but for voice over
-			speakerGuid: String, // TODO
-			listenerGuid: String, // TODO
+			speakerGuid: {
+				type: Object,
+				value: function() {
+					return {label: "Speaker", value: "", set: PoeQuestEditor.GUIDS, type: "text", help: "help me"};
+				}
+			},
+			listenerGuid: {
+				type: Object,
+				value: function() {
+					return {label: "Listener", value: "", set: PoeQuestEditor.GUIDS, type: "text", help: "help me"};
+				}
+			},
+
 			type: {
 				value: 'TalkNode'
+			},
+
+			editElements: {
+				type: Array,
+				value: function() { return []; }
 			}
 		},
 		// hoffentlich ist das nen pointer
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_; // da das den UIBehavior konstruktor überschreibt, und man über this.behaviors nicht gehen kann
 			this.links = this.$.dialoguenode.$.flowchartnode.links;
+			this.push("editElements", this.speakerGuid);
+			this.push("editElements", this.listenerGuid);
 		},
+
 		createLink: function(to) {
 			this.$.dialoguenode.createLink(to, this);
 		},
@@ -574,10 +593,10 @@
 						this.actorDirection = node.textContent;
 					}
 					if(node.nodeName == "SpeakerGuid") {
-						this.speakerGuid = node.textContent;
+						this.speakerGuid.value = node.textContent;
 					}
 					if(node.nodeName == "ListenerGuid") {
-						this.listenerGuid = node.textContent;
+						this.listenerGuid.value = node.textContent;
 					}
 				}
 			}
@@ -586,8 +605,8 @@
 		toXML: function() {
 			var xml = "";
 			xml += '<ActorDirection>' + this.actorDirection + '</ActorDirection>';
-			xml += '<SpeakerGuid>' + this.speakerGuid + '</SpeakerGuid>';
-			xml += '<ListenerGuid>' + this.listenerGuid + '</ListenerGuid>';
+			xml += '<SpeakerGuid>' + this.speakerGuid.value + '</SpeakerGuid>';
+			xml += '<ListenerGuid>' + this.listenerGuid.value + '</ListenerGuid>';
 			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.dialoguenode.toXML(xml) + '</FlowChartNode>';
 		}
 	});

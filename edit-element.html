@@ -59,12 +59,6 @@
 			}
 		},
 
-		factoryImpl: function(label, type, helpText) {
-			this.label = label;
-			this.type = type;
-			this.helpText = helpText;
-		},
-			
 		asSelect: function(options, value) {
 			var	betterSelect = new BetterSelect(options, value);
 			this.$.editControl.appendChild(betterSelect);

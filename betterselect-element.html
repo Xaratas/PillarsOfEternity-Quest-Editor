@@ -2,7 +2,7 @@
 <dom-module id="betterSelect-element">
 	<style></style>
 	<template>
-		<template is="dom-repeat" items="{{options}}">
+		<template is="dom-repeat" items="{{options_}}">
 			<option>{{item}}</option>
 		</template>
 	</template>
@@ -14,7 +14,7 @@
 		extends: "select",
 
 		properties: {
-			options: Array,
+			options_: Array,
 			selectedValue: String,
 		},
 
@@ -22,8 +22,9 @@
 			'change': 'onChange'
 		},
 		
-		factoryImpl: function(options, selectedValue) { // label?
-			this.options = options;
+		/** Options is a reserved HtmlOptionsCollection */
+		factoryImpl: function(options_, selectedValue) { // label?
+			this.options_ = options_;
 			this.selectedValue = selectedValue;
 			// TODO
 		},

@@ -5,8 +5,14 @@ var ParserBehavior = {
 	properties: {
 		type: String,
 		nextNodeId: Number,
-		nodes: Array, // jeder Typ braucht einen eigenen Array, nicht vorinitialisieren
-		buckets: Array, 
+		nodes: {
+			type: Array,
+			value: function() { return []; }
+		},
+		buckets: {
+			type: Array, 
+			value: function() { return []; }
+		},
 		parser: {
 			type: Object,
 			value: new window.DOMParser()
@@ -93,6 +99,7 @@ var ParserBehavior = {
 		}, this);
 	},
 
+	/** gehört eigentlich in ein eigenes behavior */
 	selectNone: function(exceptThis) {
 		this.nodes.forEach(function(node) {
 			if(node.$.dialoguenode !== undefined) {

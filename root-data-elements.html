@@ -79,9 +79,7 @@
 
 		created: function() {
 			this.type = "QuestData";
-			this.nodes = [];
 			this.nodesMap = {};
-			this.buckets = [];
 		},
 
 		// geht erstmal von text aus, hab noch kein file handling
@@ -161,15 +159,15 @@
 		properties: {
 			/** Valid Values: Conversation or Chatter */
 			conversationType: String,
-			characterMappings: Array // array of objects with Guid and InstanceTag
+			characterMappings: {
+				type: Array, // array of objects with Guid and InstanceTag
+				value: function() { return []; }
+			}
 		},
 
 		created: function() {
 			this.type = "ConversationData";
-			this.nodes = [];
 			this.nodesMap = {};
-			this.buckets = [];
-			this.characterMappings = [];
 		},
 
 		fromXML: function(xml) {

@@ -44,9 +44,9 @@
 		fireSelectedEvent: function(event) {
 			this.fire('iron-signal', {
 				name: "flow-chart-node-selected",
-				data: [this.nodeId, this.defaultText, this.femaleText, this]
+				data: [this]
 			});
-			// TODO selected für eingehende links
+			
 			this.parent_.selectNone(this);
 			if (this.$.dialoguenode !== undefined) {
 				this.toggleClass("selected", true, this.$.dialoguenode.$.flowchartnode);

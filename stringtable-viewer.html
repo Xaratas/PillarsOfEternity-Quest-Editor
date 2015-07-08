@@ -32,14 +32,30 @@
 
 		.right {
 			flex-grow: 5;
+			position: relative;
 		}
 
 		textarea {
 			flex-grow: 1; 
 		}
 
-		textarea[data-show=""] {
+		#addendumpanel {
+			background-color: white;
+			height: 83%;
+			left: 0;
+	    	position: absolute;
+			top: 0;
+			width: 100%;
+			display: flex;
+		}
+		
+		textarea[data-show=""], div[data-show=""], #addendumpanel[data-show=""] {
 			display: none;
+		}
+
+
+		#addendumpanel label {
+			margin-right: 5px;
 		}
 	</style>
 	<template>
@@ -56,9 +72,19 @@
 					<input id="showFemaleText" type="checkbox" checked="{{showFemaleText::change}}" />
 				</span>
 			</div>
-			<div class="column right">
-			<textarea id="text" data-show$="[[!showText]]" value="{{defaultText::input}}" placeholder="default text"></textarea>
-			<textarea id="femaleText" data-show$="[[!showFemaleText]]" value="{{femaleText::input}}" placeholder="female text"></textarea>
+			<div class="column right" data-show$="[[isQuest]]">
+				<textarea id="text" data-show$="[[!showText]]" value="{{defaultText::input}}" placeholder="default text"></textarea>
+				<textarea id="femaleText" data-show$="[[!showFemaleText]]" value="{{femaleText::input}}" placeholder="female text"></textarea>
+			</div>
+			<div class="column right" data-show$="[[isConversation]]">
+				<input is="iron-input" bind-value="{{title}}" placeholder="quest step title" />
+				<textarea id="description" value="{{description::input}}" placeholder="quest step description"></textarea>
+				<button on-click="toggleAddendums">{{showButtonText(nodeId, isHidden)}}</button>
+				<div id="addendumpanel" data-show$="[[isHidden]]"> <!-- element hat ein display wert gesetzt, hidden ist schwächer als display -->
+					<template is="dom-repeat" items="{{addendums}}">
+						<label>{{item.id}}</label><textarea value="{{item.text}}" placeholder="quest addendum"></textarea>
+					</template>
+				</div>
 			</div>
 		</wrap>
 	</template>
@@ -88,15 +114,48 @@
 				type: String,
 				observer: 'femaleTextChanged'
 			},
+			addendums: {
+				type: Array,
+				value: function() { return []; }
+			},
+			
+			isConversation: {
+				type: Boolean,
+				value: true
+			},
+			isQuest: {
+				type: Boolean,
+				value: false
+			},
+			isHidden: {
+				type: Boolean,
+				value: true
+			},
 
 			sourceNode: Object
 		},
 
 		flowChartNodeSelected: function(e, data, sender) {
-			this.nodeId = data[0];
-			this.sourceNode = data[3]; // erst this, dann kann der observer oben nichts überschreiben
-			this.defaultText = data[1];
-			this.femaleText = data[2];
+			this.sourceNode = data[0]; // erst this, dann kann der observer oben nichts überschreiben
+			this.nodeId = this.sourceNode.nodeId;
+			this.defaultText = this.sourceNode.defaultText;
+			this.femaleText = this.sourceNode.femaleText;
+			if(this.sourceNode.type == "QuestNode" || this.sourceNode.type == "ObjectiveNode") {
+			    this.title = this.sourceNode.defaultText;	
+				this.description = this.sourceNode.description;
+				this.isQuest = true; 
+				this.isConversation = false;
+			} else {
+				this.isQuest = false;
+				this.isConversation = true;
+				this.isHidden = true;
+			}
+			if(this.sourceNode.type == "QuestNode") {
+				this.addendums = this.sourceNode.endStates;
+			}
+			if(this.sourceNode.type == "ObjectiveNode") {
+				this.addendums = this.sourceNode.addendumIds;
+			}
 		},
 	
 		defaultTextChanged: function(new_, old) {
@@ -105,6 +164,25 @@
 
 		femaleTextChanged: function(new_, old) {
 			this.sourceNode.femaleText = new_;
+		},
+
+		toggleAddendums: function() {
+			this.isHidden = !this.isHidden;;
+		},
+
+		showButtonText: function(isConversation, isHidden) {
+			var word = ""
+			if(this.sourceNode !== undefined) {
+				if(this.sourceNode.type == "QuestNode") 
+					word = " endstates";
+				if(this.sourceNode.type == "ObjectiveNode")
+					word = " addendums";
+				if(isHidden)
+					word = "show" + word;
+				else
+					word = "hide" + word;
+			}
+			return word;
 		}
 	});
 </script>

@@ -180,7 +180,12 @@
 						}
 						if(textType == "addendum") {
 							for(var i = 0; i < this.nodes.length; i++) {
-								if(this.nodes[i].type == "ObjectiveNode" && this.nodes[i].addendumIds.indexOf(id) > 0) {
+								if(this.nodes[i].type == "ObjectiveNode" && 
+										this.nodes[i].addendumIds.some(
+											function(val, index) { 
+												if(val.id == id) return true;
+											}
+										)) {
 									flowChartNode = this.nodes[i];
 									flowChartNode.setText(entry.childNodes[1].textContent, entry.childNodes[2].textContent, textType, id);
 									break;
@@ -188,8 +193,8 @@
 							}
 						}
 						if(textType == "description" || textType == "title") {
+							flowChartNode = this.nodesMap[type + id];
 							if(flowChartNode !== undefined) {
-								flowChartNode = this.nodesMap[type + id];
 								flowChartNode.setText(entry.childNodes[1].textContent, entry.childNodes[2].textContent, textType);
 							}
 						}

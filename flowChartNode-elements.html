@@ -331,7 +331,9 @@
 				this.description = text;
 			}
 			if(textType == "endState") {
-				this.endStates[id].text = text;
+				Object.keys(this.endStates).forEach(function(endstate) { 
+					if(this.endStates[endstate].id == id) { this.endStates[endstate].text = text; }
+				}, this);
 			}
 		},
 		
@@ -347,10 +349,10 @@
 							for(var i = 0; i < node.childNodes.length; i++) {
 								state = node.childNodes[i];
 								if(state.hasChildNodes()) {
-									var endStateId = state.childNodes[0].textContent;
+									var endStateId = parseInt(state.childNodes[0].textContent);
 									var displayName = state.childNodes[1].textContent;
 									var packageId = state.childNodes[2].textContent;
-									this.endStates[i] = {'endStateId': endStateId, 'displayName': displayName, 'packageId': packageId};
+									this.endStates.push({id: endStateId, 'displayName': displayName, 'packageId': packageId});
 								}
 							}
 						}
@@ -429,7 +431,9 @@
 				this.description = text;
 			}
 			if(textType == "addendum") {
-				this.addendumIds[id].text = text;
+				Object.keys(this.addendumIds).forEach(function(addendum) { 
+					if(this.addendumIds[addendum].id == id) { this.addendumIds[addendum].text = text; }
+				}, this);
 			}
 		},
 
@@ -442,7 +446,8 @@
 					if (node.nodeName == "AddendumIDs") {
 						var addendum = node.childNodes;
 						for(var i = 0; i < addendum.length; i++) {
-							this.addendumIds[i] = addendum[i].textContent;	
+							var id = parseInt(addendum[i].textContent);
+							this.addendumIds.push({id:id});
 						}
 					}
 					if (node.nodeName == "ExperienceWeight") {

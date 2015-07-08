@@ -151,6 +151,51 @@
 			var result = this.basetypecontent_toXML();
 			// todo nicht gleiches
 			return result + '</' + this.type + '>';
+		},
+
+
+		stringsFromXMLNode: function(node) {
+			var types = ["QuestNode", "ObjectiveNode"];
+			if(node.nodeName == "Entries") {
+				var entry;
+				for(var n = 0; n < node.childNodes.length; n++) {
+					entry = node.childNodes[n];
+					types.forEach(function(type) {
+						var id = entry.childNodes[0].textContent;
+						var textType = "title";
+						var flowChartNode;
+						if(id >= 10000 && id < 20000) {
+							id -= 10000;
+							textType = "description";
+						}
+						if(id >= 20000 && id < 30000) {
+							id -= 20000;
+							textType = "addendum";
+						}
+						if(id >= 30000) {
+							id -= 30000;
+							textType = "endState";
+							flowChartNode = this.nodesMap["QuestNode" + 0];
+							flowChartNode.setText(entry.childNodes[1].textContent, entry.childNodes[2].textContent, textType, id);
+						}
+						if(textType == "addendum") {
+							for(var i = 0; i < this.nodes.length; i++) {
+								if(this.nodes[i].type == "ObjectiveNode" && this.nodes[i].addendumIds.indexOf(id) > 0) {
+									flowChartNode = this.nodes[i];
+									flowChartNode.setText(entry.childNodes[1].textContent, entry.childNodes[2].textContent, textType, id);
+									break;
+								}
+							}
+						}
+						if(textType == "description" || textType == "title") {
+							if(flowChartNode !== undefined) {
+								flowChartNode = this.nodesMap[type + id];
+								flowChartNode.setText(entry.childNodes[1].textContent, entry.childNodes[2].textContent, textType);
+							}
+						}
+					}, this);
+				}
+			}
 		}
 	});
 
@@ -293,41 +338,18 @@
 			return result + '</' + this.type + '>';
 		},
 
-		
-		stringsFromXML: function(xml) { // TODO Als Global definieren
+		stringsFromXMLNode: function(node) {	
 			var types = ["TalkNode", "PlayerResponseNode", "TriggerConversationNode", "BankNode", "ScriptNode"];
-			if(typeof(xml) == "string") { // schon geparstes ist object
-				xml = this.parser.parseFromString(xml, 'text/xml');
-				this.cleanFormatting(xml);
-			}
-			if(xml.hasChildNodes()) {
-				var node;
-				for	(var x = 0; x < xml.childNodes.length; x++) {
-					node = xml.childNodes[x];
-					if(node.nodeName == "StringTableFile") {
-						this.stringsFromXML(node); // outer layer
-					}
-					if(node.nodeName == "Name") {
-						this.stringTableFileLink = node.textContent;
-					}
-					if(node.nodeName == "NextEntryID") {
-						this.nextEntryID = node.textContent; // nicht wirklich wichtig, vom tool aber es gibt illegale Werte bei Obsidian Files
-					}
-					if(node.nodeName == "EntryCount") {
-						this.entryCount = node.textContent;
-					}
-					if(node.nodeName == "Entries") {
-						var entry;
-						for(var n = 0; n < node.childNodes.length; n++) {
-							entry = node.childNodes[n];
-							types.forEach(function(type) {
-								var talkNode = this.nodesMap[type + entry.childNodes[0].textContent];
-								if(talkNode !== undefined) {
-									talkNode.setText(entry.childNodes[1].textContent, entry.childNodes[2].textContent);
-								}
-							}, this);
+			if(node.nodeName == "Entries") {
+				var entry;
+				for(var n = 0; n < node.childNodes.length; n++) {
+					entry = node.childNodes[n];
+					types.forEach(function(type) {
+						var talkNode = this.nodesMap[type + entry.childNodes[0].textContent];
+						if(talkNode !== undefined) {
+							talkNode.setText(entry.childNodes[1].textContent, entry.childNodes[2].textContent);
 						}
-					}
+					}, this);
 				}
 			}
 		}

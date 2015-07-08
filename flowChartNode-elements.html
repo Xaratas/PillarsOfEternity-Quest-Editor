@@ -299,6 +299,8 @@
 				}
 			},
 
+			description: String, // female gibt es einfach nicht
+
 			type: {
 				value: 'QuestNode'
 			},
@@ -320,6 +322,19 @@
 			this.$.flowchartnode.creatLink(to, this);
 		},
 
+		setText: function(text, femaleText, textType, id) {
+			if(textType == "title") {
+				this.defaultText = text;
+				this.femaleText = femaleText;
+			}
+			if(textType == "description") {
+				this.description = text;
+			}
+			if(textType == "endState") {
+				this.endStates[id].text = text;
+			}
+		},
+		
 		fromXML: function(xml) {
 			this.nodeId = this.$.flowchartnode.fromXML(xml);
 			if (xml.hasChildNodes()) {
@@ -381,7 +396,8 @@
 					return {label: "Experience Weight", value: 0, type: 'input', help: 'Help me'};
 				}
 			},
-		
+			description: String,
+
 			type: {
 				value: 'ObjectiveNode'
 			},
@@ -403,6 +419,19 @@
 		},
 
 		// TODO linktypen vereinheitlichen
+		
+		setText: function(text, femaleText, textType, id) {
+			if(textType == "title") {
+				this.defaultText = text;
+				this.femaleText = femaleText;
+			}
+			if(textType == "description") {
+				this.description = text;
+			}
+			if(textType == "addendum") {
+				this.addendumIds[id].text = text;
+			}
+		},
 
 		fromXML: function(xml) {
 			this.nodeId = this.$.flowchartnode.fromXML(xml);

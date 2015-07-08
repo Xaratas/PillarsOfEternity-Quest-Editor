@@ -54,6 +54,35 @@ var ParserBehavior = {
 		return result;
 	},
 
+	stringsFromXML: function(xml) {
+		if(typeof(xml) == "string") { // schon geparstes ist object
+			xml = this.parser.parseFromString(xml, 'text/xml');
+			this.cleanFormatting(xml);
+		}
+		if(xml.hasChildNodes()) {
+			var node;
+			for	(var x = 0; x < xml.childNodes.length; x++) {
+				node = xml.childNodes[x];
+				if(node.nodeName == "StringTableFile") {
+					this.stringsFromXML(node); // outer layer
+				}
+				if(node.nodeName == "Name") {
+					this.stringTableFileLink = node.textContent;
+				}
+				if(node.nodeName == "NextEntryID") {
+					this.nextEntryID = node.textContent; // nicht wirklich wichtig, vom tool aber es gibt illegale Werte bei Obsidian Files
+				}
+				if(node.nodeName == "EntryCount") {
+					this.entryCount = node.textContent;
+				}
+				if(node.nodeName == "Entries") { 
+					// muss der Subtyp implementieren
+					this.stringsFromXMLNode(node);
+				}
+			}
+		}
+	},	
+
 	stringsToXML: function() {
 		var result = '<?xml version="1.0" encoding="utf-8"?><StringTableFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
 		result += '<Name>' + this.stringTableFileLink + '</Name>';

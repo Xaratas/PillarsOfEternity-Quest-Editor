@@ -79,9 +79,6 @@
 
 		created: function() {
 			this.type = "QuestData";
-			this.nodes = [];
-			this.nodesMap = {};
-			this.buckets = [];
 		},
 
 		// geht erstmal von text aus, hab noch kein file handling
@@ -143,14 +140,47 @@
 							});
 						}, this);
 					}
+					if(item.nodeName == "Bookmarks") {} // ignore
+					if(item.nodeName == "ClassExtender") {} // ignore
+					if(item.nodeName == "NextEventID") {
+						this.nextEventID = item.textContent;
+					}
+					if(item.nodeName == "NextEndStateID") {
+						this.nextEndStateID = item.textContent;
+					}
+					if(item.nodeName == "NextAddendumID") {
+						this.nextAddendumID = item.textContent;
+					}
+					if(item.nodeName == "Events") {
+						// TODO
+					}
+					if(item.nodeName == "QuestType") {
+						this.questType = PoeQuestEditor.QuestType[parseInt(item.textContent)];
+					}
 				}
 			}
 		},
 
 		toXML: function() {
 			var result = this.basetypecontent_toXML();
-			// todo nicht gleiches
-			return result + '</' + this.type + '>';
+			result += '<NextEventID>' + this.nextEventID + '</NextEventID>';
+			result += '<NextEndStateID>' + this.nextEventID + '</NextEndStateID>';
+			result += '<NextAddendumID>' + this.nextAddendumID + '</NextAddendumID>';
+			result += '<Events>';
+				// TODO
+			result += '</Events>';
+			result += '<QuestType>'; // Ist als int im xml, Obsidian hat ihren Code selbst verhunzt -.-
+		    if(this.questType == PoeQuestEditor.QuestType[0]) { 
+				result += '0';
+			}
+			if(this.questType == PoeQuestEditor.QuestType[1]) {
+				result += '1';
+			}
+			if(this.questType == PoeQuestEditor.QuestType[2]) {
+				result += '2';
+			}
+			result += '</QuestType>';
+			return result += '</' + this.type + '>';
 		},
 
 
@@ -211,15 +241,14 @@
 		properties: {
 			/** Valid Values: Conversation or Chatter */
 			conversationType: String,
-			characterMappings: Array // array of objects with Guid and InstanceTag
+			characterMappings: {
+				type: Array, // array of objects with Guid and InstanceTag
+				value: function() { return []; }
+			}
 		},
 
 		created: function() {
 			this.type = "ConversationData";
-			this.nodes = [];
-			this.nodesMap = {};
-			this.buckets = [];
-			this.characterMappings = [];
 		},
 
 		fromXML: function(xml) {

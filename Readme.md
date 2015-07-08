@@ -1,9 +1,9 @@
-# Pillars of Eternity Quest Editor (im entstehen) v0.2.5
+# Pillars of Eternity Quest Editor (im entstehen) v0.2.6
 
 Basiert momentan rein auf [Polymer](www.polymer-project.org)
 
-XML für Conversation, Quest und Stringtable vollständig.
-Verknüpfen von Conversation zu Stringtable vollständig.
+XML für Conversation, Quest (bis auf Events) und Stringtable vollständig. Bis Version 1.0.4, 1.0.5 hat die xml Dateien erweitert.
+Verknüpfen von Quest und Conversation zu Stringtable vollständig.
 Für UI Verbesserungen und Ideen bitte ein Ticket anlegen.
 
 ## Fähigkeiten
@@ -15,9 +15,10 @@ Für UI Verbesserungen und Ideen bitte ein Ticket anlegen.
 * Verknüpfen von Conversation mit ihren Stringtable Dateien
 * Highlight ausgewählter Nodes
 * Highlight ein- und ausgehender Links in verschiedenen Farben
-* Anzeigen der Texte für die ausgewählte Node
+* Anzeigen und editieren der Texte für die ausgewählte Node
 * Edtieren von Playtype, Persistence, DisplayType, Experiencetype, Experience Level und Experience Weight
 * Anzeigen der redenden und zuhörenden NPCs
+* Ausgeben der editierten Files auf der Konsole (ohne Formatierung)
 
 
 Rest: Muss noch gebaut werden :)

@@ -371,7 +371,7 @@
 			var xml = '<EndStates>';
 			for(var i = 0; i < this.endStates.length; i++) {
 				xml += '<QuestEndState>';
-				xml += '<EndStateID>' + this.endStates[i].endStateId + '</EndStateID>';
+				xml += '<EndStateID>' + this.endStates[i].id + '</EndStateID>';
 				xml += '<DisplayName>' + this.endStates[i].displayName + '</DisplayName>';
 				xml += '<PackageID>' + this.endStates[i].packageId + '</PackageID>';
 				xml += '</QuestEndState>';
@@ -459,8 +459,8 @@
 
 		toXML: function() {
 			var xml = '<AddendumIDs>';
-			this.addendumIds.forEach(function(id) {
-				xml += '<int>' + id + '</int>';
+			this.addendumIds.forEach(function(addendum) {
+				xml += '<int>' + addendum.id + '</int>';
 			});
 			xml += '</AddendumIDs>';
 			xml += '<ExperienceWeight>' + this.experienceWeight.value + '</ExperienceWeight>';

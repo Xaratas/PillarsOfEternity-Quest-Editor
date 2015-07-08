@@ -5,8 +5,19 @@ var ParserBehavior = {
 	properties: {
 		type: String,
 		nextNodeId: Number,
-		nodes: Array, // jeder Typ braucht einen eigenen Array, nicht vorinitialisieren
-		buckets: Array, 
+		nodes: {
+			type: Array,
+			value: function() { return []; }
+		},
+		buckets: {
+			type: Array, 
+			value: function() { return []; }
+		},
+		nodesMap: {
+			type: Object,
+			value: function() { return {}; }
+		},
+
 		parser: {
 			type: Object,
 			value: new window.DOMParser()
@@ -15,7 +26,12 @@ var ParserBehavior = {
 		/** Stringtable file data */
 		stringTableFileLink: String,
 		nextEntryID: Number,
-		entryCount: Number
+		entryCount: Number,
+
+		nextEventID: Number,
+		nextEndStateID: Number,
+		nextAddendumID: Number,
+		questType: String
 	},
 
 

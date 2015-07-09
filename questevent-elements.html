@@ -1,7 +1,7 @@
 <link rel="import" href="event-data-behavior.html" />
 <script>
 "use strict";
-var QuestEventGlobalVariable = Polymer({
+var QuestEventGlobalVariable = new Polymer({
 	is: "questevent-globalvariable-element",
 	behaviors: [EventDataBehavior],
 
@@ -34,7 +34,7 @@ var QuestEventGlobalVariable = Polymer({
 	}
 });
 
-var QuestEventAquire = Polymer({
+var QuestEventAquire = new Polymer({
 	is: "questevent-aquire-element",
 	behaviors: [EventDataBehavior],
 
@@ -62,7 +62,7 @@ var QuestEventAquire = Polymer({
 	}
 });
 
-var QuestEventInspect = Polymer({
+var QuestEventInspect = new Polymer({
 	is: "questevent-inspect-element",
 	behaviors: [EventDataBehavior],
 
@@ -90,7 +90,7 @@ var QuestEventInspect = Polymer({
 	}
 });
 
-var QuestEventInteract = Polymer({
+var QuestEventInteract = new Polymer({
 	is: "questevent-interact-element",
 	behaviors: [EventDataBehavior],
 
@@ -118,7 +118,7 @@ var QuestEventInteract = Polymer({
 	}
 });
 
-var QuestEventKill = Polymer({ 
+var QuestEventKill = new Polymer({ 
 	is: "questevent-kill-element",
 	behaviors: [EventDataBehavior],
 
@@ -151,7 +151,7 @@ var QuestEventKill = Polymer({
 	}
 });
 
-var QuestEventLocation = Polymer({
+var QuestEventLocation = new Polymer({
 	is: "questevent-location-element",
 	behaviors: [EventDataBehavior],
 
@@ -179,7 +179,7 @@ var QuestEventLocation = Polymer({
 	}
 });
 
-var QuestEventTalk = Polymer({
+var QuestEventTalk = new Polymer({
 	is: "questevent-talk-element",
 	behaviors: [EventDataBehavior],
 

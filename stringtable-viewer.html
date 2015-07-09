@@ -92,7 +92,7 @@
 
 <script>
 "use strict";
-	var StringtableViewer = Polymer({
+	var StringtableViewer = new Polymer({
 		is: "stringtable-viewer",
 	
 		properties: {
@@ -167,11 +167,11 @@
 		},
 
 		toggleAddendums: function() {
-			this.isHidden = !this.isHidden;;
+			this.isHidden = !this.isHidden;
 		},
 
 		showButtonText: function(isConversation, isHidden) {
-			var word = ""
+			var word = "";
 			if(this.sourceNode !== undefined) {
 				if(this.sourceNode.type == "QuestNode") 
 					word = " endstates";

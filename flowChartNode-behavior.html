@@ -87,11 +87,11 @@
 			var type = {val: 0};
 			knownTypes.some(function(knownType) {
 				this.val = localStorage.getItem(knownType);
-				return this.val != undefined;
+				return this.val !== undefined;
 			}, type);
 
 //			if (type === this.type) { // nur gleiche typen lassen sich linken // todo questnode und objective node sind gleich
-			if (type.val != undefined) {
+			if (type.val !== undefined) {
 				event.preventDefault();
 			}
 		},
@@ -101,11 +101,11 @@
 			var type = {val: 0};
 			knownTypes.some(function(knownType) {
 				this.val = localStorage.getItem(knownType);
-				return this.val != undefined;
+				return this.val !== undefined;
 			}, type);
 
 //			if (type === this.type) { // nur gleiche typen lassen sich linken
-			if (type.val != undefined) {
+			if (type.val !== undefined) {
 				event.preventDefault();
 				event.dataTransfer.dropEffect = 'link';
 				if (this.direction !== "from") {
@@ -211,6 +211,7 @@
 						this.nodeId = node.textContent;
 					}
 					if (node.nodeName == "Comments") {
+						var _;
 						for (var c = 0; c < node.childNodes.length; c++) {
 							this.addComment(_, _, node.childNodes[c].textContent);
 						}

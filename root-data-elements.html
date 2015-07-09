@@ -74,7 +74,7 @@
 
 <script>
 "use strict";
-	var QuestData = Polymer({
+	var QuestData = new Polymer({
 		is: "QuestData-element",
 		behaviors: [ParserBehavior],
 
@@ -153,34 +153,34 @@
 						this.nextAddendumID = item.textContent;
 					}
 					if(item.nodeName == "Events") {
-						var node, element;
+						var node2, element2; // scoping regeln von js …
 						for(var y = 0; y < item.childNodes.length; y++) {
-							node = item.childNodes[y];
-							switch(node.attributes[0].value) {
+							node2 = item.childNodes[y];
+							switch(node2.attributes[0].value) {
 								case "QuestEventGlobalVariable":
-									element = new QuestEventGlobalVariable();
+									element2 = new QuestEventGlobalVariable();
 									break;
 								case "QuestEventAquire":
-									element = new QuestEventAquire();
+									element2 = new QuestEventAquire();
 									break;
 								case "QuestEventInspect":
-									element = new QuestEventInspect();
+									element2 = new QuestEventInspect();
 									break;
 								case "QuestEventInteract":
-									element = new QuestEventInteract();
+									element2 = new QuestEventInteract();
 									break;
 								case "QuestEventKill":
-									element = new QuestEventKill();
+									element2 = new QuestEventKill();
 									break;
 								case "QuestEventLocation":
-									element = new QuestEventLocation();
+									element2 = new QuestEventLocation();
 									break;
 								case "QuestEventTalk":
-									element = new QuestEventTalk();
+									element2 = new QuestEventTalk();
 									break;
 							}
-							element.fromXML(node);
-							this.questEvents.push(element);
+							element2.fromXML(node2);
+							this.questEvents.push(element2);
 						}
 					}
 					if(item.nodeName == "QuestType") {
@@ -265,7 +265,7 @@
 		}
 	});
 
-	var ConversationData = Polymer({
+	var ConversationData = new Polymer({
 		is: "ConversationData-element",
 		behaviors: [ParserBehavior],
 
@@ -369,13 +369,13 @@
 					if(item.nodeName == "SceneTime") {} // ignore
 					if(item.nodeName == "CharacterMappings") {
 						if(item.hasChildNodes()) {
-							var node;
-							for(var i = 0; i < item.childNodes.length; i++) {
-								node = item.childNodes[i];
-								if(node.hasChildNodes()) {
-									var guid = node.childNodes[0].textContent;
-									var instanceTag = node.childNodes[1].textContent;
-									this.characterMappings[i] = {'guid' : guid, 'instanceTag': instanceTag};
+							var node2;
+							for(var j = 0; j < item.childNodes.length; j++) {
+								node2 = item.childNodes[j];
+								if(node2.hasChildNodes()) {
+									var guid = node2.childNodes[0].textContent;
+									var instanceTag = node2.childNodes[1].textContent;
+									this.characterMappings[j] = {'guid' : guid, 'instanceTag': instanceTag};
 								}
 							}
 						}

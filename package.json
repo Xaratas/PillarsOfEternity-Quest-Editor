@@ -1,0 +1,13 @@
+{
+	"private": true,
+	"devDependencies": {
+        "browser-sync": "^2.7.7",
+		"gulp": "^3.8.5",
+        "gulp-load-plugins": "^0.10.0",
+        "gulp-jshint": "^1.6.3",
+        "jshint-stylish": "^2.0.0"
+	},
+	"engines": {
+		"node": ">=0.10.0"
+	}
+}

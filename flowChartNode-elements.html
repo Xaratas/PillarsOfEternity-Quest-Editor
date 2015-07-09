@@ -235,13 +235,13 @@
 
 <script>
 "use strict";
-	var FlowChartNode = Polymer({
+	var FlowChartNode = new Polymer({
 		is: "FlowChartNode-element",
 		behaviors: [FlowChartNodeBehavior],
 
 		/** Create Links via Drag and Drop */
 		createLink: function(to, orginalThis) {
-			if (orginalThis == undefined) {
+			if (orginalThis === undefined) {
 				orginalThis = this;
 			}
 			if (!(to.id in this.links)) {
@@ -277,7 +277,7 @@
 		}
 	});
 
-	var QuestNode = Polymer({
+	var QuestNode = new Polymer({
 		is: "QuestNode-element",
 		behaviors: [UIBehavior],
 		
@@ -383,7 +383,7 @@
 		}
 	});
 
-	var ObjectiveNode = Polymer({
+	var ObjectiveNode = new Polymer({
 		is: "ObjectiveNode-element",
 		behaviors: [UIBehavior],
 
@@ -468,7 +468,7 @@
 		}
 	});
 
-	var DialogueNode = Polymer({
+	var DialogueNode = new Polymer({
 		is: "DialogueNode-element",
 
 		properties: {
@@ -486,14 +486,14 @@
 			persistence: {
 				type: Object,
 				value: function() {
-					return { 'label': 'Persistence', 'value': PoeQuestEditor.Persistence[0], 'set': PoeQuestEditor.Persistence, 'type': 'select', 'help': 'Help me'}
+					return { 'label': 'Persistence', 'value': PoeQuestEditor.Persistence[0], 'set': PoeQuestEditor.Persistence, 'type': 'select', 'help': 'Help me'};
 				}
 			},
 			noPlayRandomWeight: String,
 			displayType: {
 				type: Object,
 				value: function() {
-					return {'label': 'Display Type', 'value': PoeQuestEditor.DisplayType[0], 'set': PoeQuestEditor.DisplayType,'type': 'select', 'help': 'Help me'}
+					return {'label': 'Display Type', 'value': PoeQuestEditor.DisplayType[0], 'set': PoeQuestEditor.DisplayType,'type': 'select', 'help': 'Help me'};
 				}
 			},
 
@@ -504,7 +504,7 @@
 		},
 		
 		createLink: function(to, orginalThis) {
-			if(orginalThis == undefined) {
+			if(orginalThis === undefined) {
 				orginalThis = this;
 			}
 			this.$.flowchartnode.createLink(to, orginalThis);
@@ -577,7 +577,7 @@
 	});
 
 
-	var TalkNode = Polymer({
+	var TalkNode = new Polymer({
 		is: 'TalkNode-element',
 		
 		behaviors: [UIBehavior],
@@ -645,7 +645,7 @@
 		}
 	});
 
-	var PlayerResponseNode = Polymer({
+	var PlayerResponseNode = new Polymer({
 		is: 'PlayerResponseNode-element',
 		behaviors: [UIBehavior],
 
@@ -673,7 +673,7 @@
 		}
 	});
 
-	var TriggerConversationNode = Polymer({
+	var TriggerConversationNode = new Polymer({
 		is: 'TriggerConversationNode-element',
 		behaviors: [UIBehavior],
 
@@ -731,7 +731,7 @@
 		}
 	});
 
-	var BankNode = Polymer({
+	var BankNode = new Polymer({
 		is: 'BankNode-element',
 
 		behaviors: [UIBehavior],
@@ -796,7 +796,7 @@
 		}
 	});
 
-	var ScriptNode = Polymer({
+	var ScriptNode = new Polymer({
 		is: 'ScriptNode-element',
 
 		behaviors: [UIBehavior],

@@ -35,23 +35,23 @@
 			if(nodes.length > 0) {
 				console.log(nodes[0].toXML());
 			}
-			var nodes = document.getElementsByTagName("conversationdata-element");
+			nodes = document.getElementsByTagName("conversationdata-element");
 			if(nodes.length > 0) {
 				console.log(nodes[0].toXML());
 			}
-		};
+		}
 
 		function read_quest() {
 			var questData = new QuestData();
 			questData.fromXML(document.getElementById("questXML").value);
 			document.getElementsByTagName("body")[0].appendChild(questData);
-		};
+		}
 
 		function read_conversation() {
 			var conversationData = new ConversationData();
 			conversationData.fromXML(document.getElementById("conversationXML").value);
 			document.getElementsByTagName("body")[0].appendChild(conversationData);
-		};
+		}
 	
 		function read_stringtable_for_Conversation() {
 			// connect somehow, prototypisch
@@ -59,21 +59,21 @@
 			if(nodes.length > 0) {
 				nodes[nodes.length - 1].stringsFromXML(document.getElementById("stringTable").value);
 			}
-		};
+		}
 
 		function read_stringtable_for_Quest() {
 			var nodes = document.getElementsByTagName("questdata-element");
 			if(nodes.length > 0) {
 				nodes[nodes.length - 1].stringsFromXML(document.getElementById("stringTable").value);
 			}
-		};
+		}
 
 		function write_stringtable() {
 			var nodes = document.getElementsByTagName("conversationdata-element");
 			if(nodes.length > 0) {
 				console.log(nodes[0].stringsToXML());	
 			}
-		};
+		}
 	</script>
 	</head>
 	<body>

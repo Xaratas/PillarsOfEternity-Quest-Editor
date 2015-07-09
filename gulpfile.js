@@ -9,8 +9,8 @@ var reload = browserSync.reload;
 // Lint JavaScript
 gulp.task('jshint', function () {
   return gulp.src([
-      '*.js',
-      '*.html'
+      'app/*.js',
+      'app/*.html'
     ])
     .pipe(reload({stream: true, once: true}))
     .pipe($.jshint.extract()) // Extract JS from .html files

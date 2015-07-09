@@ -1,6 +1,7 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="parser-behavior.html">
 <link rel="import" href="flowChartNode-elements.html">
+<link rel="import" href="questevent-elements.html">
 
 <!-- Quest Farbpalette
 	Hell: #EDEFFF
@@ -152,7 +153,35 @@
 						this.nextAddendumID = item.textContent;
 					}
 					if(item.nodeName == "Events") {
-						// TODO
+						var node, element;
+						for(var y = 0; y < item.childNodes.length; y++) {
+							node = item.childNodes[y];
+							switch(node.attributes[0].value) {
+								case "QuestEventGlobalVariable":
+									element = new QuestEventGlobalVariable();
+									break;
+								case "QuestEventAquire":
+									element = new QuestEventAquire();
+									break;
+								case "QuestEventInspect":
+									element = new QuestEventInspect();
+									break;
+								case "QuestEventInteract":
+									element = new QuestEventInteract();
+									break;
+								case "QuestEventKill":
+									element = new QuestEventKill();
+									break;
+								case "QuestEventLocation":
+									element = new QuestEventLocation();
+									break;
+								case "QuestEventTalk":
+									element = new QuestEventTalk();
+									break;
+							}
+							element.fromXML(node);
+							this.questEvents.push(element);
+						}
 					}
 					if(item.nodeName == "QuestType") {
 						this.questType = PoeQuestEditor.QuestType[parseInt(item.textContent)];
@@ -167,7 +196,9 @@
 			result += '<NextEndStateID>' + this.nextEventID + '</NextEndStateID>';
 			result += '<NextAddendumID>' + this.nextAddendumID + '</NextAddendumID>';
 			result += '<Events>';
-				// TODO
+			for(var x = 0; x < this.questEvents.length; x++) {
+				result += this.questEvents[x].toXML();
+			}
 			result += '</Events>';
 			result += '<QuestType>'; // Ist als int im xml, Obsidian hat ihren Code selbst verhunzt -.-
 		    if(this.questType == PoeQuestEditor.QuestType[0]) { 

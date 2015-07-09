@@ -3,7 +3,10 @@
 var FunctionCallBehavior = {
 	properties: {
 		functionName: String, 
-		parameter: Array
+		parameter: {
+			type: Array,
+			value: function() { return []; }
+		}
 	},
 
 	functionCallFromXML: function(xml) {

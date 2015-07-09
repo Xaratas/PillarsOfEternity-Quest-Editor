@@ -1,0 +1,214 @@
+<link rel="import" href="event-data-behavior.html" />
+<script>
+"use strict";
+var QuestEventGlobalVariable = Polymer({
+	is: "questevent-globalvariable-element",
+	behaviors: [EventDataBehavior],
+
+	properties: {
+		variableName: String,
+		variableValue: Number
+	},
+
+	fromXML: function(xml) {
+		this._fromXML(xml);
+		var data;
+		for(var c = 0; c < xml.childNodes.length; c++) {
+			data = xml.childNodes[c];
+			if(data.nodeName == "VariableName") {
+				this.variableName = data.textContent;
+			}
+			if(data.nodeName == "VariableValue") {
+				this.variableValue = parseInt(data.textContent);
+			}
+		}
+	},
+
+	toXML: function() {
+		var xml = '<QuestEvent xsi:type="' + this.type + '">';
+		xml += this._toXML();
+		xml += '<VariableName>' + this.variableName + '</VariableName>';
+		xml += '<VariableValue>' + this.variableValue + '</VariableValue>';
+		xml += '</QuestEvent>';
+		return xml;
+	}
+});
+
+var QuestEventAquire = Polymer({
+	is: "questevent-aquire-element",
+	behaviors: [EventDataBehavior],
+
+	properties: {
+		item: String
+	},
+
+	fromXML: function(xml) {
+		this._fromXML(xml);
+		var data;
+		for(var c = 0; c < xml.childNodes.length; c++) {
+			data = xml.childNodes[c];
+			if(data.nodeName == "Item") {
+				this.item = data.nodeName;
+			}
+		}
+	},
+
+	toXML: function() {
+		var xml = '<QuestEvent xsi:type="' + this.type + '">';
+		xml += this._toXML();
+		xml += '<Item>' + this.variableName + '</Item>';
+		xml += '</QuestEvent>';
+		return xml;
+	}
+});
+
+var QuestEventInspect = Polymer({
+	is: "questevent-inspect-element",
+	behaviors: [EventDataBehavior],
+
+	properties: {
+		item: String
+	},
+
+	fromXML: function(xml) {
+		this._fromXML(xml);
+		var data;
+			for(var c = 0; c < xml.childNodes.length; c++) {
+			data = xml.childNodes[c];
+			if(data.nodeName == "Item") {
+				this.item = data.textContent;
+			}
+		}
+	},
+
+	toXML: function() {
+		var xml = '<QuestEvent xsi:type="' + this.type + '">';
+		xml += this._toXML();
+		xml += '<Item>' + this.variableName + '</Item>';
+		xml += '</QuestEvent>';
+		return xml;
+	}
+});
+
+var QuestEventInteract = Polymer({
+	is: "questevent-interact-element",
+	behaviors: [EventDataBehavior],
+
+	properties: {
+		object: String
+	},
+
+	fromXML: function(xml) {
+		this._fromXML(xml);
+		var data;
+		for(var c = 0; c < xml.childNodes.length; c++) {
+			data = xml.childNodes[c];
+			if(data.nodeName == "Object") {
+				this.object = data.textContent;
+			}
+		}
+	},
+
+	toXML: function() {
+		var xml = '<QuestEvent xsi:type="' + this.type + '">';
+		xml += this._toXML();
+		xml += '<Object>' + this.variableName + '</Object>';
+		xml += '</QuestEvent>';
+		return xml;
+	}
+});
+
+var QuestEventKill = Polymer({ 
+	is: "questevent-kill-element",
+	behaviors: [EventDataBehavior],
+
+	properties: {
+		target: String,
+		totalToKill: Number
+	},
+
+	fromXML: function(xml) {
+		this._fromXML(xml);
+		var data;
+		for(var c = 0; c < xml.childNodes.length; c++) {
+			data = xml.childNodes[c];
+			if(data.nodeName == "Target") {
+				this.target = data.textContent;
+			}
+			if(data.nodeName == "TotalToKill") {
+				this.totalToKill = data.textContent;
+			}
+		}
+	},
+
+	toXML: function() {
+		var xml = '<QuestEvent xsi:type="' + this.type + '">';
+		xml += this._toXML();
+		xml += '<Target>' + this.variableName + '</Target>';
+		xml += '<TotalToKill>' + this.variableValue + '</TotalToKill>';
+		xml += '</QuestEvent>';
+		return xml;
+	}
+});
+
+var QuestEventLocation = Polymer({
+	is: "questevent-location-element",
+	behaviors: [EventDataBehavior],
+
+	properties: {
+		triggerObject: String
+	},
+
+	fromXML: function(xml) {
+		this._fromXML(xml);
+		var data;
+		for(var c = 0; c < xml.childNodes.length; c++) {
+			data = xml.childNodes[c];
+			if(data.nodeName == "TriggerObject") {
+				this.triggerObject = data.textContent;
+			}
+		}
+	},
+
+	toXML: function() {
+		var xml = '<QuestEvent xsi:type="' + this.type + '">';
+		xml += this._toXML();
+		xml += '<TriggerObject>' + this.variableName + '</TriggerObject>';
+		xml += '</QuestEvent>';
+		return xml;
+	}
+});
+
+var QuestEventTalk = Polymer({
+	is: "questevent-talk-element",
+	behaviors: [EventDataBehavior],
+
+	properties: {
+		conversation: String,
+		nodeId: Number
+	},
+
+	fromXML: function(xml) {
+		this._fromXML(xml);
+		var data;
+		for(var c = 0; c < xml.childNodes.length; c++) {
+			data = xml.childNodes[c];
+			if(data.nodeName == "Conversation") {
+				this.conversation = data.textContent;
+			}
+			if(data.nodeName == "NodeID") {
+				this.nodeId = data.textContent;
+			}
+		}
+	},
+
+	toXML: function() {
+		var xml = '<QuestEvent xsi:type="' + this.type + '">';
+		xml += this._toXML();
+		xml += '<Conversation>' + this.variableName + '</Conversation>';
+		xml += '<NodeID>' + this.variableValue + '</NodeID>';
+		xml += '</QuestEvent>';
+		return xml;
+	}
+});
+</script>

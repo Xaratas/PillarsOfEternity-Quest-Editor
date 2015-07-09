@@ -31,7 +31,11 @@ var ParserBehavior = {
 		nextEventID: Number,
 		nextEndStateID: Number,
 		nextAddendumID: Number,
-		questType: String
+		questType: String,
+		questEvents: {
+			type: Array,
+			value: function() { return []; }
+		}
 	},
 
 

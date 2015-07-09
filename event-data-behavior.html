@@ -1,0 +1,30 @@
+<script>
+"use strict";
+var EventDataBehavior = {
+	properties: {
+		id: Number,
+		displayName: String,
+		type: String
+	},
+
+	_fromXML: function(xml) {
+		var data;
+		this.type = xml.attributes[0].value;
+		for(var b = 0; b < xml.childNodes.length; b++) {
+			data = xml.childNodes[b];
+			if(data.nodeName == "EventID") {
+				this.id = data.textContent;
+			}
+			if(data.nodeName == "DisplayName") {
+				this.displayName = data.textContent;
+			}
+		}
+	},
+
+	_toXML: function() {
+		var xml = '<EventID>' + this.id + '</EventID>';
+		xml += '<DisplayName>' + this.displayName + '</DisplayName>';
+		return xml;
+	}
+}
+</script>

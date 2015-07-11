@@ -38,7 +38,8 @@
 
 			value: {
 				type: String,
-				notify: true
+				notify: true,
+				observer: 'valueChanged'
 			},
 
 			options: {
@@ -46,15 +47,27 @@
 				value: function() { return []; }
 			}
 		},
-
+		// ich weiß nicht was zu erst dran ist, in ff ist es value, in chrome und ie type
+		// slack-channel: sjmiles 23:57 @xaratas: property change order is not guaranteed, use explicit dependencies in observers 
 		typeChanged: function(newValue) {
-			if(newValue == "select") {
+			if(this.value != undefined) {
+				this.setup();
+			}
+		},
+		valueChanged: function(newValue) {
+			if(this.type != undefined) {
+				this.setup();
+			}
+		},
+
+		setup: function() {
+			if(this.type == "select") {
 				this.asSelect(this.options, this.value);
 			}
-			if(newValue == "input") {
+			if(this.type == "input") {
 				this.asInput(this.value);
 			}
-			if(newValue == "text") {
+			if(this.type == "text") {
 				this.asText(this.options, this.value);
 			}
 		},

@@ -262,6 +262,51 @@
 					}, this);
 				}
 			}
+		},
+		// basisfunktion komplett überschreiben
+		stringsToXML: function() {
+			var defaultTexts = "", descriptionTexts = "", addendumTexts = "", endStateTexts = "";
+			var count = 0;
+			var xml = '<?xml version="1.0" encoding="utf-8"?><StringTableFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
+			xml += '<Name>' + this.stringTableFileLink + '</Name>';
+			xml += '<NextEntryID>' + this.nextEntryID + '</NextEntryID>'; // Das was Obsidian verhunzt hat ordentlich machen
+
+			for(var i = 0; i < this.nodes.length; i++) {
+				defaultTexts += '<Entry>';
+				defaultTexts += '<ID>' + this.nodes[i].nodeId + '</ID>';
+				defaultTexts += '<DefaultText>' + this.nodes[i].defaultText + '</DefaultText><FemaleText />';
+				defaultTexts += '</Entry>';
+				if(this.nodes[i].description !== undefined) {
+					count++;
+					descriptionTexts += '<Entry>';
+					descriptionTexts += '<ID>' + (this.nodes[i].nodeId + 10000) + '</ID>';
+					descriptionTexts += '<DefaultText>' + this.nodes[i].defaultText + '</DefaultText><FemaleText />';
+					descriptionTexts += '</Entry>';
+				}
+				if(this.nodes[i].addendumIds !== undefined) {
+					count += this.nodes[i].addendumIds.length;
+					for(var a = 0; a < this.nodes[i].addendumIds.length; a++) {
+						addendumTexts += '<Entry>';
+						addendumTexts += '<ID>' + (this.nodes[i].addendumIds[a].id + 20000) + '</ID>';
+						addendumTexts += '<DefaultText>' + this.nodes[i].addendumIds[a].text + '</DefaultText><FemaleText />';
+						addendumTexts += '</Entry>';
+					}
+				}
+				if(this.nodes[i].endStates !== undefined) {
+					count += this.nodes[i].endStates.length;
+					for(var e = 0; e < this.nodes[i].endStates.length; e++) {
+						endStateTexts += '<Entry>';
+						endStateTexts += '<ID>' + (this.nodes[i].endStates[e].id + 30000) + '</ID>';
+						endStateTexts += '<DefaultText>' + this.nodes[i].endStates[e].text + '</DefaultText><FemaleText />';
+						endStateTexts += '</Entry>';
+					}
+				}
+			}
+
+			xml += '<EntryCount>' + (this.nodes.length + count) + '</EntryCount>';
+			xml += '<Entries>';
+
+			return xml + defaultTexts + descriptionTexts + addendumTexts + endStateTexts + '</Entries>';
 		}
 	});
 

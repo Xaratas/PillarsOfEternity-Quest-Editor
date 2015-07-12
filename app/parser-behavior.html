@@ -107,7 +107,7 @@ var ParserBehavior = {
 		var result = '<?xml version="1.0" encoding="utf-8"?><StringTableFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">';
 		result += '<Name>' + this.stringTableFileLink + '</Name>';
 		result += '<NextEntryID>' + this.nextEntryID + '</NextEntryID>'; // Das was Obsidian verhunzt hat ordentlich machen
-		result += '<EntryCount>' + (this.nodes.length - 1) + '</EntryCount>';
+		result += '<EntryCount>' + (this.nodes.length - 1) + '</EntryCount>'; // Conversation Node 0 has no text
 		result += '<Entries>';
 		for(var i = 0; i < this.nodes.length; i++) {
 			var text = this.nodes[i].defaultText;

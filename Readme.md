@@ -1,4 +1,4 @@
-# Pillars of Eternity Quest Editor (im entstehen) v0.2.6
+# Pillars of Eternity Quest Editor (im entstehen) v0.2.8
 
 Basiert momentan rein auf [Polymer](www.polymer-project.org)
 
@@ -40,5 +40,5 @@ https://bitbucket.org/ckirschner/poe-modding-framework/src/6f1d5264711c4eafc5ad4
 
 
 ### Abhängigkeiten
-Keine, es ist alles im Git enthalten.
-Zum Entwickeln hilft aber [bower](bower.io) installiert zu haben.
+[bower](bower.io) um die referenzierten Polymer Elemente zu laden.
+optional npm, gulp für jslint

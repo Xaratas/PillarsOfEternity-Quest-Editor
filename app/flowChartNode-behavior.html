@@ -207,7 +207,7 @@
 				for (var x = 0; x < xml.childNodes.length; x++) {
 					node = xml.childNodes[x];
 					if (node.nodeName == "NodeID") {
-						this.nodeId = node.textContent;
+						this.nodeId = parseInt(node.textContent);
 					}
 					if (node.nodeName == "Comments") {
 						var _;

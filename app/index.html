@@ -69,10 +69,15 @@
 		}
 
 		function write_stringtable() {
-			var nodes = document.getElementsByTagName("conversationdata-element");
+			var nodes = document.getElementsByTagName("questdata-element");
+			if(nodes.length > 0) {
+				console.log(nodes[0].stringsToXML());
+			}
+			nodes = document.getElementsByTagName("conversationdata-element");
 			if(nodes.length > 0) {
 				console.log(nodes[0].stringsToXML());	
 			}
+
 		}
 	</script>
 	</head>

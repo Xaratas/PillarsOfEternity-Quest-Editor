@@ -1,3 +1,4 @@
+<link rel="import" href="functionCall-element.html">
 <link rel="import" href="functionCall-data-behavior.html">
 <!-- TODO select element in polymer mit Hinweisen, was die Einträge bewirken -->
 <dom-module id="Condition-element">
@@ -8,8 +9,11 @@
 		}
 	</style>
 	<template>
+		<functionCall-editElement function_="{{getByName(functionName)}}" parameter="{{parameter}}"></functionCall-editElement>
 		<div>Operator: <span>{{operator}}</span></div>
 		<div>Function:&nbsp;<span>{{not}}</span> <span>{{functionName}}</span></div>
+		<span>{{fullFunction.param0.name}}</span><span>{{fullFunction.param1.name}}</span>
+		
 		<template is="dom-repeat" items="{{parameter}}">
 			<div>Parameter <span>{{index}}</span>: <span>{{item}}</span></div>
 		</template>
@@ -28,12 +32,10 @@
 			operator: String,
 			type: String,
 			not: String,
-			nestedConditions: Array
-		},
-
-		factoryImpl: function() {
-			this.nestedConditions = [];
-			this.parameter = [];
+			nestedConditions: {
+				type: Array,
+				value: function() { return []; }
+			}
 		},
 		
 		conditionalCall: function(xml) {
@@ -119,6 +121,11 @@
 				}
 			}
 			return xml;
+		},
+		
+		// remember: never name a function 'get' it will break polymer
+		getByName: function(name) {
+			return PoeQuestEditor.Conditionals.get(name);
 		}
 	});
 </script>

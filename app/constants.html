@@ -1,30 +1,39 @@
 <script>
-	/** Enumeration values for changeable Settings in the Questeditor */
-	var PoeQuestEditor = {};
-	PoeQuestEditor.BankNodePlayType = ['PlayFirst', 'PlayAll', 'PlayRandom'];
-	PoeQuestEditor.ConversationType = ['Conversation', 'Chatter'];
-	PoeQuestEditor.PlayType =         ['Normal', 'Random', 'CycleLoop', 'CycleStop'];
-	PoeQuestEditor.Persistence =      ['None', 'OnceEver', 'OncePerConversation', 'MarkAsRead'];
-	PoeQuestEditor.DisplayType =      ['Hidden', 'Conversation', 'Bark'];
-	PoeQuestEditor.LogicalOperator =  ['And', 'Or'];
-	PoeQuestEditor.QuestionNodeTextDisplay = ['ShowOnce', 'ShowAlways', 'ShowNever'];
-	PoeQuestEditor.ExperienceType =   ['Minor', 'Normal', 'Major'];
-	PoeQuestEditor.QuestType =        ['MainQuest', 'Quest', 'Task'];
+/** Enumeration values for changeable Settings in the Questeditor */
+var PoeQuestEditor = {};
 
-	PoeQuestEditor.ConditionalOperator = ['EqualTo', 'GreaterThan', 'LessThan', 'NotEqualTo', 'GreaterThanOrEqualTo', 'LessThanOrEqualTo'];
-	PoeQuestEditor.GameDifficulty =   ['Easy', 'Normal', 'Hard', 'PathOfTheDamned'];
-	PoeQuestEditor.Relationship =     ['Neutral', 'Hostile', 'Friendly'];
-	PoeQuestEditor.FactionName =      ['None', 'GildedVale', 'DefianceBay', 'Dyrford', 'TwinElms', 'KnightsOfTheCrucible', 'TheDozens', 'DunrydRow', 'HouseDoemenel', 'EthikNol', 'OvatesOfTheGoldenGrove', 'TheFangs'];
-	PoeQuestEditor.Disposition =      ['Benevolent', 'Cruel', 'Clever', 'Stoic', 'Aggressive', 'Diplomatic', 'Passionate', 'Rational', 'Honest', 'Deceptive'];
-	PoeQuestEditor.DispostionRank =   ['None', 'Rank1', 'Rank2', 'Rank3'];
-	PoeQuestEditor.DispositionRankStrength = ['Minor', 'Average', 'Major'];
-	PoeQuestEditor.WeaponType =       ['Arablest', 'Arquebus', 'BattleAxe', 'Blunderbuss', 'Club', 'Crossbow', 'Dagger', 'Estoc', 'Flail', 'GreatSword', 'Hatchet', 'HuntingBow', 'Mace', 'MorningStar', 'Pike', 'Pistol', 'Pollaxe', 'Quarterstaff', 'Rapier', 'Rod', 'Sabre', 'Stiletto', 'Sceptre', 'Spear', 'Sword', 'Wand', 'WarBow', 'WarHammer', 'Unarmed'];
-	// can be Container, StrongholdContainer, Doors, AutoLootContainers, Traps
-	PoeQuestEditor.OCLState =         ['Closed', 'Open', 'Locked', 'Sealed', 'SealedOpen'];
-	PoeQuestEditor.AttributeScoreType = ['Resolve', 'Might', 'Dexterity', 'Intellect', 'Constituiton', 'Perception'];
-	PoeQuestEditor.DefenseType =      ['Deflect', 'Fortitude', 'Reflex', 'Will'];
-	PoeQuestEditor.SkillType =        ['Stealth', 'Athletics', 'Lore', 'Mechanics', 'Survival', 'Crafting'];
+// enums in XML files
+PoeQuestEditor.BankNodePlayType = ['PlayFirst', 'PlayAll', 'PlayRandom'];
+PoeQuestEditor.ConversationType = ['Conversation', 'Chatter'];
+PoeQuestEditor.PlayType =         ['Normal', 'Random', 'CycleLoop', 'CycleStop'];
+PoeQuestEditor.Persistence =      ['None', 'OnceEver', 'OncePerConversation', 'MarkAsRead'];
+PoeQuestEditor.DisplayType =      ['Hidden', 'Conversation', 'Bark'];
+PoeQuestEditor.LogicalOperator =  ['And', 'Or'];
+PoeQuestEditor.QuestionNodeTextDisplay = ['ShowOnce', 'ShowAlways', 'ShowNever'];
+PoeQuestEditor.ExperienceType =   ['Minor', 'Normal', 'Major'];
+PoeQuestEditor.QuestType =        ['MainQuest', 'Quest', 'Task'];
 
-	PoeQuestEditor.ScriptCalls = [];
-	PoeQuestEditor.FunctionCalls = [];
+// enums for conditions and scriptcalls
+PoeQuestEditor.AbilityNames =     ['Blooded','Bloodlust','BruteForce','Carnage','Frenzy','HeartOfFury','OneStandsAlone','VengefulDefeat','Chant','ChanterTrait','FocusTrait','BorrowedInstinct','TacticalMeld','PsychicBacklashTrait','Spiritshift','Wildstrike','CripplingGuard','Unbending','GenericAbilityWithPrimaryAttackOverrides','DrainingTouch','GenericSpellWithExtraAttackOnMissAndEnd','GenericSpellWithPositionSwap','MinorBlights','Mirror','Safeguard','ImmediateReloadAbility','MirrorAbility','CrucibleOfSuffering','EnervatingBlows','RootingPain','SoulMirror','WoundsTrait','RighteousSoul','SwornEnemyTrait','ZealousAura','FireGodlikeTrait','MoonGodlikeTrait','DefensiveBond','DefensiveShooting','MarkedPreyTrait','StalkersLink','StunningShots','BackStabAbility','CoordinatedPositioning','Deathblows','DeepWounds','FinishingBlow','FlankingAbility','Riposte','TriggeredOnDeathAbility','TriggeredOnKillAbility','Blast','GrimoireSlam','BloodySlaughter','WeaponFocus','WeaponSpecialization','WeaponTypeSpecialization'];
+PoeQuestEditor.AttributeScoreType = ['Resolve', 'Might', 'Dexterity', 'Intellect', 'Constituiton', 'Perception'];
+PoeQuestEditor.Background =       ['Aristocrat','Artist','Colonist','Dissident','Drifter','Explorer','Hunter','Laborer','Mercenary','Merchant','Mystic','Philosopher','Priest','Raider','Slave','Scholar','Scientist','Farmer','Soldier','Midwife','Gentry'];
+PoeQuestEditor.Class =            ['Fighter','Rogue','Priest','Wizard','Barbarian','Ranger','Druid','Paladin','Monk','Cipher','Chanter','Troll','Ogre','Wolf','Spider','Ooze','Stelgaer','Imp','DankSpore','SwampLurker','Eoten','Xaurip','Vithrack','WillOWisp','Delemgan','Pwgra','Wurm','Skuldr','Drake','SkyDragon','AdraDragon','Blight','Animat','FleshConstruct','Shadow','Phantom','CeanGwla','Skeleton','Revenant','Gul','Dargul','Fampyr','Wicht','Beetle','AnimalCompanion','WeakEnemy','HeraldOfWoedica','PriestOfWoedica'];
+PoeQuestEditor.ConditionalOperator = ['EqualTo', 'GreaterThan', 'LessThan', 'NotEqualTo', 'GreaterThanOrEqualTo', 'LessThanOrEqualTo'];
+PoeQuestEditor.Culture =          ['Aedyr','DeadfireArchipelago','IxamitlPlains','OldVailia','Ruatai','TheLivingLands','TheWhiteThatWends','TheDyrwood','TheVailianRepublics','Nassitaq','EirGlanfath'];
+PoeQuestEditor.DefenseType =      ['Deflect', 'Fortitude', 'Reflex', 'Will'];
+PoeQuestEditor.Deity =            ['None','Berath','Eothas','Magran','Skaen','Wael'];
+PoeQuestEditor.Disposition =      ['Benevolent', 'Cruel', 'Clever', 'Stoic', 'Aggressive', 'Diplomatic', 'Passionate', 'Rational', 'Honest', 'Deceptive'];
+PoeQuestEditor.DispostionRank =   ['None', 'Rank1', 'Rank2', 'Rank3'];
+PoeQuestEditor.DispositionRankStrength = ['Minor', 'Average', 'Major'];
+PoeQuestEditor.FactionName =      ['None', 'GildedVale', 'DefianceBay', 'Dyrford', 'TwinElms', 'KnightsOfTheCrucible', 'TheDozens', 'DunrydRow', 'HouseDoemenel', 'EthikNol', 'OvatesOfTheGoldenGrove', 'TheFangs'];
+PoeQuestEditor.GameDifficulty =   ['Easy', 'Normal', 'Hard', 'PathOfTheDamned'];
+PoeQuestEditor.Gender =           ['Male','Female','Neuter'];
+PoeQuestEditor.OCLState =         ['Closed', 'Open', 'Locked', 'Sealed', 'SealedOpen'];	// can be Container, StrongholdContainer, Doors, AutoLootContainers, Traps
+PoeQuestEditor.PaladinOrder =     ['None','BleakWalkers','DarcozziPaladini','GoldpactKnights','KindWayfarers','ShieldbearersOfStElcga','FrermasMesCancSuolias'];
+PoeQuestEditor.Relationship =     ['Neutral', 'Hostile', 'Friendly'];
+PoeQuestEditor.Race =             ['Human', 'Elf', 'Dwarf', 'Godlike', 'Orlan','Aumaua', 'Beast', 'Primordial', 'Spirit', 'Vessel', 'Wilder'];
+PoeQuestEditor.SkillType =        ['Stealth', 'Athletics', 'Lore', 'Mechanics', 'Survival', 'Crafting'];
+PoeQuestEditor.Subrace =          ['Meadow_Human','Ocean_Human','Savannah_Human', 'Wood_Elf','Snow_Elf','Mountain_Dwarf','Boreal_Dwarf','Death_Godlike','Fire_Godlike','Nature_Godlike','Moon_Godlike','Hearth_Orlan','Wild_Orlan','Coastal_Aumaua','Island_Aumaua','Avian_Godlike'];
+PoeQuestEditor.StrongholdUpgradeType = ['Barbican','WestCurtainWall','SouthCurtainWall','Bailey','MainKeep','Barracks','Dungeons','BeastVault','Towers','Library','CraftHall','AritficersHall','Forum','MerchantStalls','CurioShop','TrainingGrounds','Chapel','HedgeMaze','BotanicalGarden','RoadRepairs','WardensLodge','WoodlandTrails','Bedding','AdditionalStorage','Hearth','Lab','CourtyardPool','EasternBarbican','None'];
+PoeQuestEditor.WeaponType =       ['Arablest', 'Arquebus', 'BattleAxe', 'Blunderbuss', 'Club', 'Crossbow', 'Dagger', 'Estoc', 'Flail', 'GreatSword', 'Hatchet', 'HuntingBow', 'Mace', 'MorningStar', 'Pike', 'Pistol', 'Pollaxe', 'Quarterstaff', 'Rapier', 'Rod', 'Sabre', 'Stiletto', 'Sceptre', 'Spear', 'Sword', 'Wand', 'WarBow', 'WarHammer', 'Unarmed'];
 </script>

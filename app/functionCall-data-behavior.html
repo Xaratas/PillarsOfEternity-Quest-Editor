@@ -1,8 +1,14 @@
+<link rel="import" href="constants.html">
+<link rel="import" href="constants-conditionals.html">
 <script>
 "use strict";
 var FunctionCallBehavior = {
 	properties: {
-		functionName: String, 
+		functionName: String,
+	    fullFunction: { // referenz aus den constants-conditionals.js
+			type: Object,	
+			value: function() { return {}; }
+		},
 		parameter: {
 			type: Array,
 			value: function() { return []; }
@@ -15,6 +21,7 @@ var FunctionCallBehavior = {
 			data = xml.childNodes[x];
 			if (data.nodeName == "FullName") {
 				this.functionName = data.textContent;
+				this.fullFunction = PoeQuestEditor.Conditionals.get(this.functionName);
 			}
 			if (data.nodeName == "Parameters") {
 				for (var p = 0; p < data.childNodes.length; p++) {

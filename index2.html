@@ -4,23 +4,30 @@
 	<head>
 		<script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 		<link rel="import" href="bower_components/polymer/polymer.html">
-		<link rel="import" href="constants.html">
-		<link rel="import" href="betterselect-element.html">
-		<link rel="import" href="edit-element.html">
-		<link rel="import" href="flowChartNode-elements.html">
+		<link rel="import" href="app/constants.html">
+		<link rel="import" href="app/constants-npc-guids.html">
+		<link rel="import" href="app/constants-conditionals.html">
+		<link rel="import" href="app/betterselect-element.html">
+		<link rel="import" href="app/edit-element.html">
+		<link rel="import" href="app/flowChartNode-elements.html">
+		<link rel="import" href="app/functionCall-element.html">
+		<link rel="import" href="app/polishedIron-input.html">
 		<script>
 			 document.addEventListener('WebComponentsReady', function() {
 				document.getElementsByTagName('body')[0].appendChild(new BetterSelect(PoeQuestEditor.BankNodePlayType, "PlayRandom"));
-			 });
-			var x = new QuestNode(null);
+			 	var function_ = PoeQuestEditor.Conditionals.get('Boolean IsGlobalValue(String, Operator, Int32)');
+				var parameter = ['haushoch', 'GreaterThan', 3];
+				var elem = new FunctionCallEditElement(function_, parameter);
+				document.getElementsByTagName("body")[0].appendChild(elem);
 				
-			document.getElementsByTagName('body')[0].appendChild(x);
+				document.getElementsByTagName('body')[0].appendChild(new PolishedIronInput(44));
+			 });
+				
 		</script>
 	</head>
 	<body>
 		<select is="betterSelect" value="PlayRandom" options_="PoeQuestEditor.BankNodePlayType"></select>
 		<edit-element type="select" value="PlayRandom" options="PoeQuestEditor.BankNodePlayType"></edit-element>
 		<edit-element type="select" value="PlayRandom" options="["PlayFirst", "PlayAll", "PlayRandom"]"></edit-element>
-		<questnode-element parent_="body" links="[]" edit-elements="{{PoeQuestEditor.BankNodePlayType}}"></questnodee-element>
 	</body>
 </html>

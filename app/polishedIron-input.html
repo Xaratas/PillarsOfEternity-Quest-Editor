@@ -1,0 +1,19 @@
+<link rel="import" href="../bower_components/iron-input/iron-input.html">
+<dom-module id="PolishedIron-input">
+	<template>
+		<input is="iron-input" bind-value="{{value}}"></input>
+	</template>
+</dom-module>
+<script>
+"use strict";
+	var PolishedIronInput = new Polymer({
+		is: 'PolishedIron-input',
+		properties: {
+			value: String
+		},
+
+		factoryImpl: function(value) {
+			this.value = value;
+		}
+	});
+</script>

@@ -1,0 +1,97 @@
+<link rel="import" href="polishedIron-input.html">
+<dom-module id="functionCall-editElement">
+	<style>
+		:host {
+			width: 400px;
+			background-color: #c2ebf5;
+			display: table-row;
+		}
+		div {
+		}
+		span, param0, param1, param2, param3, param4 {
+			width: 200px;
+			display: inline-block;
+		}
+
+		span[data-show=""], param0[data-show=""], param1[data-show=""], param2[data-show=""], param3[data-show=""], param4[data-show=""] {
+			display: none;
+		}
+	</style>
+	<template>
+		<div>
+			<span>Inv.</span><span>Name</span><span data-show$="[[hidden(parameter,0)]]">{{function_.param0.name}}</span><span data-show$="[[hidden(parameter,1)]]">{{function_.param1.name}}</span><span data-show$="[[hidden(parameter,2)]]">{{function_.param2.name}}</span><span data-show$="[[hidden(parameter,3)]]">{{function_.param3.name}}</span><span data-show$="[[hidden(parameter,4)]]">{{function_.param4.name}}</span>
+		</div>
+		<div>
+			<span>{{not}}</span> <span>{{function_.name}}</span><param0 data-show$="[[hidden(parameter,0)]]"></param0><param1 data-show$="[[hidden(parameter,1)]]"></param1><param2 data-show$="[[hidden(parameter,2)]]"></param2> <param3 data-show$="[[hidden(parameter,3)]]"></param3><param4 data-show$="[[hidden(parameter,4)]]"></param4>
+		</div>
+	</template>
+</dom-module>
+<script>
+"use strict";
+	var FunctionCallEditElement = new Polymer({
+		is: 'functionCall-editElement',
+// brauch ich für observer doch ein created?
+		properties: {
+			not: String,
+			function_: {
+				type: Object,
+				value: function() { return {}; },
+			},
+			parameter: {
+				type: Array,
+				value: function() { return []; },
+				notify: true
+			}
+		},
+
+		factoryImpl: function(function_, parameterValues) {
+			this.function_ = function_;
+			this.parameter = parameterValues;
+		},
+
+		attached: function() {
+			if(Object.keys(this.function_).length != 0) {
+				// die funktionen einmal durchgehen und type überall anfügen
+				var edit;
+				if(this.function_.param0 !== undefined) {
+					edit = this.elementForType(this.function_.param0.type, 0);
+					this.$$("param0").appendChild(edit);
+				}
+				if(this.function_.param1 !== undefined) {
+					edit = this.elementForType(this.function_.param1.type, 1);
+					this.$$("param1").appendChild(edit);
+				}
+				if(this.function_.param2 !== undefined) {
+					edit = this.elementForType(this.function_.param2.type, 2);
+					this.$$("param2").appendChild(edit);
+				}
+				if(this.function_.param3 !== undefined) {
+					edit = this.elementForType(this.function_.param3.type, 3);
+					this.$$("param3").appendChild(edit);
+				}
+				if(this.function_.param4 !== undefined) {
+					edit = this.elementForType(this.function_.param4.type, 4);
+					this.$$("param4").appendChild(edit);
+				}
+			}
+		},
+
+		elementForType: function(type, i) {
+			switch(type) {
+				case "Guid":
+					return new BetterSelect(PoeQuestEditor.GUIDS, this.parameter[i]);
+				case "ConditionalOperator":
+					return new BetterSelect(PoeQuestEditor.ConditionalOperator, this.parameter[i]);
+				case "Quest":
+				case "Text":
+				case "GlobalVariable":
+				case "Number": // typ zahl an das iron input hängen, und TODO validierung
+					return new PolishedIronInput(this.parameter[i]);
+			};
+		},
+
+		hidden: function(parameter, param) {
+			return parameter === undefined && parameter[param] === undefined;
+		}
+	});
+</script>

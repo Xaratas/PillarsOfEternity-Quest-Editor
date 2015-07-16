@@ -7,17 +7,21 @@
 			display: flex;
 			flex-direction: column;		 
 		}
+
+		functionCall-editElement[data-show=""], div[data-show=""] {
+			display: none;
+		}
 	</style>
 	<template>
-		<functionCall-editElement function_="{{getByName(functionName)}}" parameter="{{parameter}}"></functionCall-editElement>
+		<functionCall-editElement data-show$="[[isHidden]]" function_="{{getByName(functionName)}}" parameter="{{parameter}}"></functionCall-editElement>
 		<div>Operator: <span>{{operator}}</span></div>
-		<div>Function:&nbsp;<span>{{not}}</span> <span>{{functionName}}</span></div>
-		<span>{{fullFunction.param0.name}}</span><span>{{fullFunction.param1.name}}</span>
+		<div data-show$="[[isHidden]]">Function:&nbsp;<span>{{not}}</span> <span>{{functionName}}</span></div>
+	<!--	<span>{{fullFunction.param0.name}}</span><span>{{fullFunction.param1.name}}</span>
 		
 		<template is="dom-repeat" items="{{parameter}}">
 			<div>Parameter <span>{{index}}</span>: <span>{{item}}</span></div>
 		</template>
-
+-->
 		<nestedConditions></nestedConditions>
 	</template>
 </dom-module>
@@ -35,7 +39,9 @@
 			nestedConditions: {
 				type: Array,
 				value: function() { return []; }
-			}
+			},
+
+			isHidden: Boolean
 		},
 		
 		conditionalCall: function(xml) {
@@ -55,6 +61,7 @@
 			}
 		},
 		conditionalExpression: function(xml) {
+			this.isHidden = true;
 			for(var i = 0; i < xml.childNodes.length; i++) {
 				if (xml.childNodes[i].nodeName == "Operator") {
 					this.operator = xml.childNodes[i].textContent;

@@ -2,11 +2,11 @@
 <dom-module id="functionCall-editElement">
 	<style>
 		:host {
-			width: 400px;
 			background-color: #c2ebf5;
 			display: table-row;
 		}
 		div {
+			display: flex;
 		}
 		span, param0, param1, param2, param3, param4 {
 			width: 200px;
@@ -19,10 +19,10 @@
 	</style>
 	<template>
 		<div>
-			<span>Inv.</span><span>Name</span><span data-show$="[[hidden(parameter,0)]]">{{function_.param0.name}}</span><span data-show$="[[hidden(parameter,1)]]">{{function_.param1.name}}</span><span data-show$="[[hidden(parameter,2)]]">{{function_.param2.name}}</span><span data-show$="[[hidden(parameter,3)]]">{{function_.param3.name}}</span><span data-show$="[[hidden(parameter,4)]]">{{function_.param4.name}}</span>
+			<span>Inv.</span><span>Name</span><span data-show$="[[!hidden(parameter.*, 0)]]">{{function_.param0.name}}</span><span data-show$="[[!hidden(parameter.*, 1)]]">{{function_.param1.name}}</span><span data-show$="[[!hidden(parameter.*, 2)]]">{{function_.param2.name}}</span><span data-show$="[[!hidden(parameter.*, 3)]]">{{function_.param3.name}}</span><span data-show$="[[!hidden(parameter.*, 4)]]">{{function_.param4.name}}</span>
 		</div>
 		<div>
-			<span>{{not}}</span> <span>{{function_.name}}</span><param0 data-show$="[[hidden(parameter,0)]]"></param0><param1 data-show$="[[hidden(parameter,1)]]"></param1><param2 data-show$="[[hidden(parameter,2)]]"></param2> <param3 data-show$="[[hidden(parameter,3)]]"></param3><param4 data-show$="[[hidden(parameter,4)]]"></param4>
+			<span>{{not}}</span> <span>{{function_.name}}</span><param0 data-show$="[[!hidden(parameter.*, 0)]]"></param0><param1 data-show$="[[!hidden(parameter.*, 1)]]"></param1><param2 data-show$="[[!hidden(parameter.*, 2)]]"></param2> <param3 data-show$="[[!hidden(parameter.*, 3)]]"></param3><param4 data-show$="[[!hidden(parameter.*, 4)]]"></param4>
 		</div>
 	</template>
 </dom-module>
@@ -41,7 +41,8 @@
 				type: Array,
 				value: function() { return []; },
 				notify: true
-			}
+			},
+			
 		},
 
 		factoryImpl: function(function_, parameterValues) {
@@ -90,8 +91,8 @@
 			};
 		},
 
-		hidden: function(parameter, param) {
-			return parameter === undefined && parameter[param] === undefined;
+		hidden: function(change, index) {
+			return change.base[index] !== undefined;
 		}
 	});
 </script>

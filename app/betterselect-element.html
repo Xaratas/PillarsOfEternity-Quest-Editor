@@ -31,7 +31,13 @@
 		// Das selectbox Verhalten setzt den Wert auf das erste Option das kommt, sprich das muss korrigiert werden.
 		attached: function() {
 			this.async(function() {
-				this.value = this.selectedValue;
+				if(this.value === "") { // delay further, looks like bad style
+					this.async(function() {
+						this.value = this.selectedValue;
+					});
+				} else {
+					this.value = this.selectedValue;
+				}
 			});
 		},
 

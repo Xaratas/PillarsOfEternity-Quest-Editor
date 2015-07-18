@@ -1,9 +1,9 @@
-//valueTypeBasicValidator:
+<!-- valueTypeBasicValidator:
 //  slot: 0 <= value < 6
 //  guid: 8-4-4-4-12
 //  percentage: 0 <= value <= 100
 //  quest, conversation: string/questpath
-//  allerhand enums
+//  allerhand enums -->
 <script>
 PoeQuestEditor.Conditionals = new Map(); // js6
 PoeQuestEditor.Conditionals.set(
@@ -1128,4 +1128,13 @@ PoeQuestEditor.Conditionals.set(
             default: "0"
         }
     });
+
+// für BetterSelect
+PoeQuestEditor.Conditionals_NameList = [];
+PoeQuestEditor.Conditionals_byDisplayName = new Map();
+PoeQuestEditor.Conditionals.forEach(function(item, key, mapObj) {
+	PoeQuestEditor.Conditionals_NameList.push(item.name);		
+	PoeQuestEditor.Conditionals_byDisplayName.set(item.name, item);
+});
+
 </script>

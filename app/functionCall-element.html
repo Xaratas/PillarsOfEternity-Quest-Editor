@@ -3,26 +3,32 @@
 	<style>
 		:host {
 			background-color: #c2ebf5;
-			display: table-row;
+			display: inline;
 		}
 		div {
 			display: flex;
 		}
-		span, param0, param1, param2, param3, param4 {
+		span, func, param0, param1, param2, param3, param4 {
 			width: 200px;
 			display: inline-block;
+			flex-grow: 1;
+		}
+		span:first-child {
+			width: 30px;
 		}
 
 		span[data-show=""], param0[data-show=""], param1[data-show=""], param2[data-show=""], param3[data-show=""], param4[data-show=""] {
 			display: none;
 		}
+
+		// bestimmte inputs länger
 	</style>
 	<template>
 		<div>
 			<span>Inv.</span><span>Name</span><span data-show$="[[!hidden(parameter.*, 0)]]">{{function_.param0.name}}</span><span data-show$="[[!hidden(parameter.*, 1)]]">{{function_.param1.name}}</span><span data-show$="[[!hidden(parameter.*, 2)]]">{{function_.param2.name}}</span><span data-show$="[[!hidden(parameter.*, 3)]]">{{function_.param3.name}}</span><span data-show$="[[!hidden(parameter.*, 4)]]">{{function_.param4.name}}</span>
 		</div>
 		<div>
-			<span>{{not}}</span> <span>{{function_.name}}</span><param0 data-show$="[[!hidden(parameter.*, 0)]]"></param0><param1 data-show$="[[!hidden(parameter.*, 1)]]"></param1><param2 data-show$="[[!hidden(parameter.*, 2)]]"></param2> <param3 data-show$="[[!hidden(parameter.*, 3)]]"></param3><param4 data-show$="[[!hidden(parameter.*, 4)]]"></param4>
+			<span>{{not}}</span> <func on-value-changed="functionChange"></func><param0 data-show$="[[!hidden(parameter.*, 0)]]"></param0><param1 data-show$="[[!hidden(parameter.*, 1)]]"></param1><param2 data-show$="[[!hidden(parameter.*, 2)]]"></param2> <param3 data-show$="[[!hidden(parameter.*, 3)]]"></param3><param4 data-show$="[[!hidden(parameter.*, 4)]]"></param4>
 		</div>
 	</template>
 </dom-module>
@@ -41,10 +47,8 @@
 				type: Array,
 				value: function() { return []; },
 				notify: true
-			},
-			
+			}
 		},
-
 		factoryImpl: function(function_, parameterValues) {
 			this.function_ = function_;
 			this.parameter = parameterValues;
@@ -54,6 +58,8 @@
 			if(Object.keys(this.function_).length != 0) {
 				// die funktionen einmal durchgehen und type überall anfügen
 				var edit;
+				edit = this.elementForType("Function");
+				this.$$("func").appendChild(edit);
 				if(this.function_.param0 !== undefined) {
 					edit = this.elementForType(this.function_.param0.type, 0);
 					this.$$("param0").appendChild(edit);
@@ -79,6 +85,8 @@
 
 		elementForType: function(type, i) {
 			switch(type) {
+				case "Function": 
+					return new BetterSelect(PoeQuestEditor.Conditionals_NameList, this.function_.name);
 				case "Guid":
 					return new BetterSelect(PoeQuestEditor.GUIDS, this.parameter[i]);
 				case "ConditionalOperator":
@@ -88,11 +96,16 @@
 				case "GlobalVariable":
 				case "Number": // typ zahl an das iron input hängen, und TODO validierung
 					return new PolishedIronInput(this.parameter[i]);
-			};
+			}
 		},
 
 		hidden: function(change, index) {
 			return change.base[index] !== undefined;
-		}
+		},
+
+		functionChange: function(e, details, sender) {
+			this.function_ = PoeQuestEditor.Conditionals_byDisplayName.get(e.value);
+			// parameter anpassen
+		},
 	});
 </script>

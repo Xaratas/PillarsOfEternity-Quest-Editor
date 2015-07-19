@@ -8,7 +8,7 @@
 		}
 	</style>
 	<template>
-		<functionCall-editElement function_="{{getByName(functionName)}}" parameter="{{parameter}}"></functionCall-editElement>
+		<functionCall-editElement function_="{{fullFunction}}" parameter="{{parameter}}"></functionCall-editElement>
 		<div>Script: <span>{{functionName}}</span></div>
 		<template is="dom-repeat" items="{{parameter}}">
 			<div>Parameter <span>{{index}}</span>: <span>{{item}}</span></div>
@@ -20,10 +20,6 @@
 "use strict";
 	var ScriptElement = new Polymer({
 		is: "Script-element",
-		behaviors: [FunctionCallBehavior],
-
-		getByName: function(name) {
-			return PoeQuestEditor.Conditionals.get(name);
-		}
+		behaviors: [FunctionCallBehavior]
 	});
 </script>

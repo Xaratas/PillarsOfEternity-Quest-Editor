@@ -4,8 +4,7 @@
 "use strict";
 var FunctionCallBehavior = {
 	properties: {
-		functionName: String,
-	    fullFunction: { // referenz aus den constants-conditionals.js
+	    fullFunction: { // referenz aus den constants-conditionals.html
 			type: Object,	
 			value: function() { return {}; }
 		},
@@ -20,8 +19,7 @@ var FunctionCallBehavior = {
 		for (var x = 0; x < xml.childNodes.length; x++) {
 			data = xml.childNodes[x];
 			if (data.nodeName == "FullName") {
-				this.functionName = data.textContent;
-				this.fullFunction = PoeQuestEditor.Conditionals.get(this.functionName);
+				this.fullFunction = PoeQuestEditor.Conditionals.get(data.textContent);
 			}
 			if (data.nodeName == "Parameters") {
 				for (var p = 0; p < data.childNodes.length; p++) {
@@ -32,12 +30,14 @@ var FunctionCallBehavior = {
 	},
 
 	functionCallToXML: function() {	
-		var xml = '<Data><FullName>' + this.functionName + '</FullName>' + '<Parameters>';
+		var xml = '<Data><FullName>' + PoeQuestEditor.Conditionals_fromDisplayName.get(this.fullFunction.name) + '</FullName>' + '<Parameters>';
 		this.parameter.forEach(function (parameter) {
 			xml += '<string>' + parameter + '</string>';
 		});
 		xml += '</Parameters></Data>';
 		return xml;
 	}
+	
+	// remember: never name a function 'get' it will break polymer
 };
 </script>

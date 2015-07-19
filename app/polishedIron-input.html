@@ -9,7 +9,10 @@
 	var PolishedIronInput = new Polymer({
 		is: 'PolishedIron-input',
 		properties: {
-			value: String
+			value: {
+				type: String,
+				notify: true
+			}
 		},
 
 		factoryImpl: function(value) {

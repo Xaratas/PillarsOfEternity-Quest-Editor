@@ -28,7 +28,13 @@
 			<span>Inv.</span><span>Name</span><span data-show$="[[!hidden(parameter.*, 0)]]">{{function_.param0.name}}</span><span data-show$="[[!hidden(parameter.*, 1)]]">{{function_.param1.name}}</span><span data-show$="[[!hidden(parameter.*, 2)]]">{{function_.param2.name}}</span><span data-show$="[[!hidden(parameter.*, 3)]]">{{function_.param3.name}}</span><span data-show$="[[!hidden(parameter.*, 4)]]">{{function_.param4.name}}</span>
 		</div>
 		<div>
-			<span>{{not}}</span> <func on-value-changed="functionChange"></func><param0 data-show$="[[!hidden(parameter.*, 0)]]"></param0><param1 data-show$="[[!hidden(parameter.*, 1)]]"></param1><param2 data-show$="[[!hidden(parameter.*, 2)]]"></param2> <param3 data-show$="[[!hidden(parameter.*, 3)]]"></param3><param4 data-show$="[[!hidden(parameter.*, 4)]]"></param4>
+			<span>{{not}}</span>
+		   	<func on-value-changed="functionChange"></func>
+			<param0 on-value-changed="input0Change" on-bind-value-changed="input0Change" data-show$="[[!hidden(parameter.*, 0)]]"></param0>
+			<param1 on-value-changed="input1Change" on-bind-value-changed="input1Change" data-show$="[[!hidden(parameter.*, 1)]]"></param1>
+			<param2 on-value-changed="input2Change" on-bind-value-changed="input2Change" data-show$="[[!hidden(parameter.*, 2)]]"></param2> 
+			<param3 on-value-changed="input3Change" on-bind-value-changed="input3Change" data-show$="[[!hidden(parameter.*, 3)]]"></param3>
+			<param4 on-value-changed="input4Change" on-bind-value-changed="input4Change" data-show$="[[!hidden(parameter.*, 4)]]"></param4>
 		</div>
 	</template>
 </dom-module>
@@ -36,12 +42,13 @@
 "use strict";
 	var FunctionCallEditElement = new Polymer({
 		is: 'functionCall-editElement',
-// brauch ich für observer doch ein created?
+		
 		properties: {
 			not: String,
 			function_: {
 				type: Object,
 				value: function() { return {}; },
+				notify: true
 			},
 			parameter: {
 				type: Array,
@@ -49,6 +56,7 @@
 				notify: true
 			}
 		},
+		
 		factoryImpl: function(function_, parameterValues) {
 			this.function_ = function_;
 			this.parameter = parameterValues;
@@ -84,18 +92,22 @@
 		},
 
 		elementForType: function(type, i) {
-			switch(type) {
-				case "Function": 
-					return new BetterSelect(PoeQuestEditor.Conditionals_NameList, this.function_.name);
-				case "Guid":
-					return new BetterSelect(PoeQuestEditor.GUIDS, this.parameter[i]);
-				case "ConditionalOperator":
-					return new BetterSelect(PoeQuestEditor.ConditionalOperator, this.parameter[i]);
-				case "Quest":
-				case "Text":
-				case "GlobalVariable":
-				case "Number": // typ zahl an das iron input hängen, und TODO validierung
-					return new PolishedIronInput(this.parameter[i]);
+			var options = PoeQuestEditor[type];
+			if(options !== undefined) {
+				return new BetterSelect(options, this.parameter[i]); // alle Enumerierten Konstanten
+			} else {
+				switch(type) {
+					case "Function":
+						return new BetterSelect(PoeQuestEditor.Conditionals_NameList, this.function_.name);
+					case "Guid":
+						return new BetterSelect(PoeQuestEditor.GUIDS_NameList, this.parameter[i]);
+					case "Quest":
+					case "Conversation":
+					case "GlobalVariable":
+					case "Text":
+					case "Number": // typ zahl an das iron input hängen, und TODO validierung
+						return new PolishedIronInput(this.parameter[i]);
+				}
 			}
 		},
 
@@ -104,8 +116,81 @@
 		},
 
 		functionChange: function(e, details, sender) {
-			this.function_ = PoeQuestEditor.Conditionals_byDisplayName.get(e.value);
+			if(this.function_.param0 !== undefined) this.$$("param0").children[0].remove();
+			if(this.function_.param1 !== undefined) this.$$("param1").children[0].remove();
+			if(this.function_.param2 !== undefined) this.$$("param2").children[0].remove();
+			if(this.function_.param3 !== undefined) this.$$("param3").children[0].remove();
+			if(this.function_.param4 !== undefined) this.$$("param4").children[0].remove();
+
+			this.function_ = PoeQuestEditor.Conditionals_byDisplayName.get(details.value);
+			var edit;
 			// parameter anpassen
+			this.parameter = [];
+			if(this.function_.param0 !== undefined) {
+				this.push('parameter', "");
+				edit = this.elementForType(this.function_.param0.type, 0);
+				this.$$("param0").appendChild(edit);
+			}
+			if(this.function_.param1 !== undefined) {
+				this.push('parameter', "");
+				edit = this.elementForType(this.function_.param1.type, 1);
+				this.$$("param1").appendChild(edit);
+			}
+			if(this.function_.param2 !== undefined) {
+				this.push('parameter', "");
+				edit = this.elementForType(this.function_.param2.type, 2);
+				this.$$("param2").appendChild(edit);
+			}
+			if(this.function_.param3 !== undefined) {
+				this.push('parameter', "");
+				edit = this.elementForType(this.function_.param3.type, 3);
+				this.$$("param3").appendChild(edit);
+			}
+			if(this.function_.param4 !== undefined) {
+				this.push('parameter', "");
+				edit = this.elementForType(this.function_.param4.type, 4);
+				this.$$("param4").appendChild(edit);
+			}
 		},
+
+		input0Change: function(e, details) {
+			if(this.function_.param0.type == "Guid") {
+				this.parameter[0] = PoeQuestEditor.GUIDS_byDisplayName.get(details.value);
+			} else {
+				this.parameter[0] = details.value;
+			}
+		},
+		
+		input1Change: function(e, details) {
+			if(this.function_.param1.type == "Guid") {
+				this.parameter[1] = PoeQuestEditor.GUIDS_byDisplayName.get(details.value);
+			} else {
+				this.parameter[1] = details.value;
+			}
+		},
+		
+		input2Change: function(e, details) {
+			if(this.function_.param2.type == "Guid") {
+				this.parameter[2] = PoeQuestEditor.GUIDS_byDisplayName.get(details.value);
+			} else {
+				this.parameter[2] = details.value;
+			}
+		},
+		
+		input3Change: function(e, details) {
+			if(this.function_.param3.type == "Guid") {
+				this.parameter[3] = PoeQuestEditor.GUIDS_byDisplayName.get(details.value);
+			} else {
+				this.parameter[3] = details.value;
+			}
+		},
+
+		input4Change: function(e, details) {
+			if(this.function_.param4.type == "Guid") {
+				this.parameter[4] = PoeQuestEditor.GUIDS_byDisplayName.get(details.value);
+			} else {
+				this.parameter[4] = details.value;
+			}
+		}
 	});
 </script>

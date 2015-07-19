@@ -13,7 +13,7 @@
 		}
 	</style>
 	<template>
-		<functionCall-editElement data-show$="[[isHidden]]" function_="{{getByName(functionName)}}" parameter="{{parameter}}"></functionCall-editElement>
+		<functionCall-editElement data-show$="[[isHidden]]" function_="{{fullFunction}}" parameter="{{parameter}}"></functionCall-editElement>
 		<div>Operator: <span>{{operator}}</span></div>
 		<div data-show$="[[isHidden]]">Function:&nbsp;<span>{{not}}</span> <span>{{functionName}}</span></div>
 	<!--	<span>{{fullFunction.param0.name}}</span><span>{{fullFunction.param1.name}}</span>
@@ -128,11 +128,7 @@
 				}
 			}
 			return xml;
-		},
-		
-		// remember: never name a function 'get' it will break polymer
-		getByName: function(name) {
-			return PoeQuestEditor.Conditionals.get(name);
 		}
+		
 	});
 </script>

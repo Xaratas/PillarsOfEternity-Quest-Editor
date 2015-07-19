@@ -44,7 +44,8 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Slot",
             description: "Slot to check.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -55,7 +56,8 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Slot",
             description: "Slot to check.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -84,7 +86,8 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Seconds",
             description: "The length of time in seconds to compare against combat duration.",
-            default: "1.0"
+            default: "1.0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -131,7 +134,8 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Arg",
             description: "The arg to check to see if it was set.",
-            default: ""
+            default: "",
+			type: "Text"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -155,7 +159,7 @@ PoeQuestEditor.Conditionals.set(
             name: "Value",
             description: "Compare the global variable against this value.",
             default: "0",
-			type: "Text"
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -172,7 +176,8 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Operator",
             description: "Comparison operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param2: {
             name: "Global 2",
@@ -195,7 +200,8 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Conversation Node ID",
             description: "Conversation node ID.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -212,15 +218,15 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Quest Node ID",
             description: "Quest node ID.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
     "Boolean IsQuestEventTriggered(String, Int32)", {
-    name: "Is Quest Event Triggered",
-    category: "Quest",
+    	name: "Is Quest Event Triggered",
+    	category: "Quest",
         description: "Checks if the quest event with the given id was triggerd",
-        type: "QuestEvent",
         param0: {
             name: "Quest Name",
             description: "Name of the quest.",
@@ -248,7 +254,8 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Addendum ID",
             description: "Addendum ID to test.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -265,7 +272,8 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "End State ID",
             description: "End State ID to test.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -300,12 +308,14 @@ PoeQuestEditor.Conditionals.set(
         param2: {
             name: "Operator",
             description: "Comparison operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param3: {
             name: "Value",
             description: "Compare the distance between A and B against this value.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -334,17 +344,20 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Team A",
             description: "The first team to check",
-            default: ""
+            default: "",
+			type: "Text"
         },
         param1: {
             name: "Team B",
             description: "The second team to check",
-            default: ""
+            default: "",
+			type: "Text"
         },
         param2: {
             name: "Relationship",
             description: "How team A and B will relate to each other",
-            default: "Neutral"
+            default: "Neutral",
+			type: "Relationship"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -361,12 +374,14 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Axis",
             description: "Type of rank to check",
-            default: "Benevolent"
+            default: "Positive",
+			type: "ReputationAxis"
         },
         param2: {
             name: "Ranks",
             description: "Ranks check amount",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -377,17 +392,20 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Faction Name",
             description: "Faction to modify",
-            default: "None"
+            default: "None",
+			type: "FactionName"
         },
         param1: {
             name: "Axis",
             description: "Type of rank to check",
-            default: "Benevolent"
+            default: "Positive",
+			type: "ReputationAxis"
         },
         param2: {
             name: "Ranks",
             description: "Ranks check amount",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -398,17 +416,20 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Object",
             description: "Object to check",
-            default: ""
+            default: "",
+			type: "Guid"
         },
         param1: {
             name: "Axis",
             description: "Type of rank to check",
-            default: "Benevolent"
+            default: "Positive",
+			type: "ReputationAxis"
         },
         param2: {
             name: "Ranks",
             description: "Ranks check amount",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -419,13 +440,153 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Faction Name",
             description: "Faction to check",
-            default: "None"
+            default: "None",
+			type: "FactionName"
         },
         param1: {
             name: "Axis",
-            description: "Type of rank to increase",
-            default: "Benevolent"
+            description: "Type of rank to check",
+            default: "Positive",
+			type: "ReputationAxis"
         },
+		param2: {
+			name: "Ranks",
+			description: "Ranks check amount",
+			default: "0",
+			type: "Number"
+		}
+    });
+PoeQuestEditor.Conditionals.set(
+        "Boolean DispositionEqual(Axis, Rank)", {
+        name: "Disposition Equal",
+        category: "Faction",
+        description: "Returns true if rank is equal to this value.",
+        param0: {
+            name: "Axis",
+            description: "The disposition type to check",
+            default: "Benevolent",
+			type: "Disposition"
+        },
+        param1: {
+            name: "Rank",
+            description: "Returns true if rank is equal to this value.",
+            default: "None",
+			type: "DispositionRank"
+        }
+    });
+PoeQuestEditor.Conditionals.set(
+        "Boolean DispositionGreaterOrEqual(Axis, Rank)", {
+        name: "Disposition Greater or Equal",
+        category: "Faction",
+        description: "Returns true if rank is equal or greater to this value.",
+        param0: {
+            name: "Axis",
+            description: "The disposition type to check",
+            default: "Benevolent",
+			type: "Disposition"
+        },
+        param1: {
+            name: "Rank",
+            description: "Returns true if rank is greater or equal to this value.",
+            default: "None",
+			type: "DispositionRank"
+        }
+    });
+PoeQuestEditor.Conditionals.set(
+        "Boolean IsHealthValue(Guid, Operator, Single)", {
+  		name: "Is Health Value",
+        category: "Health",
+        description: "Checks Ojbect health with given operator agains value",
+        param0: {
+            name: "Object",
+            description: "Object to test.",
+            default: "",
+            type: "Guid"
+        },
+        param1: {
+            name: "Operator",
+            description: "Comparison operator.",
+            default: "EqualTo",
+			type: "ConditionalOperator"
+        },
+        param2: {
+            name: "Health Value",
+            description: "Compare the object's health against this value.",
+            default: "0",
+			type: "Number"
+        }
+    });
+PoeQuestEditor.Conditionals.set(
+        "Boolean IsHealthPercentage(Guid, Operator, Single)", {
+        name: "Is Health Percentage",
+        category: "Health",
+        description: "Checks Ojbect health with operator agains percentage (0-100)",
+        param0: {
+            name: "Object",
+            description: "Object to test.",
+            default: "",
+            type: "Guid"
+        },
+        param1: {
+            name: "Operator",
+            description: "Comparison operator.",
+            default: "EqualTo",
+			type: "ConditionalOperator"
+        },
+        param2: {
+            name: "Health Percentage",
+            description: "Compare the object's health against this percentage.",
+            default: "0",
+			type: "Number"
+        }
+    });
+PoeQuestEditor.Conditionals.set(
+        "Boolean IsStaminaValue(Guid, Operator, Single)", {
+        name: "Is Stamina Value",
+        category: "Health",
+        description: "Checks Ojbect stamina with operator agains value",
+        param0: {
+            name: "Object",
+            description: "Object to test.",
+            default: "",
+            type: "Guid"
+        },
+        param1: {
+            name: "Operator",
+            description: "Comparison operator.",
+            default: "EqualTo",
+			type: "ConditionalOperator"
+        },
+        param2: {
+            name: "Stamina Value",
+            description: "Compare the object's statmina against this value.",
+            default: "0",
+			type: "Number"
+        }
+    });
+PoeQuestEditor.Conditionals.set(
+        "Boolean IsStaminaPercentage(Guid, Operator, Single)", {
+        name: "Is Stamina Percentage",
+        category: "Health",
+        description: "Checks Ojbect stamina with operator agains percentage (0-100)",
+        param0: {
+            name: "Object",
+            description: "Object to test.",
+            default: "",
+            type: "Guid"
+        },
+        param1: {
+            name: "Operator",
+            description: "Comparison operator.",
+            default: "EqualTo",
+			type: "ConditionalOperator"
+        },
+        param2: {
+            name: "Stamina Percentage",
+            description: "Compare the object's stamina against this percentage.",
+            default: "0",
+			type: "Number"
+        }
     });
 PoeQuestEditor.Conditionals.set(
     "Boolean IsItemCount(String, Operator, Int32)", {
@@ -435,17 +596,20 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Item Name",
             description: "Name of the item",
-            default: "ItemName"
+            default: "ItemName",
+			type: "Text"
         },
         param1: {
             name: "Operator",
             description: "Comparison operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param2: {
             name: "Count",
             description: "Compare the item count against this value.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -462,7 +626,8 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Item Name",
             description: "Name of the item",
-            default: "ItemName"
+            default: "ItemName",
+			type: "Text"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -473,7 +638,8 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Item Name",
             description: "Name of the item",
-            default: "ItemName"
+            default: "ItemName",
+			type: "Text"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -484,12 +650,14 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Operator",
             description: "Comparison operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param1: {
             name: "Amount",
             description: "Compare the player's money against this value.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -506,17 +674,20 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Item Name",
             description: "Name of the item",
-            default: "ItemName"
+            default: "ItemName",
+			type: "Text"
         },
         param2: {
             name: "Operator",
             description: "Comparison operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param3: {
             name: "Count",
             description: "Compare the item count against this value.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -533,7 +704,8 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Weapon Type",
             description: "Type of Weapon",
-            default: "Arbalest"
+            default: "Arbalest",
+			type: "WeaponType"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -550,7 +722,8 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "State to test",
             description: "State",
-            default: "Closed"
+            default: "Closed",
+			type: "OCLState"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -567,17 +740,20 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Attribute",
             description: "Attribute to test.",
-            default: "Resolve"
+            default: "Resolve",
+			type: "AttributeScoreType"
         },
         param2: {
             name: "Operator",
             description: "Comparison operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param3: {
             name: "Value",
             description: "Compare the object's attribute score against this value.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -588,17 +764,20 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Attribute",
             description: "Attribute to test.",
-            default: "Resolve"
+            default: "Resolve",
+			type: "AttributeScoreType"
         },
         param1: {
             name: "Operator",
             description: "Comparison operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param2: {
             name: "Value",
             description: "Compare the object's attribute score against this value.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -609,22 +788,26 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Slot",
             description: "slot to test.",
-            default: "0"
+            default: "0",
+			type: "Number"
         },
         param1: {
             name: "Attribute",
             description: "Attribute to test.",
-            default: "Resolve"
+            default: "Resolve",
+			type: "AttributeScoreType"
         },
         param2: {
             name: "Operator",
             description: "Comparison operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param3: {
             name: "Value",
             description: "Compare the object's attribute score against this value.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -641,17 +824,20 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Defense Type",
             description: "Defense to test.",
-            default: "Deflect"
+            default: "Deflect",
+			type: "DefenseType"
         },
         param2: {
             name: "Operator",
             description: "Comparison operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param3: {
             name: "Value",
             description: "Compare the object's defense against this value.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -662,17 +848,20 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Defense Type",
             description: "Defense to test.",
-            default: "Deflect"
+            default: "Deflect",
+			type: "DefenseType"
         },
         param1: {
             name: "Operator",
             description: "Comparison operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param2: {
             name: "Value",
             description: "Compare the object's defense against this value.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -689,17 +878,20 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Skill Type",
             description: "Skill to test.",
-            default: "Stealth"
+            default: "Stealth",
+			type: "SkillType"
         },
         param2: {
             name: "Operator",
             description: "Comparison operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param3: {
             name: "Value",
             description: "Compare the object's skill against this value.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -710,27 +902,32 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Skill Type",
             description: "Skill to test.",
-            default: "Stealth"
+            default: "Stealth",
+			type: "SkillType"
         },
         param1: {
             name: "Skill Operator",
             description: "Comparison operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param2: {
             name: "Skill Value",
             description: "Compare the object's skill against this value.",
-            default: "0"
+            default: "0",
+			type: "Number"
         },
         param3: {
             name: "Party Operator",
             description: "Compare the party count with this operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param4: {
             name: "Party Value",
             description: "Compare how many party members pass.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -741,17 +938,20 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Skill Type",
             description: "Skill to test.",
-            default: "Stealth"
+            default: "Stealth",
+			type: "SkillType"
         },
         param1: {
             name: "Operator",
             description: "Comparison operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param2: {
             name: "Value",
             description: "Compare the object's skill against this value.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -762,22 +962,26 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Slot",
             description: "slot to test.",
-            default: "0"
+            default: "0",
+			type: "Number"
         },
         param1: {
             name: "Skill Type",
             description: "Skill to test.",
-            default: "Stealth"
+            default: "Stealth",
+			type: "SkillType"
         },
         param2: {
             name: "Operator",
             description: "Comparison operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param3: {
             name: "Value",
             description: "Compare the object's skill against this value.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -806,7 +1010,8 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Class",
             description: "Class to test.",
-            default: "Fighter"
+            default: "Fighter",
+			type: "Class"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -817,7 +1022,8 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Class",
             description: "Class to test.",
-            default: "Fighter"
+            default: "Fighter",
+			type: "Class"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -834,7 +1040,8 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Race",
             description: "Race to test.",
-            default: "Human"
+            default: "Human",
+			type: "Race"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -845,7 +1052,8 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Race",
             description: "Race to test.",
-            default: "Human"
+            default: "Human",
+			type: "Race"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -862,7 +1070,8 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Subrace",
             description: "Subrace to test.",
-            default: "Meadow_Human"
+            default: "Meadow_Human",
+			type: "Subrace"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -873,7 +1082,8 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Subrace",
             description: "Subrace to test.",
-            default: "Meadow_Human"
+            default: "Meadow_Human",
+			type: "Subrace"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -890,7 +1100,8 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Gender",
             description: "Gender to test.",
-            default: "Male"
+            default: "Male",
+			type: "Gender"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -901,7 +1112,8 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Gender",
             description: "Gender to test.",
-            default: "Male"
+            default: "Male",
+			type: "Gender"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -912,12 +1124,14 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Slot",
             description: "Slot to test",
-            default: "0"
+            default: "0",
+			type: "Number"
         },
         param1: {
             name: "Gender",
             description: "Gender to test.",
-            default: "Male"
+            default: "Male",
+			type: "Gender"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -934,7 +1148,8 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Ability Name",
             description: "Name of the ability",
-            default: "AbilityName"
+            default: "AbilityName",
+			type: "AbilityNames"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -951,7 +1166,8 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Deity",
             description: "Deity to test.",
-            default: "Berath"
+            default: "Berath",
+			type: "Deity"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -968,7 +1184,8 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Paladin Order",
             description: "Paladin order to test.",
-            default: "BleakWalkers"
+            default: "BleakWalkers",
+			type: "PaladinOrder"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -985,7 +1202,8 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Culture",
             description: "Culture to test.",
-            default: "Aedyr"
+            default: "Aedyr",
+			type: "Culture"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -996,7 +1214,8 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Culture",
             description: "Culture to test.",
-            default: "Aedyr"
+            default: "Aedyr",
+			type: "Culture"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -1013,7 +1232,8 @@ PoeQuestEditor.Conditionals.set(
         param1: {
             name: "Background",
             description: "Background to test.",
-            default: "0"
+            default: "Aristocrat",
+			type: "Background"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -1024,7 +1244,8 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Background",
             description: "Background to test.",
-            default: "0"
+            default: "Aristocrat",
+			type: "Background"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -1059,7 +1280,8 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Prisoner Name",
             description: "The name of the prisoner",
-            default: "PrisonerName"
+            default: "PrisonerName",
+			type: "Text"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -1070,7 +1292,8 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Upgrade Type",
             description: "Upgrade to check.",
-            default: "None"
+            default: "None",
+			type: "StrongholdUpgradeType"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -1081,7 +1304,8 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Upgrade Type",
             description: "Upgrade to check.",
-            default: "None"
+            default: "None",
+			type: "StrongholdUpgradeType"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -1104,12 +1328,14 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Operator",
             description: "Comparison operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param1: {
             name: "Value",
             description: "Compare the stronghold's Security score against this value.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 PoeQuestEditor.Conditionals.set(
@@ -1120,21 +1346,25 @@ PoeQuestEditor.Conditionals.set(
         param0: {
             name: "Operator",
             description: "Comparison operator.",
-            default: "EqualTo"
+            default: "EqualTo",
+			type: "ConditionalOperator"
         },
         param1: {
             name: "Value",
             description: "Compare the stronghold's Prestige score against this value.",
-            default: "0"
+            default: "0",
+			type: "Number"
         }
     });
 
 // für BetterSelect
 PoeQuestEditor.Conditionals_NameList = [];
 PoeQuestEditor.Conditionals_byDisplayName = new Map();
+PoeQuestEditor.Conditionals_fromDisplayName = new Map();
 PoeQuestEditor.Conditionals.forEach(function(item, key, mapObj) {
 	PoeQuestEditor.Conditionals_NameList.push(item.name);		
 	PoeQuestEditor.Conditionals_byDisplayName.set(item.name, item);
+	PoeQuestEditor.Conditionals_fromDisplayName.set(item.name, key);
 });
 
 </script>

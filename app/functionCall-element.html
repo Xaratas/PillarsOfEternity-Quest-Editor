@@ -1,20 +1,27 @@
 <link rel="import" href="polishedIron-input.html">
-<dom-module id="functionCall-editElement">
+<dom-module id="functionCall-element">
 	<style>
 		:host {
 			background-color: #c2ebf5;
-			display: inline;
+			display: flex;
 		}
 		div {
 			display: flex;
+			flex-direction: column;
 		}
 		span, func, param0, param1, param2, param3, param4 {
-			width: 200px;
-			display: inline-block;
-			flex-grow: 1;
 		}
+
+		func, param0, param1, param2, param3, param4 {
+			max-width: 200px;
+			display: flex;
+		}
+
+		func {
+		}
+
 		span:first-child {
-			width: 30px;
+			flex: 0 0 30px; /* ziemlich genau 30px */
 		}
 
 		span[data-show=""], param0[data-show=""], param1[data-show=""], param2[data-show=""], param3[data-show=""], param4[data-show=""] {
@@ -25,26 +32,42 @@
 	</style>
 	<template>
 		<div>
-			<span>Inv.</span><span>Name</span><span data-show$="[[!hidden(parameter.*, 0)]]">{{function_.param0.name}}</span><span data-show$="[[!hidden(parameter.*, 1)]]">{{function_.param1.name}}</span><span data-show$="[[!hidden(parameter.*, 2)]]">{{function_.param2.name}}</span><span data-show$="[[!hidden(parameter.*, 3)]]">{{function_.param3.name}}</span><span data-show$="[[!hidden(parameter.*, 4)]]">{{function_.param4.name}}</span>
+			<span>Inv.</span>
+			<span>{{not}}</span>
 		</div>
 		<div>
-			<span>{{not}}</span>
+			<span>Name</span>
 		   	<func on-value-changed="functionChange"></func>
+		</div>
+		<div>
+			<span data-show$="[[!hidden(parameter.*, 0)]]">{{function_.param0.name}}</span>
 			<param0 on-value-changed="input0Change" on-bind-value-changed="input0Change" data-show$="[[!hidden(parameter.*, 0)]]"></param0>
+		</div>
+		<div>
+			<span data-show$="[[!hidden(parameter.*, 1)]]">{{function_.param1.name}}</span>
 			<param1 on-value-changed="input1Change" on-bind-value-changed="input1Change" data-show$="[[!hidden(parameter.*, 1)]]"></param1>
+		</div>
+		<div>
+			<span data-show$="[[!hidden(parameter.*, 2)]]">{{function_.param2.name}}</span>
 			<param2 on-value-changed="input2Change" on-bind-value-changed="input2Change" data-show$="[[!hidden(parameter.*, 2)]]"></param2> 
+		</div>
+		<div>
+			<span data-show$="[[!hidden(parameter.*, 3)]]">{{function_.param3.name}}</span>
 			<param3 on-value-changed="input3Change" on-bind-value-changed="input3Change" data-show$="[[!hidden(parameter.*, 3)]]"></param3>
+		</div>
+		<div>
+			<span data-show$="[[!hidden(parameter.*, 4)]]">{{function_.param4.name}}</span>
 			<param4 on-value-changed="input4Change" on-bind-value-changed="input4Change" data-show$="[[!hidden(parameter.*, 4)]]"></param4>
 		</div>
 	</template>
 </dom-module>
 <script>
 "use strict";
-	var FunctionCallEditElement = new Polymer({
-		is: 'functionCall-editElement',
+	var FunctionCallElement = new Polymer({
+		is: 'functionCall-element',
 		
 		properties: {
-			not: String,
+			not: String, // TODO
 			function_: {
 				type: Object,
 				value: function() { return {}; },
@@ -64,7 +87,6 @@
 
 		attached: function() {
 			if(Object.keys(this.function_).length != 0) {
-				// die funktionen einmal durchgehen und type überall anfügen
 				var edit;
 				edit = this.elementForType("Function");
 				this.$$("func").appendChild(edit);

@@ -13,15 +13,8 @@
 		}
 	</style>
 	<template>
-		<functionCall-editElement data-show$="[[isHidden]]" function_="{{fullFunction}}" parameter="{{parameter}}"></functionCall-editElement>
+		<functionCall-element data-show$="[[isHidden]]" function_="{{fullFunction}}" parameter="{{parameter}}"></functionCall-element>
 		<div>Operator: <span>{{operator}}</span></div>
-		<div data-show$="[[isHidden]]">Function:&nbsp;<span>{{not}}</span> <span>{{functionName}}</span></div>
-	<!--	<span>{{fullFunction.param0.name}}</span><span>{{fullFunction.param1.name}}</span>
-		
-		<template is="dom-repeat" items="{{parameter}}">
-			<div>Parameter <span>{{index}}</span>: <span>{{item}}</span></div>
-		</template>
--->
 		<nestedConditions></nestedConditions>
 	</template>
 </dom-module>

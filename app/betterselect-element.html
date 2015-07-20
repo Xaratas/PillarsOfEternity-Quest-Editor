@@ -1,6 +1,10 @@
 
 <dom-module id="betterSelect-element">
-	<style></style>
+	<style>
+		:host {
+			/* max-width: inherit; /* Funzt nicht im ff*/
+		}
+	</style>
 	<template>
 		<template is="dom-repeat" items="{{options_}}">
 			<option>{{item}}</option>

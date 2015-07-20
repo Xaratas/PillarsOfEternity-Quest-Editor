@@ -31,32 +31,33 @@
 		properties: {
 			label: String,
 			type: {
-				type: String,
-				observer: 'typeChanged'
+				type: String
 			},
 			helpText: String,
 
 			value: {
 				type: String,
-				notify: true,
-				observer: 'valueChanged'
+				notify: true
 			},
 
 			options: {
 				type: Array,
 				value: function() { return []; }
+			},
+
+			setupDone: {
+				type: Boolean,
+				value: false
 			}
 		},
-		// ich weiß nicht was zu erst dran ist, in ff ist es value, in chrome und ie type
+
 		// slack-channel: sjmiles 23:57 @xaratas: property change order is not guaranteed, use explicit dependencies in observers 
-		typeChanged: function(newValue) {
-			if(this.value != undefined) {
+		observers: ['typeAndValueSet(type, value)'],
+		
+		typeAndValueSet: function(newType, newValue) {
+			if(!this.setupDone) {
 				this.setup();
-			}
-		},
-		valueChanged: function(newValue) {
-			if(this.type != undefined) {
-				this.setup();
+				this.setupDone = true;
 			}
 		},
 
@@ -84,13 +85,8 @@
 
 		asText: function(options, value) {
 			var text = "";
-			// momentan ist value eine guid, finde den instancetag dazu
-			for(var i = 0; i < options.length; i++) {
-				if(options[i].guid == value) {
-					text  = options[i].instanceTag;
-					break;
-				}
-			}
+			// momentan ist value eine guid
+			text = PoeQuestEditor.GUIDS_byDisplayName.get(value);
 			var span = document.createElement("span");
 			span.innerHTML = text;
 			this.$.editControl.appendChild(span);

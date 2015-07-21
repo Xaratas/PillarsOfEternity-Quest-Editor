@@ -8,12 +8,12 @@
 			flex-direction: column;		 
 		}
 
-		functionCall-editElement[data-show=""], div[data-show=""] {
+		functionCall-editElement[hide], div[hide] {
 			display: none;
 		}
 	</style>
 	<template>
-		<functionCall-element data-show$="[[isHidden]]" function_="{{fullFunction}}" parameter="{{parameter}}"></functionCall-element>
+		<functionCall-element hide$="[[isHidden]]" function_="{{fullFunction}}" parameter="{{parameter}}"></functionCall-element>
 		<div>Operator: <span>{{operator}}</span></div>
 		<nestedConditions></nestedConditions>
 	</template>

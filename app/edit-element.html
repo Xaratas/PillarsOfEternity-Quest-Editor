@@ -75,7 +75,7 @@
 
 		asSelect: function(options, value) {
 			var	betterSelect = new BetterSelect(options, value);
-			this.$.editControl.appendChild(betterSelect);
+			Polymer.dom(this.$.editControl).appendChild(betterSelect);
 		},
 		 
 		asInput: function(value) {
@@ -89,7 +89,7 @@
 			text = PoeQuestEditor.GUIDS_byDisplayName.get(value);
 			var span = document.createElement("span");
 			span.innerHTML = text;
-			this.$.editControl.appendChild(span);
+			Polymer.dom(this.$.editControl).appendChild(span);
 		}
 
 	});

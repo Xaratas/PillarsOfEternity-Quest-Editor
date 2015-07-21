@@ -200,6 +200,10 @@
 			this.$.editpanel.hidden = !this.$.editpanel.hidden;
 		},
 
+		toggleConditions: function() {
+			this.$$('conditions').hidden = !this.$$('conditions').hidden;
+		},		
+
 		fromXML: function(xml) {
 			if (xml.hasChildNodes()) {
 				this.type = xml.attributes[0].value;

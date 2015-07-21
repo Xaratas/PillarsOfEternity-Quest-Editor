@@ -24,7 +24,7 @@
 			flex: 0 0 30px; /* ziemlich genau 30px */
 		}
 
-		span[data-show=""], param0[data-show=""], param1[data-show=""], param2[data-show=""], param3[data-show=""], param4[data-show=""] {
+		span[hide], param0[hide], param1[hide], param2[hide], param3[hide], param4[hide] {
 			display: none;
 		}
 
@@ -40,24 +40,24 @@
 		   	<func on-value-changed="functionChange"></func>
 		</div>
 		<div>
-			<span data-show$="[[!hidden(parameter.*, 0)]]">{{function_.param0.name}}</span>
-			<param0 on-value-changed="input0Change" on-bind-value-changed="input0Change" data-show$="[[!hidden(parameter.*, 0)]]"></param0>
+			<span hide$="[[!hidden(parameter.*, 0)]]">{{function_.param0.name}}</span>
+			<param0 on-value-changed="input0Change" on-bind-value-changed="input0Change" hide$="[[!hidden(parameter.*, 0)]]"></param0>
 		</div>
 		<div>
-			<span data-show$="[[!hidden(parameter.*, 1)]]">{{function_.param1.name}}</span>
-			<param1 on-value-changed="input1Change" on-bind-value-changed="input1Change" data-show$="[[!hidden(parameter.*, 1)]]"></param1>
+			<span hide$="[[!hidden(parameter.*, 1)]]">{{function_.param1.name}}</span>
+			<param1 on-value-changed="input1Change" on-bind-value-changed="input1Change" hide$="[[!hidden(parameter.*, 1)]]"></param1>
 		</div>
 		<div>
-			<span data-show$="[[!hidden(parameter.*, 2)]]">{{function_.param2.name}}</span>
-			<param2 on-value-changed="input2Change" on-bind-value-changed="input2Change" data-show$="[[!hidden(parameter.*, 2)]]"></param2> 
+			<span hide$="[[!hidden(parameter.*, 2)]]">{{function_.param2.name}}</span>
+			<param2 on-value-changed="input2Change" on-bind-value-changed="input2Change" hide$="[[!hidden(parameter.*, 2)]]"></param2> 
 		</div>
 		<div>
-			<span data-show$="[[!hidden(parameter.*, 3)]]">{{function_.param3.name}}</span>
-			<param3 on-value-changed="input3Change" on-bind-value-changed="input3Change" data-show$="[[!hidden(parameter.*, 3)]]"></param3>
+			<span hide$="[[!hidden(parameter.*, 3)]]">{{function_.param3.name}}</span>
+			<param3 on-value-changed="input3Change" on-bind-value-changed="input3Change" hide$="[[!hidden(parameter.*, 3)]]"></param3>
 		</div>
 		<div>
-			<span data-show$="[[!hidden(parameter.*, 4)]]">{{function_.param4.name}}</span>
-			<param4 on-value-changed="input4Change" on-bind-value-changed="input4Change" data-show$="[[!hidden(parameter.*, 4)]]"></param4>
+			<span hide$="[[!hidden(parameter.*, 4)]]">{{function_.param4.name}}</span>
+			<param4 on-value-changed="input4Change" on-bind-value-changed="input4Change" hide$="[[!hidden(parameter.*, 4)]]"></param4>
 		</div>
 	</template>
 </dom-module>
@@ -89,26 +89,26 @@
 			if(Object.keys(this.function_).length != 0) {
 				var edit;
 				edit = this.elementForType("Function");
-				this.$$("func").appendChild(edit);
+				Polymer.dom(this.$$("func")).appendChild(edit);
 				if(this.function_.param0 !== undefined) {
 					edit = this.elementForType(this.function_.param0.type, 0);
-					this.$$("param0").appendChild(edit);
+					Polymer.dom(this.$$("param0")).appendChild(edit);
 				}
 				if(this.function_.param1 !== undefined) {
 					edit = this.elementForType(this.function_.param1.type, 1);
-					this.$$("param1").appendChild(edit);
+					Polymer.dom(this.$$("param1")).appendChild(edit);
 				}
 				if(this.function_.param2 !== undefined) {
 					edit = this.elementForType(this.function_.param2.type, 2);
-					this.$$("param2").appendChild(edit);
+					Polymer.dom(this.$$("param2")).appendChild(edit);
 				}
 				if(this.function_.param3 !== undefined) {
 					edit = this.elementForType(this.function_.param3.type, 3);
-					this.$$("param3").appendChild(edit);
+					Polymer.dom(this.$$("param3")).appendChild(edit);
 				}
 				if(this.function_.param4 !== undefined) {
 					edit = this.elementForType(this.function_.param4.type, 4);
-					this.$$("param4").appendChild(edit);
+					Polymer.dom(this.$$("param4")).appendChild(edit);
 				}
 			}
 		},
@@ -138,11 +138,11 @@
 		},
 
 		functionChange: function(e, details, sender) {
-			if(this.function_.param0 !== undefined) this.$$("param0").children[0].remove();
-			if(this.function_.param1 !== undefined) this.$$("param1").children[0].remove();
-			if(this.function_.param2 !== undefined) this.$$("param2").children[0].remove();
-			if(this.function_.param3 !== undefined) this.$$("param3").children[0].remove();
-			if(this.function_.param4 !== undefined) this.$$("param4").children[0].remove();
+			if(this.function_.param0 !== undefined) Polymer.dom(this.$$("param0")).remove(Polymer.dom(this.$$("param0").firstChild));
+			if(this.function_.param1 !== undefined) Polymer.dom(this.$$("param1")).remove(Polymer.dom(this.$$("param1").firstChild));
+			if(this.function_.param2 !== undefined) Polymer.dom(this.$$("param2")).remove(Polymer.dom(this.$$("param2").firstChild));
+			if(this.function_.param3 !== undefined) Polymer.dom(this.$$("param3")).remove(Polymer.dom(this.$$("param3").firstChild));
+			if(this.function_.param4 !== undefined) Polymer.dom(this.$$("param4")).remove(Polymer.dom(this.$$("param4").firstChild));
 
 			this.function_ = PoeQuestEditor.Conditionals_byDisplayName.get(details.value);
 			var edit;
@@ -151,27 +151,27 @@
 			if(this.function_.param0 !== undefined) {
 				this.push('parameter', "");
 				edit = this.elementForType(this.function_.param0.type, 0);
-				this.$$("param0").appendChild(edit);
+				Polymer.dom(this.$$("param0")).appendChild(edit);
 			}
 			if(this.function_.param1 !== undefined) {
 				this.push('parameter', "");
 				edit = this.elementForType(this.function_.param1.type, 1);
-				this.$$("param1").appendChild(edit);
+				Polymer.dom(this.$$("param1")).appendChild(edit);
 			}
 			if(this.function_.param2 !== undefined) {
 				this.push('parameter', "");
 				edit = this.elementForType(this.function_.param2.type, 2);
-				this.$$("param2").appendChild(edit);
+				Polymer.dom(this.$$("param2")).appendChild(edit);
 			}
 			if(this.function_.param3 !== undefined) {
 				this.push('parameter', "");
 				edit = this.elementForType(this.function_.param3.type, 3);
-				this.$$("param3").appendChild(edit);
+				Polymer.dom(this.$$("param3")).appendChild(edit);
 			}
 			if(this.function_.param4 !== undefined) {
 				this.push('parameter', "");
 				edit = this.elementForType(this.function_.param4.type, 4);
-				this.$$("param4").appendChild(edit);
+				Polymer.dom(this.$$("param4")).appendChild(edit);
 			}
 		},
 

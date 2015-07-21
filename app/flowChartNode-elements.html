@@ -65,7 +65,7 @@
 		transform: translate(-4px, -26px) rotate(90deg);
 	}
 	
-	.left > conditions, .leftmiddle > enterScripts, .right > exitScripts {
+	.left > conditions, .left > conditions[hidden], .leftmiddle > enterScripts, .right > exitScripts {
 		display: none;
 		position: absolute;
 		width: 800px;
@@ -75,12 +75,16 @@
 		top: 30px;
 		padding: 10px;
 	}
-
-	.left:hover > conditions, .leftmiddle:hover > enterScripts, .right:hover > exitScripts {
+	
+	.left > conditions {
 		display: block;
 	}
 
-	conditions:hover, enterScripts:hover, exitScripts:hover {
+	.leftmiddle:hover > enterScripts, .right:hover > exitScripts {
+		display: block;
+	}
+
+	enterScripts:hover, exitScripts:hover {
 		display: block;
 	}
 	
@@ -108,9 +112,11 @@
 	}
 </style>
 <template>
-		<div class="left">
+		<div class="left" on-tap="toggleConditions">
 			<span>Conditions</span>
-			<conditions></conditions>
+			<conditions hidden="">
+				<button on-tap="toggleConditions">close</button>
+			</conditions>
 		</div>
 		<div class="leftmiddle">
 			<span>Enter&nbsp;Scripts</span>
@@ -245,8 +251,9 @@
 				orginalThis = this;
 			}
 			if (!(to.id in this.links)) {
-				this.links[to.id] = new DialogueLink(orginalThis, to);
-				document.getElementsByTagName("body")[0].appendChild(this.links[to.id]);
+				this.links[to.id] = new DialogueLink(orginalThis, to); // TODO QuestLink bei Quests
+				//document.getElementsByTagName("body")[0].appendChild(this.links[to.id]);
+				Polymer.dom(document).querySelector("body").appendChild(this.links[to.id]);
 			}
 		},
 
@@ -319,7 +326,7 @@
 		},
 
 		createLink: function(to) {
-			this.$.flowchartnode.creatLink(to, this);
+			this.$.flowchartnode.createLink(to, this);
 		},
 
 		setText: function(text, femaleText, textType, id) {
@@ -417,7 +424,7 @@
 		},
 
 		createLink: function(to) {
-			this.$.flowchartnode.creatLink(to, this);
+			this.$.flowchartnode.createLink(to, this);
 		},
 
 		// TODO linktypen vereinheitlichen

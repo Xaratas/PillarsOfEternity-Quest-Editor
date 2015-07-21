@@ -49,7 +49,7 @@
 			display: flex;
 		}
 		
-		textarea[data-show=""], div[data-show=""], #addendumpanel[data-show=""] {
+		textarea[hide], div[hide], #addendumpanel[hide] {
 			display: none;
 		}
 
@@ -72,15 +72,15 @@
 					<input id="showFemaleText" type="checkbox" checked="{{showFemaleText::change}}" />
 				</span>
 			</div>
-			<div class="column right" data-show$="[[isQuest]]">
-				<textarea id="text" data-show$="[[!showText]]" value="{{defaultText::input}}" placeholder="default text"></textarea>
-				<textarea id="femaleText" data-show$="[[!showFemaleText]]" value="{{femaleText::input}}" placeholder="female text"></textarea>
+			<div class="column right" hide$="[[isQuest]]">
+				<textarea id="text" hide$="[[!showText]]" value="{{defaultText::input}}" placeholder="default text"></textarea>
+				<textarea id="femaleText" hide$="[[!showFemaleText]]" value="{{femaleText::input}}" placeholder="female text"></textarea>
 			</div>
-			<div class="column right" data-show$="[[isConversation]]">
+			<div class="column right" hide$="[[isConversation]]">
 				<input is="iron-input" bind-value="{{title}}" placeholder="quest step title" />
 				<textarea id="description" value="{{description::input}}" placeholder="quest step description"></textarea>
 				<button on-click="toggleAddendums">{{showButtonText(nodeId, isHidden)}}</button>
-				<div id="addendumpanel" data-show$="[[isHidden]]"> <!-- element hat ein display wert gesetzt, hidden ist schwächer als display -->
+				<div id="addendumpanel" hide$="[[isHidden]]"> <!-- element hat ein display wert gesetzt, hidden ist schwächer als display -->
 					<template is="dom-repeat" items="{{addendums}}">
 						<label>{{item.id}}</label><textarea value="{{item.text}}" placeholder="quest addendum"></textarea>
 					</template>

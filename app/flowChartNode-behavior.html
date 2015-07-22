@@ -144,7 +144,7 @@
 	var FlowChartNodeBehavior = {
 		properties: {
 			type: String,
-			nodeId: Number,
+			nodeId: String, // statt Number solange der fix für https://github.com/PolymerElements/iron-input/issues/37 nicht gemergt wird
 			comments: {
 				type: Array,
 				value: function() { return []; }
@@ -211,7 +211,8 @@
 				for (var x = 0; x < xml.childNodes.length; x++) {
 					node = xml.childNodes[x];
 					if (node.nodeName == "NodeID") {
-						this.nodeId = parseInt(node.textContent);
+						//this.nodeId = parseInt(node.textContent);
+						this.nodeId = node.textContent;
 					}
 					if (node.nodeName == "Comments") {
 						var _;

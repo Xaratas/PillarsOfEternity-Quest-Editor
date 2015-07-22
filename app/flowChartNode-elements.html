@@ -65,7 +65,7 @@
 		transform: translate(-4px, -26px) rotate(90deg);
 	}
 	
-	.left > conditions, .left > conditions[hidden], .leftmiddle > enterScripts, .right > exitScripts {
+	conditions, conditions[hidden], .leftmiddle > enterScripts, .right > exitScripts {
 		display: none;
 		position: absolute;
 		width: 800px;
@@ -76,7 +76,7 @@
 		padding: 10px;
 	}
 	
-	.left > conditions {
+	conditions {
 		display: block;
 	}
 
@@ -114,10 +114,10 @@
 <template>
 		<div class="left" on-tap="toggleConditions">
 			<span>Conditions</span>
-			<conditions hidden="">
-				<button on-tap="toggleConditions">close</button>
-			</conditions>
 		</div>
+		<conditions hidden="">
+			<button on-tap="toggleConditions">close</button>
+		</conditions>
 		<div class="leftmiddle">
 			<span>Enter&nbsp;Scripts</span>
 			<enterScripts></enterScripts>

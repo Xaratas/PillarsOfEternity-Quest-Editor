@@ -144,11 +144,11 @@
 		},
 
 		functionChange: function(e, details, sender) {
-			if(this.function_.param0 !== undefined) Polymer.dom(this.$$("param0")).removeChild(Polymer.dom(this.$$("param0").firstChild));
-			if(this.function_.param1 !== undefined) Polymer.dom(this.$$("param1")).removeChild(Polymer.dom(this.$$("param1").firstChild));
-			if(this.function_.param2 !== undefined) Polymer.dom(this.$$("param2")).removeChild(Polymer.dom(this.$$("param2").firstChild));
-			if(this.function_.param3 !== undefined) Polymer.dom(this.$$("param3")).removeChild(Polymer.dom(this.$$("param3").firstChild));
-			if(this.function_.param4 !== undefined) Polymer.dom(this.$$("param4")).removeChild(Polymer.dom(this.$$("param4").firstChild));
+			if(this.function_.param0 !== undefined) this.$$("param0").children[0].remove(); //Polymer.dom(this.$$("param0")).removeChild(Polymer.dom(this.$$("param0").firstChild));
+			if(this.function_.param1 !== undefined) this.$$("param1").children[0].remove();
+			if(this.function_.param2 !== undefined) this.$$("param2").children[0].remove();
+			if(this.function_.param3 !== undefined) this.$$("param3").children[0].remove();
+			if(this.function_.param4 !== undefined) this.$$("param4").children[0].remove();
 
 			this.function_ = PoeQuestEditor.Conditionals_byDisplayName.get(details.value);
 			var edit;

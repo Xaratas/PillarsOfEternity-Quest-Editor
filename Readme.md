@@ -1,4 +1,4 @@
-# Pillars of Eternity Quest Editor (im entstehen) v0.2.8
+# Pillars of Eternity Quest Editor (im entstehen) v0.2.9
 
 Basiert momentan rein auf [Polymer](www.polymer-project.org)
 
@@ -16,9 +16,11 @@ Für UI Verbesserungen und Ideen bitte ein Ticket anlegen.
 * Highlight ausgewählter Nodes
 * Highlight ein- und ausgehender Links in verschiedenen Farben
 * Anzeigen und editieren der Texte für die ausgewählte Node
-* Edtieren von Playtype, Persistence, DisplayType, Experiencetype, Experience Level und Experience Weight
+* Editieren von Playtype, Persistence, DisplayType, Experiencetype, Experience Level und Experience Weight
+* Editieren von Conditions in allen belangen, ohne Validierung der Eingaben.
 * Anzeigen der redenden und zuhörenden NPCs
 * Ausgeben der editierten Files auf der Konsole (ohne Formatierung)
+* Hilfetexte, was die Conditionfunktionen bewirken
 
 
 Rest: Muss noch gebaut werden :)
@@ -30,7 +32,7 @@ http://xaratas.github.io
 Dokumentation des Quest-/Conversationsystems http://pillarsofeternity.gamepedia.com/Modding
 
 
-Dokumentation NPCs http://pillarsofeternity.gamepedia.com/Modding/Quest/
+Dokumentation Conditions und NPCs http://pillarsofeternity.gamepedia.com/Modding/Quest/
 
 
 XSD um Quest- und Conversationdateien zu validieren: https://bitbucket.org/ckirschner/poe-modding-framework/src/9c50d164c2ca74162dc39086f97702acd0b9e662/QuestModResources/quest2.xsd?at=QuestModding

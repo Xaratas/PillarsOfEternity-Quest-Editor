@@ -296,13 +296,13 @@
 			experienceType: {
 				type: Object, // String
 				value: function() {
-					return {label: "Experience Type", value: PoeQuestEditor.ExperienceType[0], set: PoeQuestEditor.ExperienceType, type: 'select', help: 'Help me'};
+					return {label: "Experience Type", value: PoeQuestEditor.ExperienceType[0], set: PoeQuestEditor.ExperienceType, type: 'select', help: 'Used to weight how much total experience will be handed out when objectives complete.'};
 				}
 			},
 			experienceLevel: {
 				type: Object, // Number
 				value: function() {
-					return {label: "Experience Level", value: 0, type: 'input', help: 'Help me'};
+					return {label: "Experience Level", value: 0, type: 'input', help: 'The average character level for this quest. This determines what experience pool this quest will award experience from.'};
 				}
 			},
 
@@ -402,7 +402,7 @@
 			experienceWeight: {
 				type: Object, // Number
 				value: function() {
-					return {label: "Experience Weight", value: 0, type: 'input', help: 'Help me'};
+					return {label: "Experience Weight", value: 0, type: 'input', help: 'The average character level for this quest. This determines what experience pool this quest will award experience from.'};
 				}
 			},
 			description: String,
@@ -487,20 +487,20 @@
 			playType: {
 				type: Object,
 				value: function() { 
-					return {'label': 'Play Type', 'value': PoeQuestEditor.PlayType[0], 'set': PoeQuestEditor.PlayType, 'type': 'select', 'help': 'Help me'};
+					return {'label': 'Play Type', 'value': PoeQuestEditor.PlayType[0], 'set': PoeQuestEditor.PlayType, 'type': 'select', 'help': 'The way the dialogue node selects which child node to play.'};
 				}
 			},
 			persistence: {
 				type: Object,
 				value: function() {
-					return { 'label': 'Persistence', 'value': PoeQuestEditor.Persistence[0], 'set': PoeQuestEditor.Persistence, 'type': 'select', 'help': 'Help me'};
+					return { 'label': 'Persistence', 'value': PoeQuestEditor.Persistence[0], 'set': PoeQuestEditor.Persistence, 'type': 'select', 'help': 'Set how the play status is remembered.'};
 				}
 			},
 			noPlayRandomWeight: String,
 			displayType: {
 				type: Object,
 				value: function() {
-					return {'label': 'Display Type', 'value': PoeQuestEditor.DisplayType[0], 'set': PoeQuestEditor.DisplayType,'type': 'select', 'help': 'Help me'};
+					return {'label': 'Display Type', 'value': PoeQuestEditor.DisplayType[0], 'set': PoeQuestEditor.DisplayType,'type': 'select', 'help': 'How the node will be displayed to the player.'};
 				}
 			},
 
@@ -593,13 +593,13 @@
 			speakerGuid: {
 				type: Object,
 				value: function() {
-					return {label: "Speaker", value: "", set: PoeQuestEditor.GUIDS, type: "text", help: "help me"};
+					return {label: "Speaker", value: "", set: PoeQuestEditor.GUIDS, type: "text", help: 'Guid of speaking Unit. Should be the same as in Character mappings for this character.'};
 				}
 			},
 			listenerGuid: {
 				type: Object,
 				value: function() {
-					return {label: "Listener", value: "", set: PoeQuestEditor.GUIDS, type: "text", help: "help me"};
+					return {label: "Listener", value: "", set: PoeQuestEditor.GUIDS, type: "text", help: 'In Obsidian quests it\'s mostly the player character listening.'};
 				}
 			},
 
@@ -688,13 +688,13 @@
 			conversationFilename: {
 				type: Object, // String
 				value: function() {
-					return {label: 'Filename', value: '', type: 'input', help: 'Help me'};
+					return {label: 'Filename', value: '', type: 'input', help: 'sorry no text'};
 				}
 			},
 			startNodeId: {
 				type: Object, // Number
 				value: function() {
-					return {label: 'Start nodeId', value: 0, type: 'input', help: 'Help me'};
+					return {label: 'Start nodeId', value: 0, type: 'input', help: 'sorry no text'};
 				}
 			},
 
@@ -747,7 +747,7 @@
 			bankNodePlayType: {
 				type: Object, // String
 				value: function() {
-					return {label: "BankNode play type", value: PoeQuestEditor.BankNodePlayType[0], set: PoeQuestEditor.BankNodePlayType, type: 'select', help: 'Help me'};
+					return {label: "BankNode play type", value: PoeQuestEditor.BankNodePlayType[0], set: PoeQuestEditor.BankNodePlayType, type: 'select', help: 'Specifies how nodes within the bank will be played.'};
 				}
 			},
 			childNodeIds: {

@@ -85,9 +85,11 @@
 	</head>
 	<body>
 		<h2>Instructions</h2>
-		Copy the content of a .quest file in the light violet box. And the content of a conversation file in the turquise box. Hit the respective buttons. Limitations: write buttons write only the first read quest/ conversation. Stringtable input only for conversation files, quests are more complex.<br />
+		Copy the content of a .quest file in the light violet box. And the content of a conversation file in the turquise box. Hit the respective buttons. Limitations: write buttons write only the first read quest/ conversation.<br />
 		On selecting a Node (Box) all ingoing links get blue, and all outgoing links get green.<br />
 		If a spaker name is "-" then this npc has got no name.
+		<h3>Conditions</h3>
+		Conditions can now be edited. The Questionmark Icon and each parameter name has a short description text on hover.
 		<h3>Nice examples</h3>
 		[gamepath]/data/quests/05_defiance_bay_heritage_hill/05_qst_rise_and_fall.quest <br />
 		[gamepath]/data/conversations/07_gilded_vale/07_bs_rh_ext_guard_01.conversation <br />
@@ -102,9 +104,9 @@
 		<button onclick="write_stringtable()">write modified Stringtable XML to console</button>
 		</div>
 		<div>
-		<textarea id="questXML" class="quest" cols="80" rows="10" placeholder=".quest"></textarea>
-		<textarea id="conversationXML" class="conversation" cols="80" rows="10" placeholder=".conversation"></textarea>
-		<textarea id="stringTable" class="stringtable" cols="80" rows="10" placeholder=".stringtable"></textarea>
+		<textarea id="questXML" class="quest" cols="60" rows="10" placeholder=".quest"></textarea>
+		<textarea id="stringTable" class="stringtable" cols="60" rows="10" placeholder=".stringtable"></textarea>
+		<textarea id="conversationXML" class="conversation" cols="60" rows="10" placeholder=".conversation"></textarea>
 		</div>
 		</div>
 		<stringtable-viewer></stringtable-viewer>

@@ -19,7 +19,10 @@
 
 		properties: {
 			options_: Array,
-			selectedValue: String,
+			selectedvalue: {
+				type: String,
+				notify: true
+			}
 		},
 
 		listeners: {
@@ -27,25 +30,25 @@
 		},
 		
 		/** Options is a reserved HtmlOptionsCollection */
-		factoryImpl: function(options_, selectedValue) { // label?
+		factoryImpl: function(options_, selectedvalue) { // label?
 			this.options_ = options_;
-			this.selectedValue = selectedValue;
-			// TODO
+			this.selectedvalue = selectedvalue;
 		},
 		// Das selectbox Verhalten setzt den Wert auf das erste Option das kommt, sprich das muss korrigiert werden.
 		attached: function() {
 			this.async(function() {
 				if(this.value === "") { // delay further, looks like bad style
 					this.async(function() {
-						this.value = this.selectedValue;
+						this.value = this.selectedvalue;
 					});
 				} else {
-					this.value = this.selectedValue;
+					this.value = this.selectedvalue;
 				}
 			});
 		},
 
 		onChange: function() {
+			this.selectedvalue = this.value; // direkt ändern, wenn es direkt gebunden ist
 			this.fire('value-changed', {value: this.value});
 		}
 	});

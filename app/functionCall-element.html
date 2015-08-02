@@ -28,15 +28,15 @@
 			flex: 0 0 30px; /* ziemlich genau 30px */
 		}
 
-		span[hide], param0[hide], param1[hide], param2[hide], param3[hide], param4[hide] {
+		div[hide], span[hide], param0[hide], param1[hide], param2[hide], param3[hide], param4[hide] {
 			display: none;
 		}
 
 		/* bestimmte inputs länger */
 	</style>
 	<template>
-		<div>
-			<span>Inv.</span>
+		<div hide$="[[!isScript(type)]]">
+			<span>Not</span>
 			<span><paper-toggle-button checked="{{not}}"></paper-toggle-button></span>
 		</div>
 		<div>
@@ -135,7 +135,7 @@
 					case "Script":
 						return new BetterSelect(PoeQuestEditor.Scripts_NameList, this.function_.name);
 					case "Guid":
-						return new BetterSelect(PoeQuestEditor.GUIDS_NameList, this.parameter[i]); // das könnte glatt nie funktioniert haben
+						return new BetterSelect(PoeQuestEditor.GUIDS_NameList, PoeQuestEditor.GUIDS.get(this.parameter[i]));
 					case "Boolean":
 						var button = document.createElement("paper-toggle-button");
 						button.checked = this.parameter[i];
@@ -152,6 +152,10 @@
 
 		hidden: function(change, index) {
 			return change.base[index] !== undefined;
+		},
+
+		isScript: function(type) {
+			return type == "Script";
 		},
 
 		functionChange: function(e, details, sender) {

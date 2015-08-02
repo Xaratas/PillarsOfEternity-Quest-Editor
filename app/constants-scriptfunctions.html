@@ -1,0 +1,2343 @@
+<script>
+PoeQuestEditor.Scripts = new Map();
+PoeQuestEditor.Scripts.set("Void AISetPackage(Guid, PackageType)", {
+    description: "Changes the Behavior of the given GUID.",
+    name: "Set Package",
+    category: "Scripts\\AI",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "AI Package",
+        description: "New package for the AI",
+        default: "",
+        type: "PackageType"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AISetPatrolling(Guid, Boolean)", {
+    description: "Enables or Disables the patrolling of this Character.",
+    name: "Set Patrol State",
+    category: "Scripts\\AI",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Should Patrol",
+        description: "The new state of patrolling",
+        default: "",
+        type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AISetPatrolPoint(Guid, Guid)", {
+    description: "Sets the basis around which the character patrols.",
+    name: "Set Patrol Point",
+    category: "Scripts\\AI",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Patrol Point",
+        description: "New base patrol point",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AIPathToPoint(Guid, Guid, MovementType)", {
+    description: "Clears the current Patrol waypoints of the NPC and sets a the waypoint as new one.",
+    name: "Move to Point",
+    category: "Scripts\\AI",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Point",
+        description: "Object to path to",
+        default: "",
+        type: "Guid"
+    },
+    param2: {
+        name: "Movement Type",
+        description: "How to get there",
+        default: "",
+        type: "MovementType"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AIForceAttack(Guid, Guid)", {
+    description: "The given character attacks the target with its primary attack.",
+    name: "Force Attack",
+    category: "Scripts\\AI",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Target",
+        description: "Object to attack",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AISetBusy(Guid, Boolean)", {
+    description: "Sets the busy state",
+    name: "Set Busy State",
+    category: "Scripts\\AI",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Is Busy",
+        description: "The new state of busy",
+        default: "",
+        type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void KnockDown(Guid, Single)", {
+    description: "Knocks the character godly down. Min duration 0.1s.",
+    name: "Knock Down",
+    category: "Scripts\\AI",
+    param0: {
+        name: "Target",
+        description: "Character to knock down",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Duration",
+        description: "The time is seconds for the character to lie down",
+        default: "1.0",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void PlayerSafeMode(Boolean)", {
+    description: "Set the Game safe from any player input and clear all queued actions and close windows. Use this to play cutscenes or scripted movements.",
+    name: "Player Safe Mode",
+    category: "Scripts\\AI",
+    param0: {
+        name: "Enabled",
+        description: "True to disable party character AIs and Input, default: false to restore",
+        default: "true",
+        type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void ForceInCombatIdle(Guid, Boolean)", {
+    description: "Forces the chacter to do nothing in combat.",
+    name: "Force In Combat Idle",
+    category: "Scripts\\AI",
+    param0: {
+        name: "NPC",
+        description: "Set the combat idle stance for this character.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "In Combat Idle",
+        description: "Whether the character should be a combat idle stance.",
+        default: "true",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void ForceCombatPathing(Guid, Boolean)", {
+    description: "Call with true if the character should use the pathfinding for combat situations.",
+    name: "Force Combat Pathing",
+    category: "Scripts\\AI",
+    param0: {
+        name: "NPC",
+        description: "Set combat pathing for this character.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Use Combat Pathing",
+        description: "Whether the character should be forced to use combat pathing.",
+        default: "true",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void PlaySound(Guid, String)", {
+    description: "Plays from this Object a named sound.",
+    name: "Play Sound From Bank",
+    category: "Scripts\\Audio",
+    param0: {
+        name: "Object",
+        description: "Object with audiobank",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Sound Cue",
+        description: "The name of the cue in the audio bank.",
+        default: "",
+        type: "Text"
+    }
+});
+PoeQuestEditor.Scripts.set("Void PlaySound(Guid)", {
+    description: "Plays the audio from this Object. A clip must be set before.",
+    name: "Play Sound From Source",
+    category: "Scripts\\Audio",
+    param0: {
+        name: "Object",
+        description: "Object with AudioSource",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void PlaySoundFromSoundSet(Guid, SoundAction, Int32)", {
+    description: "Play a sound from the sound set of this character. Will use a fallback if the character does not have this sound.",
+    name: "Play Sound From Sound Set",
+    category: "Scripts\\Audio",
+    param0: {
+        name: "Object",
+        description: "Object with Sound Set",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Sound Action",
+        description: "Sound To Play",
+        default: "Invalid",
+        type: "SoundAction"
+    },
+    param2: {
+        name: "Sound Variation",
+        description: "Variation to play",
+        default: "-1",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void PlayCommentary(Guid)", {
+    description: "Plays the developer comentary for this object.",
+    name: "Play Commentary",
+    category: "Scripts\\Audio",
+    param0: {
+        name: "Object",
+        description: "Object with a developer commentary component",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void PlayMusic(String)", {
+    description: "Plays the audio file.",
+    name: "Play Music",
+    category: "Scripts\\Audio",
+    param0: {
+        name: "Audio Clip Filename",
+        description: "AudioClip path relative to the Resources folder.",
+        default: "",
+        type: "Text"
+    }
+});
+PoeQuestEditor.Scripts.set("Void PlayScriptedMusic(String, Boolean, FadeType, Single, Single, Single, Boolean)", {
+    description: "Plays the audio file with the given fading configuration.",
+    name: "Play Scripted Music",
+    category: "Scripts\\Audio",
+    param0: {
+        name: "Clip Name",
+        description: "The scripted clip name specified in Area Music",
+        default: "",
+        type: "Text"
+    },
+    param1: {
+        name: "Block Combat Music",
+        description: "Prevents game from playing normal combat music",
+        default: "false",
+        type: "Boolean"
+    },
+    param2: {
+        name: "Fade Type",
+        description: "The type of fade to use when transitioning to new music.",
+        default: "FadeOutPauseFadeIn",
+        type: "FadeType"
+    },
+    param3: {
+        name: "Fade Out Duration",
+        description: "The length in seconds to fade out new music.",
+        default: "0.5",
+        type: "Number"
+    },
+    param4: {
+        name: "Fade In Duration",
+        description: "The length in seconds to fade in new music.",
+        default: "0.5",
+        type: "Number"
+    },
+    param5: {
+        name: "Pause Duration",
+        description: "The length in seconds to fade in new music.",
+        default: "0.5",
+        type: "Number"
+    },
+    param6: {
+        name: "Loop",
+        description: "Designates if the music should loop.",
+        default: "false",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void EndScriptedMusic()", {
+    description: "End the current scripted song and resumes normal/ area music.",
+    name: "End Scripted Music",
+    category: "Scripts\\Audio"
+});
+PoeQuestEditor.Scripts.set("Void ResumeAreaMusic()", {
+    description: "Resumes the area music if it exists, or the scripted Song",
+    name: "Resume Area Music",
+    category: "Scripts\\Audio"
+});
+PoeQuestEditor.Scripts.set("Void FadeOutAreaMusic()", {
+    description: "Quickly fades out area Music",
+    name: "Fade Out Area Music",
+    category: "Scripts\\Audio"
+});
+PoeQuestEditor.Scripts.set("Void EnableMusicLoopCooldown()", {
+    description: "Sets a flag",
+    name: "Enable Music Loop Cooldown",
+    category: "Scripts\\Audio"
+});
+PoeQuestEditor.Scripts.set("Void DisableMusicLoopCooldown()", {
+    description: "Removes a flag",
+    name: "Disable Music Loop Cooldown",
+    category: "Scripts\\Audio"
+});
+PoeQuestEditor.Scripts.set("Void FadeOutAudio(Guid, Single)", {
+    description: "Fades out all audio of this object",
+    name: "Fade Out Audio",
+    category: "Scripts\\Audio",
+    param0: {
+        name: "Parent Object",
+        description: "The parent object with the audio sources",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Fade Time",
+        description: "How long to fade the audio in seconds.",
+        default: "1.0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void FadeInAudio(Guid, Single)", {
+    description: "Fades in all audio of this object",
+    name: "Fade In Audio",
+    category: "Scripts\\Audio",
+    param0: {
+        name: "Parent Object",
+        description: "The parent object with the audio sources",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Fade Time",
+        description: "How long to fade the audio in seconds.",
+        default: "1.0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void OverrideFatigueWhispers(Single)", {
+    description: "Overrides the volume of fatigue whispers.",
+    name: "Override Fatigue Whispers",
+    category: "Scripts\\Audio",
+    param0: {
+        name: "New Volume",
+        description: "The new volume to force the fatigue whispers to.",
+        default: "0.0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void ReleaseFatigueWhisperOverride()", {
+    description: "Remove a fatigue volume override.",
+    name: "Release Fatigue Whisper Override",
+    category: "Scripts\\Audio"
+});
+PoeQuestEditor.Scripts.set("Void SetIsHostile(Guid, Boolean)", {
+    description: "Set the NPC hostile or neutral to the player.",
+    name: "Set Is Hostile",
+    category: "Scripts\\Faction",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Is Hostile",
+        description: "Hostile state towards the player",
+        default: "true",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetTeamRelationship(String, String, Relationship)", {
+    description: "Sets the relationship between 2 teams.",
+    name: "Set Team Relationship",
+    category: "Scripts\\Faction",
+    param0: {
+        name: "Team A",
+        description: "The first team to change",
+        default: "",
+        type: "Text"
+    },
+    param1: {
+        name: "Team B",
+        description: "The second team to change",
+        default: "",
+        type: "Text"
+    },
+    param2: {
+        name: "Relationship",
+        description: "How team A and B will relate to each other",
+        default: "",
+        type: "Relationship"
+    }
+});
+PoeQuestEditor.Scripts.set("Void ReputationAddPoints(FactionName, Axis, ChangeStrength)", {
+    description: "Modifies the reputation of the player by the given team.",
+    name: "Reputation Add Points By Tag",
+    category: "Scripts\\Faction",
+    param0: {
+        name: "Faction Name",
+        description: "Faction tag to modify",
+        default: "",
+        type: "FactionName"
+    },
+    param1: {
+        name: "Axis",
+        description: "Good vs. Bad action",
+        default: "Positive",
+        type: "ReputationAxis"
+    },
+    param2: {
+        name: "Strength",
+        description: "Severity of the change",
+        default: "Minor",
+        type: "ReputationChangeStrength"
+    }
+});
+PoeQuestEditor.Scripts.set("Void DispositionAddPoints(Axis, Strength)", {
+    description: "Increses the given player character disposition.",
+    name: "Disposition Add Points",
+    category: "Scripts\\ Disposition",
+    param0: {
+        name: "Axis",
+        description: "Action type",
+        default: "Aggressive",
+        type: "Disposition"
+    },
+    param1: {
+        name: "Strength",
+        description: "Severity of the change",
+        default: "Minor",
+        type: "DispositionRankStrength"
+    }
+});
+PoeQuestEditor.Scripts.set("Void PrintString(String)", {
+    description: "Writs a String to the ingame log.",
+    name: "Print String",
+    category: "Scripts\\General",
+    param0: {
+        name: "Text",
+        description: "String print to the console",
+        default: "",
+        type: "Text"
+    }
+});
+PoeQuestEditor.Scripts.set("Void ActivateObject(Guid, Boolean)", {
+    description: "Activates or deactivates an object.",
+    name: "Activate Object",
+    category: "Scripts\\General",
+    param0: {
+        name: "Object",
+        description: "Object to activate.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Active",
+        description: "Active state to set the object to.",
+        default: "true",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void StartConversation(Guid, String, Int32)", {
+    description: "Starts a Conversation based on the given File on this node id. Dead People cant speak.",
+    name: "Start Conversation",
+    category: "Scripts\\Conversation",
+    param0: {
+        name: "Object",
+        description: "Speaker Object",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Conversation",
+        description: "Conversation File",
+        default: "",
+        type: "Conversation"
+    },
+    param2: {
+        name: "Conversation Node ID",
+        description: "Conversation Node ID",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void StartScriptedInteraction(Guid)", {
+    description: "Starts a scripted interaction with this object if it have one.",
+    name: "Start Scripted Interaction",
+    category: "Scripts\\Interaction",
+    param0: {
+        name: "Object",
+        description: "Scripted Interaction Object",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void StartCutscene(Guid)", {
+    description: "Starts the given Cutscene.",
+    name: "Start Cutscene",
+    category: "Scripts\\Cutscene",
+    param0: {
+        name: "Object",
+        description: "Cutscene Object",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AreaTransition(MapType, PointLocation)", {
+    description: "Transition on to the new map, from the startpoint",
+    name: "Area Transition",
+    category: "Scripts\\Area",
+    param0: {
+        name: "Area Name",
+        description: "The name of the area",
+        default: "",
+        type: "MapType"
+    },
+    param1: {
+        name: "Start Point Name",
+        description: "The name of the start point",
+        default: "",
+        type: "PointLocation"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AddExperience(Int32)", {
+    description: "Gives each party member this many xp.",
+    name: "Add Experience",
+    category: "Scripts\\Quest",
+    param0: {
+        name: "Experience",
+        description: "Amount of XP to reward",
+        default: "50",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AddExperienceToLevel(Int32)", {
+    description: "Instantly reach the given level with all party members",
+    name: "Add Experience To Level",
+    category: "Scripts\\Quest",
+    param0: {
+        name: "Level",
+        description: "The level you want to level to",
+        default: "12",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AddExperiencePlayer(Int32)", {
+    description: "Gives only the player character xp.",
+    name: "Add Experience Player",
+    category: "Scripts\\Quest",
+    param0: {
+        name: "Experience",
+        description: "Amount of XP to reward",
+        default: "50",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetInteractionImage(Int32)", {
+    description: "Changes the image in a scripted interaction screen to the one of the given state",
+    name: "Set Interaction Image",
+    category: "Scripts\\Interaction",
+    param0: {
+        name: "Interaction Image",
+        description: "The interaction image index",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void FlipTile(Guid, Int32)", {
+    description: "?",
+    name: "Flip Tile",
+    category: "Scripts\\Tile",
+    param0: {
+        name: "Object",
+        description: "Flip tile object",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Frame",
+        description: "The interaction image index",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AddToParty(Guid)", {
+    description: "Adds the NPC to the party.",
+    name: "Add to Party",
+    category: "Scripts\\Party",
+    param0: {
+        name: "Tag",
+        description: "Companion to Add",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void RemoveFromParty(Guid)", {
+    description: "Removes the NPC from the party",
+    name: "Remove from Party",
+    category: "Scripts\\Party",
+    param0: {
+        name: "Tag",
+        description: "Companion to Remove",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void TeleportPartyToLocation(Guid)", {
+    description: "Teleports the party on the same map to the given point.",
+    name: "Teleport Party To Location",
+    category: "Scripts\\Movement",
+    param0: {
+        name: "Tag",
+        description: "Location to teleport to",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void TeleportPlayerToLocation(Guid)", {
+    description: "Teleports the player on the same map to the given point.",
+    name: "Teleport Player To Location",
+    category: "Scripts\\Movement",
+    param0: {
+        name: "Tag",
+        description: "Location to teleport to",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void TeleportObjectToLocation(Guid, Guid)", {
+    description: "Teleports the object on the same map to the given point.",
+    name: "Teleport Object To Location",
+    category: "Scripts\\Movement",
+    param0: {
+        name: "Object",
+        description: "The object to teleport",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Tag",
+        description: "Location to teleport to.",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void StartTimer(Guid)", {
+    description: "Start the given timer",
+    name: "Start Timer",
+    category: "Scripts\\Timer",
+    param0: {
+        name: "Object",
+        description: "The timer object",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void StopTimer(Guid)", {
+    description: "Stop the given timer",
+    name: "Stop Timer",
+    category: "Scripts\\Timer",
+    param0: {
+        name: "Object",
+        description: "The timer object",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetTimer(Guid, Single)", {
+    description: "Set the timer to this value (seconds. If the timer runs out 'On timer Finished' scripts are excecuted.)",
+    name: "Set Timer",
+    category: "Scripts\\Timer",
+    param0: {
+        name: "Object",
+        description: "The timer object",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Time",
+        description: "New delay time for timer",
+        default: "1",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void Rest()", {
+    description: "Rests with camp fire movie",
+    name: "Rest",
+    category: "Scripts\\Time"
+});
+PoeQuestEditor.Scripts.set("Void RestWithMovieID(Mode)", {
+    description: "Rests with given movie",
+    name: "RestWithMovieID",
+    category: "Scripts\\Time",
+    param0: {
+        name: "MovieType",
+        description: "This is the movie enum to display",
+        default: "0",
+        type: "RestMovieMode"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AdvanceTimeByHours(Int32)", {
+    description: "Advances time by x hours.",
+    name: "AdvanceTimeByHours",
+    category: "Scripts\\Time",
+    param0: {
+        name: "Hours",
+        description: "Hours to advance",
+        default: "8",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AdvanceTimeToHour(Int32)", {
+    description: "Advances time to this hour.",
+    name: "AdvanceTimeToHour",
+    category: "Scripts\\Time",
+    param0: {
+        name: "Hour",
+        description: "Hour to advance to",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void ChangeWaterLevel(Guid, Single, Single)", {
+    description: "Changes the water level over the given time.",
+    name: "Change Water Level",
+    category: "Scripts\\Water",
+    param0: {
+        name: "Object",
+        description: "The water plane",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Water Level",
+        description: "New Water Level",
+        default: "0",
+        type: "Number"
+    },
+    param2: {
+        name: "Timer",
+        description: "Time to move to new level",
+        default: "1",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetTriggerEnabled(Guid, Boolean)", {
+    description: "Enable or disable a trigger.",
+    name: "Set Trigger Enabled",
+    category: "Scripts\\Trigger",
+    param0: {
+        name: "Object",
+        description: "The trigger",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "isEnabled",
+        description: "New Enabled Value",
+        default: "true",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetSwitchEnabled(Guid, Boolean)", {
+    description: "Enable or disable a switch.",
+    name: "Set Switch Enabled",
+    category: "Scripts\\Switch",
+    param0: {
+        name: "Object",
+        description: "The switch",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "isEnabled",
+        description: "New Enabled Value",
+        default: "true",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void WorldMapSetVisibility(MapType, VisibilityType)", {
+    description: "Change the visibilty of a map.",
+    name: "World Map Set Visibility",
+    category: "Scripts\\Trigger",
+    param0: {
+        name: "Map",
+        description: "Map to change status of",
+        default: "Map",
+        type: "MapType"
+    },
+    param1: {
+        name: "Visibility",
+        description: "New visibility status",
+        default: "Locked",
+        type: "WorldMapVisibilityType"
+    }
+});
+PoeQuestEditor.Scripts.set("Void FadeToBlack(Single, Boolean, Boolean)", {
+    description: "Fade out in given time.",
+    name: "Fade To Black",
+    category: "Scripts\\Fade",
+    param0: {
+        name: "Fade Time",
+        description: "Fade time",
+        default: "2.0",
+        type: "Number"
+    },
+    param1: {
+        name: "Fade Music",
+        description: "Fade music",
+        default: "true",
+        type: "Boolean"
+    },
+    param2: {
+        name: "Fade Ambient Audio",
+        description: "Fade all ambient audio",
+        default: "true",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void FadeFromBlack(Single, Boolean, Boolean)", {
+    description: "Fade in in given time.",
+    name: "Fade From Black",
+    category: "Scripts\\Fade",
+    param0: {
+        name: "Fade Time",
+        description: "Fade time",
+        default: "2.0",
+        type: "Number"
+    },
+    param1: {
+        name: "Fade Music",
+        description: "Fade music",
+        default: "true",
+        type: "Boolean"
+    },
+    param2: {
+        name: "Fade Ambient Audio",
+        description: "Fade all ambient audio",
+        default: "true",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void EncounterSpawn(Guid)", {
+    description: "Spawns an encounter, can be Creatures, NPCs, or companions not currently in party or stronghold.",
+    name: "Encounter Spawn",
+    category: "Scripts\\Encounter",
+    param0: {
+        name: "Object",
+        description: "The Encounter",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void EncounterDespawn(Guid)", {
+    description: "Removes all members of this encounter.",
+    name: "Encounter Despawn",
+    category: "Scripts\\Encounter",
+    param0: {
+        name: "Object",
+        description: "The Encounter",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void EncounterSetCombatEndWhenAllAreDeadFlag(Guid, Boolean)", {
+    description: "Sets the encounter end flag.",
+    name: "Encounter Set Combat End When All Are Dead Flag",
+    category: "Scripts\\Encounter",
+    param0: {
+        name: "Object",
+        description: "The Encounter",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "CombatEndWhenAllAreDeadFlag",
+        description: "Set this value",
+        default: "true",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetNavMeshObstacleActivated(Guid, Boolean)", {
+    description: "Sets if the object is unwalkable.",
+    name: "SetNavMeshObstacleActivated",
+    category: "Scripts\\NavObstacle",
+    param0: {
+        name: "Is Active",
+        description: "Sets if the obstacle is activated or not.",
+        default: "true",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetBackground(Guid, Background)", {
+    description: "Sets the roleplay background of the character.",
+    name: "Set Background",
+    category: "Scripts\\Background",
+    param0: {
+        name: "Object",
+        description: "The character to set background on",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Background",
+        description: "The background value",
+        default: "0",
+        type: "Background"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetPlayerBackground(Background)", {
+    description: "Sets the roleplay background of the player.",
+    name: "Set Player Background",
+    category: "Scripts\\PlayerBackground",
+    param0: {
+        name: "Background",
+        description: "The background value",
+        default: "0",
+		type: "Background"
+    }
+});
+PoeQuestEditor.Scripts.set("Void UnlockPresentStoryItem(String)", {
+    description: "Unlocks the given present journal entry.",
+    name: "Unlock Present Story Item",
+    category: "Scripts\\PlayerBackground",
+    param0: {
+        name: "Key",
+        description: "The String of the item to unlock",
+        default: "",
+        type: "Text"
+    }
+});
+PoeQuestEditor.Scripts.set("Void UnlockPastStoryItem(String)", {
+    description: "Unlocks the given history journal entry.",
+    name: "Unlock Past Story Item",
+    category: "Scripts\\PlayerBackground",
+    param0: {
+        name: "Key",
+        description: "The String of the item to unlock",
+        default: "",
+        type: "Text"
+    }
+});
+PoeQuestEditor.Scripts.set("Void EndGame()", {
+    description: "Shows the endgame slides.",
+    name: "End Game",
+    category: "Scripts\\General"
+});
+PoeQuestEditor.Scripts.set("Void Autosave()", {
+    description: "Make a save",
+    name: "Autosave",
+    category: "Scripts\\General"
+});
+PoeQuestEditor.Scripts.set("Void ScreenShake(Single, Single)", {
+    description: "Shakes the Screen",
+    name: "Screen Shake",
+    category: "Scripts\\Camera",
+    param0: {
+        name: "Duration",
+        description: "Duration of the shake",
+        default: "0",
+        type: "Number"
+    },
+    param1: {
+        name: "Strength",
+        description: "Strength of the shake",
+        default: "0",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void IncrementTrackedAchievementStat(TrackedAchievementStat)", {
+    description: "Adds one to the given archivment stat.",
+    name: "Increment Tracked Achievement Stat",
+    category: "Scripts\\General",
+    param0: {
+        name: "Tracked Stat",
+        description: "The tracked achievement stat we are incrementing.",
+        default: "TrackedStat",
+        type: "TrackedAchievementStat"
+    }
+});
+PoeQuestEditor.Scripts.set("Void DecrementTrackedAchievementStat(TrackedAchievementStat)", {
+    description: "Remove one from the given archivment stat.",
+    name: "Decrement Tracked Achievement Stat",
+    category: "Scripts\\General",
+    param0: {
+        name: "Tracked Stat",
+        description: "The tracked achievement stat we are incrementing.",
+        default: "TrackedStat",
+        type: "TrackedAchievementStat"
+    }
+});
+PoeQuestEditor.Scripts.set("Void IncrementTrackedAchievementStat(TrackedAchievementStat, Int32)", {
+    description: "Sets the given archivment stat to this value.",
+    name: "Set Tracked Achievement Stat",
+    category: "Scripts\\General",
+    param0: {
+        name: "Tracked Stat",
+        description: "The tracked achievement stat we are incrementing.",
+        default: "TrackedStat",
+        type: "TrackedAchievementStat"
+    },
+    param1: {
+        name: "New Value",
+        description: "The new value we are setting the tracked stat to.",
+        default: "0",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SelectWeaponSet(Guid, Int32)", {
+    description: "Changes the Weaponset of the character.",
+    name: "Select Weapon Set",
+    category: "Scripts\\General",
+    param0: {
+        name: "Object",
+        description: "Character",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Weapon Set ID",
+        description: "The index of the weapon set to apply.",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SoulMemoryCameraEnable(Boolean)", {
+    description: "Shows the purple soul memory camera overlay",
+    name: "Soul Memory Camera Enable",
+    category: "Scripts\\Camera",
+    param0: {
+        name: "Enabled",
+        description: "Whether the camera should be enabled or disabled",
+        default: "true",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void DisableFogOfWar()", {
+    description: "Disalbe fog of war.",
+    name: "Disable Fog Of War",
+    category: "Scripts\\Fog of War"
+});
+PoeQuestEditor.Scripts.set("Void RevealAllFogOfWar()", {
+    description: "Show anything on the map.",
+    name: "Fog Of War Reveal All",
+    category: "Scripts\\Fog of War"
+});
+PoeQuestEditor.Scripts.set("Void PointOfNoReturnSave()", {
+    description: "Saves game, if not on trial of iron mode.",
+    name: "Point Of No Return Save",
+    category: "Scripts\\General"
+});
+PoeQuestEditor.Scripts.set("Void GameCompleteSave()", {
+    description: "Make a full save",
+    name: "Game Complete Save",
+    category: "Scripts\\General"
+});
+PoeQuestEditor.Scripts.set("Void SetGlobalValue(String, Int32)", {
+    description: "Sets the global variable to given value.",
+    name: "Set Global",
+    category: "Scripts\\Globals",
+    param0: {
+        name: "Name",
+        description: "Global Name",
+        default: "GlobalName",
+        type: "GlobalVariable"
+    },
+    param1: {
+        name: "Value",
+        description: "Global Value",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void IncrementGlobalValue(String, Int32)", {
+    description: "Add one tho the global variable.",
+    name: "Increment Global",
+    category: "Scripts\\Globals",
+    param0: {
+        name: "Name",
+        description: "Global Name",
+        default: "GlobalName",
+        type: "GlobalVariable"
+    },
+    param1: {
+        name: "Value",
+        description: "Increase Global by Value",
+        default: "1",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void RandomizeGlobalValue(String, Int32, Int32)", {
+    description: "Assigns a random value to the global, which is between minValue an maxValue.",
+    name: "Randomize Global",
+    category: "Scripts\\Globals",
+    param0: {
+        name: "Name",
+        description: "Global Name",
+        default: "GlobalName",
+        type: "GlobalVariable"
+    },
+    param1: {
+        name: "MinValue",
+        description: "Minimum Value for Global",
+        default: "1",
+        type: "Number"
+    },
+    param2: {
+        name: "MaxValue",
+        description: "Maximum Value for Global",
+        default: "2",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void RandomizeGlobalValueWithGlobal(String, String, String)", {
+    description: "Assigns a random value to the global, which is between the values of other global variables.",
+    name: "Randomize Global With Global",
+    category: "Scripts\\Globals",
+    param0: {
+        name: "Name",
+        description: "Global Name",
+        default: "GlobalName",
+        type: "GlobalVariable"
+    },
+    param1: {
+        name: "MinValueGlobal",
+        description: "Minimum Value for Global",
+        default: "GlobalName",
+        type: "GlobalVariable"
+    },
+    param2: {
+        name: "MaxValueGlobal",
+        description: "Maximum Value for Global",
+        default: "GlobalName",
+        type: "GlobalVariable"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetHealth(Guid, Single)", {
+    description: "Sets health of the given character. Capped at max health.",
+    name: "Set Health",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Health Value",
+        description: "Set current health to this value",
+        default: "100.0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetStamina(Guid, Single)", {
+    description: "Sets stamina of the given character. Capped at max stamina.",
+    name: "Set Stamina",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Stamina Value",
+        description: "Set current stamina to this value",
+        default: "100.0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetFatigue(Guid, Single)", {
+    description: "Sets the fatigue value.",
+    name: "Set Fatigue",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Fatigue Value",
+        description: "Set current fatigue time to this value (in hours)",
+        default: "24.0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AddFatigue(Guid, Single)", {
+    description: "Add to the current fatigue.",
+    name: "Add Fatigue",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Fatigue Value",
+        description: "Set current fatigue time to this value (in hours)",
+        default: "24.0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AddFatigueToParty(Single)", {
+    description: "Add the given hours of fatigue to the party.",
+    name: "Add Fatigue To Party",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Fatigue Value",
+        description: "Set current fatigue time to this value (in hours)",
+        default: "24.0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AddFatigueToSlot(Single, Int32)", {
+    description: "Add the given hours of fatigue to the character at the given slot.",
+    name: "Add Fatigue To Slot",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Fatigue Value",
+        description: "Set current fatigue time to this value (in hours)",
+        default: "24.0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AddFatigueToPartyWithSkillCheck(Single, SkillType, Operator, Int32)", {
+    description: "Add fatigue to the party member if they success at the skilltest",
+    name: "Add Fatigue To Party With Skill Check",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Fatigue Value",
+        description: "Add this value to current fatigue time (in hours)",
+        default: "24.0",
+        type: "Number"
+    },
+    param1: {
+        name: "Skill Type",
+        description: "Skill to test.",
+        default: "Stealth",
+        type: "SkillType"
+    },
+    param2: {
+        name: "Skill Operator",
+        description: "Comparison operator.",
+        default: "EqualTo",
+        type: "ConditionalOperator"
+    },
+    param3: {
+        name: "Skill Value",
+        description: "Compare the object's skill against this value.",
+        default: "0",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void HealParty()", {
+    description: "Revives unconscious chracters and set health and stamina to maximum.",
+    name: "Heal Party",
+    category: "Scripts\\Health"
+});
+PoeQuestEditor.Scripts.set("Void SetInvunerable(Guid, Boolean)", {
+    description: "Set the object Invunerable",
+    name: "Set Invunerable",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Invunerable",
+        description: "Sets the venerability of the object",
+        default: "true",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetPreventDeath(Guid, Boolean)", {
+    description: "Prevents death. One time?",
+    name: "Set Prevent Death",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Prevent Death",
+        description: "Sets the death prevention of the object",
+        default: "true",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void Kill(Guid)", {
+    description: "Kills a Character. Can not kill animal companions or characters with prevent death.",
+    name: "Kill",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Object",
+        description: "Object to kill.",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void DealDamage(Guid, Single)", {
+    description: "Deal damage to a character.",
+    name: "Deal Damage",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Damage",
+        description: "Deals this amount of damage to the object (armor/defense is applied to calculation)",
+        default: "10.0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void ApplyAffliction(Guid, String)", {
+    description: "Apply an affliction to the character. See afflictions.stringtable",
+    name: "Apply Affliction",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Affliction",
+        description: "Applies this affliction to the object",
+        default: "",
+        type: ""
+    }
+});
+PoeQuestEditor.Scripts.set("Void ApplyAfflictionToPartyMember(String, Int32)", {
+    description: "Apply an affliction to the partymember at the given slot. See afflictions.stringtable",
+    name: "Apply Affliciton To Party Member Slot #",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Affliction",
+        description: "Applies this affliction to the object",
+        default: "",
+        type: ""
+    },
+    param1: {
+        name: "Slot #",
+        description: "Party member slot # to apply affliction to",
+        default: "",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void RemoveAffliction(Guid, String)", {
+    description: "Remove an affliction from the character.",
+    name: "Remove Affliction",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Affliction",
+        description: "Removes this affliction from the object",
+        default: "",
+        type: ""
+    }
+});
+PoeQuestEditor.Scripts.set("Void ApplyAfflictionToPartyWithSkillCheck(String, SkillType, Operator, Int32)", {
+    description: "Apply an affliction to each party member if the succeed at the skillcheck.",
+    name: "Apply Affliction To Party With Skill Check",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Affliction",
+        description: "Applies this affliction to the object",
+        default: "",
+        type: ""
+    },
+    param1: {
+        name: "Skill Type",
+        description: "Skill to test.",
+        default: "Stealth",
+        type: "SkillType"
+    },
+    param2: {
+        name: "Skill Operator",
+        description: "Comparison operator.",
+        default: "EqualTo",
+        type: "ConditionalOperator"
+    },
+    param3: {
+        name: "Skill Value",
+        description: "Compare the object's skill against this value.",
+        default: "0",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void ApplyAfflictionToWorstPartyMember(String, SkillType)", {
+    description: "Finds the partymember with the lowest given stat and apply the affliction to him.",
+    name: "Apply Affliction To Worst Party Member",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Affliction",
+        description: "Applies this affliction to the object",
+        default: "",
+        type: ""
+    },
+    param1: {
+        name: "Skill Type",
+        description: "Skill to test.",
+        default: "Stealth",
+        type: "SkillType"
+    }
+});
+PoeQuestEditor.Scripts.set("Void ApplyAfflictionToBestPartyMember(String, SkillType)", {
+    description: "Finds the partymember with the higest given stat and apply the affliction to him.",
+    name: "Set Affliction To Best Party Member",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Affliction",
+        description: "Applies this affliction to the object",
+        default: "",
+        type: ""
+    },
+    param1: {
+        name: "Skill Type",
+        description: "Skill to test.",
+        default: "Stealth",
+        type: "SkillType"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetSkillCheckToken(SkillType, Operator, Int32)", {
+    description: "Fills the skillcheck token array with all party members who succeed the test.",
+    name: "Set Skill Check Token",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Skill Type",
+        description: "Skill to test.",
+        default: "Stealth",
+        type: "SkillType"
+    },
+    param1: {
+        name: "Skill Operator",
+        description: "Comparison operator.",
+        default: "EqualTo",
+        type: "ConditionalOperator"
+    },
+    param2: {
+        name: "Skill Value",
+        description: "Compare the object's skill against this value.",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetSkillCheckTokenWorst(SkillType)", {
+    description: "Sets the first token array enrty to the party member with the worst skill level.",
+    name: "Set Skill Check Token With Worst Check",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Skill Type",
+        description: "Skill to test.",
+        default: "Stealth",
+        type: "SkillType"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetSkillCheckTokenBest(SkillType)", {
+    description: "Sets the first token array entry to the party member with the best skill level.",
+    name: "Set Skill Check Token With Best Check",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Skill Type",
+        description: "Skill to test.",
+        default: "Stealth",
+        type: "SkillType"
+    }
+});
+PoeQuestEditor.Scripts.set("Void RemoveItem(String)", {
+    description: "Remove the item one time from the the current party inventories. Don't affect the stash.",
+    name: "Remove Item",
+    category: "Scripts\\Items",
+    param0: {
+        name: "Item Name",
+        description: "The name of the item to remove",
+        default: "ItemName",
+		type: "Text"
+    }
+});
+PoeQuestEditor.Scripts.set("Void RemoveItemFromNPC(Guid, String)", {
+    description: "Removes the item from the character, equiped or in inventory.",
+    name: "Remove Item from NPC",
+    category: "Scripts\\Items",
+    param0: {
+        name: "NPC",
+        description: "Remove item from this NPC.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Item Name",
+        description: "The name of the item to remove",
+        default: "ItemName",
+		type: "Text"
+    }
+});
+PoeQuestEditor.Scripts.set("Void GiveItem(String, Int32)", {
+    description: "Gives the player charcter the named item.",
+    name: "Give Item By Name",
+    category: "Scripts\\Items",
+    param0: {
+        name: "Item Name",
+        description: "The name of the item to give",
+        default: "ItemName",
+        type: "Text"
+    },
+    param1: {
+        name: "Count",
+        description: "The number of items to add",
+        default: "1",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void GiveItemAndEquip(Guid, String, Boolean)", {
+    description: "Gives the character the named item and equip it to primary or secondary weapon slot. Works only for weapons.",
+    name: "Give Item And Equip",
+    category: "Scripts\\Items",
+    param0: {
+        name: "NPC",
+        description: "NPC to give the item to.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Item Name",
+        description: "The name of the item to give",
+        default: "ItemName",
+        type: "Text"
+    },
+    param2: {
+        name: "Primary",
+        description: "Equip the item in the primary slot (left hand}",
+        default: "false",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void GiveItemToNPC(Guid, String, Int32)", {
+    description: "Gives the named Item count times to the character.",
+    name: "Give Item to NPC",
+    category: "Scripts\\Items",
+    param0: {
+        name: "NPC",
+        description: "NPC to give the item to.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Item Name",
+        description: "The name of the item to give",
+        default: "ItemName",
+        type: "Text"
+    },
+    param2: {
+        name: "Count",
+        description: "The number of items to add",
+        default: "1",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void RemoveItemStack(String, Int32)", {
+    description: "Remove the item count times from the party. Goes through all member inventories to find enough items to remove.",
+    name: "Remove Item Stack",
+    category: "Scripts\\Items",
+    param0: {
+        name: "Item Name",
+        description: "The name of the item to remove",
+        default: "ItemName",
+        type: "Text"
+    },
+    param1: {
+        name: "Count",
+        description: "The number of items to remove",
+        default: "1",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void RemoveItemStackFromNPC(Guid, String, Int32)", {
+    description: "Remove the item count times from the character.",
+    name: "Remove Item Stack From NPC",
+    category: "Scripts\\Items",
+    param0: {
+        name: "NPC",
+        description: "NPC to lose item.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Item Name",
+        description: "The name of the item to remove",
+        default: "ItemName",
+        type: "Text"
+    },
+    param2: {
+        name: "Count",
+        description: "The number of items to remove",
+        default: "1",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void UnequipItemInSlot(Guid, EquipmentSlot)", {
+    description: "Removes the item equiped in the given slot of the character. Stores it in Inventory.",
+    name: "Unequip Item in Slot",
+    category: "Scripts\\Items",
+    param0: {
+        name: "Character",
+        description: "Character to unequip.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Slot",
+        description: "Equipment Slot to unequip",
+        default: "None",
+        type: "EquipmentSlot"
+    }
+});
+PoeQuestEditor.Scripts.set("Int32 GetPlayerMoney()", {
+    description: "Returns the total money.",
+    name: "Get Player Money",
+    category: "Scripts\\Items"
+});
+PoeQuestEditor.Scripts.set("Void GivePlayerMoney(Int32)", {
+    description: "Gives money to the player.",
+    name: "Give Player Money",
+    category: "Scripts\\Items",
+    param0: {
+        name: "Amount",
+        description: "The amount of money to add to the player",
+        default: "1",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void RemovePlayerMoney(Int32)", {
+    description: "Remove the given amount of money from the player. If he have not enough it removes all money.",
+    name: "Remove Player Money",
+    category: "Scripts\\Items",
+    param0: {
+        name: "Amount",
+        description: "The amount of money to remove from the player",
+        default: "1",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void LogRecipeGet(String)", {
+    description: "Logs the fact that the group has learned a recipie.",
+    name: "Log Given Recipe",
+    category: "Scripts\\Items",
+    param0: {
+        name: "Recipe Name",
+        description: "The name of the recipe learned",
+        default: "RecipeName",
+		type: "Text"
+    }
+});
+PoeQuestEditor.Scripts.set("Void RemoveItemInSlot(Guid, EquipmentSlot)", {
+    description: "Completly removes the item from the characters slot.",
+    name: "Remove Item in Slot",
+    category: "Scripts\\Items",
+    param0: {
+        name: "Character",
+        description: "Remove the item from this character.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Slot",
+        description: "Equipment Slot to remove",
+        default: "None",
+        type: "EquipmentSlot"
+    }
+});
+PoeQuestEditor.Scripts.set("Void LockEquipmentSlot(Guid, EquipmentSlot)", {
+    description: "Disables the given slot.",
+    name: "Lock Equipment Slot",
+    category: "Scripts\\Testing",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Slot",
+        description: "Equipment Slot to lock",
+        default: "None",
+        type: "EquipmentSlot"
+    }
+});
+PoeQuestEditor.Scripts.set("Void UnlockEquipmentSlot(Guid, EquipmentSlot)", {
+    description: "Enables the given slot.",
+    name: "Unlock Equipment Slot",
+    category: "Scripts\\Testing",
+    param0: {
+        name: "Object",
+        description: "Object to modify.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Slot",
+        description: "Equipment Slot to unlock",
+        default: "None",
+        type: "EquipmentSlot"
+    }
+});
+PoeQuestEditor.Scripts.set("Void Open(Guid, Boolean)", {
+    description: "Opens a container/door.",
+    name: "Open",
+    category: "Scripts\\OCL",
+    param0: {
+        name: "Object",
+        description: "Object to open.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Ignore Lock",
+        description: "Should we ignore the lock to open",
+        default: "false",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SealOpen(Guid, Boolean)", {
+    description: "Opens a container/door and unlocks the seal.",
+    name: "Seal Open",
+    category: "Scripts\\OCL",
+    param0: {
+        name: "Object",
+        description: "Object to open.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Ignore Lock",
+        description: "Should we ignore the lock to open",
+        default: "false",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void Close(Guid)", {
+    description: "Close a container/door.",
+    name: "Close",
+    category: "Scripts\\OCL",
+    param0: {
+        name: "Object",
+        description: "Object to close.",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void Lock(Guid)", {
+    description: "Locks a container/door.",
+    name: "Lock",
+    category: "Scripts\\OCL",
+    param0: {
+        name: "Object",
+        description: "Name of the object",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void Unlock(Guid)", {
+    description: "Unlocks a container/door.",
+    name: "UnLock",
+    category: "Scripts\\OCL",
+    param0: {
+        name: "Object",
+        description: "Object to unlock.",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void ToggleOpen(Guid, Boolean)", {
+    description: "Toggle the container/door open state.",
+    name: "Toggle Open",
+    category: "Scripts\\OCL",
+    param0: {
+        name: "Object",
+        description: "Object to toggle.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Ignore Lock",
+        description: "Should we ignore the lock to open",
+        default: "false",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void ToggleLock(Guid)", {
+    description: "Toggle the container/door lock state.",
+    name: "Toggle Lock",
+    category: "Scripts\\OCL",
+    param0: {
+        name: "Object",
+        description: "Object to toggle.",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void StartQuest(String)", {
+    description: "Starts the named Quest.",
+    name: "Start Quest",
+    category: "Scripts\\Quest",
+    param0: {
+        name: "Quest Name",
+        description: "The name of the quest.",
+        default: "",
+        type: "Quest"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AdvanceQuest(String)", {
+    description: "Advances the named Quest.",
+    name: "Advance Quest",
+    category: "Scripts\\Quest",
+    param0: {
+        name: "Quest Name",
+        description: "The name of the quest.",
+        default: "",
+        type: "Quest"
+    }
+});
+PoeQuestEditor.Scripts.set("Void DebugAdvanceQuest(String)", {
+    description: "Advances the named Quest, ignores not met conditions.",
+    name: "Debug Advance Quest",
+    category: "Scripts\\Quest",
+    param0: {
+        name: "Quest Name",
+        description: "The name of the quest.",
+        default: "",
+        type: "Quest"
+    }
+});
+PoeQuestEditor.Scripts.set("Void TriggerQuestAddendum(String, Int32)", {
+    description: "Adds the quest addendum to the questlog.",
+    name: "Trigger Quest Addendum",
+    category: "Scripts\\Quest",
+    param0: {
+        name: "Quest Name",
+        description: "The name of the quest.",
+        default: "",
+        type: "Quest"
+    },
+    param1: {
+        name: "Addendum ID",
+        description: "The ID of the addendum to set.",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void TriggerQuestEndState(String, Int32)", {
+    description: "Adds the quest endstate to the questlog, ends the quest as success.",
+    name: "Trigger Quest End State",
+    category: "Scripts\\Quest",
+    param0: {
+        name: "Quest Name",
+        description: "The name of the quest.",
+        default: "",
+        type: "Quest"
+    },
+    param1: {
+        name: "End State ID",
+        description: "The ID of the end state to set.",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void TriggerQuestEndState(String, Int32)", {
+    description: "Adds the quest endstate to the questlog, ends the quest as success.",
+    name: "Trigger Quest End State",
+    category: "Scripts\\Quest",
+    param0: {
+        name: "Quest Name",
+        description: "The name of the quest.",
+        type: "Quest"
+    }
+});
+PoeQuestEditor.Scripts.set("Void TriggerQuestFailState(String, Int32)", {
+    description: "Adds the quest endstate to the questlog, ends the quest as failed.",
+    name: "Trigger Quest Fail State",
+    category: "Scripts\\Quest",
+    param0: {
+        name: "Quest Name",
+        description: "The name of the quest.",
+        default: "",
+        type: "Quest"
+    },
+    param1: {
+        name: "End State ID",
+        description: "The ID of the end state to set.",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AddTalent(String)", {
+    description: "Add the abbility to the player.",
+    name: "Add Talent",
+    category: "Scripts\\RPG",
+    param0: {
+        name: "Talent Name",
+        description: "The name of the talent to add to the player. Should be faster when provided an objectGuid.",
+        default: "TalentName",
+		type: ""
+    }
+});
+PoeQuestEditor.Scripts.set("Void AddTalent(Guid, String)", {
+    description: "Add the abbility to the character.",
+    name: "Add Talent",
+    category: "Scripts\\RPG",
+    param0: {
+        name: "Target character",
+        description: "The character desired to add talent/ability",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Talent Name",
+        description: "The name of the talent to add to the character.",
+        default: "TalentName",
+		type: ""
+    }
+});
+PoeQuestEditor.Scripts.set("Void RemoveTalent(Guid, String)", {
+    description: "Remove the abbility from the character.",
+    name: "Remove Talent",
+    category: "Scripts\\RPG",
+    param0: {
+        name: "Target character",
+        description: "The character desired to remove talent/ability",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Talent Name",
+        description: "The name of the talent to remove from the character. Will also remove abilities.",
+        default: "TalentName",
+		type: ""
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetWantsToTalk(Guid, Boolean)", {
+    description: "Sets the 'wants to talk' flag.",
+    name: "Set Wants To Talk",
+    category: "Scripts\\RPG",
+    param0: {
+        name: "Target Party Member",
+        description: "The party member desired to show the flag",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Wants To Talk",
+        description: "The new state for the conversation flag",
+        default: "false",
+		type: "Boolean"
+    }
+});
+PoeQuestEditor.Scripts.set("Void MarkConversationNodeAsRead(String, Int32)", {
+    description: "Sets the node of the given conversation as read.",
+    name: "Mark Conversation Node As Read",
+    category: "Scripts\\Conversation",
+    param0: {
+        name: "Conversation",
+        description: "Name of the conversation.",
+        default: "",
+        type: "Conversation"
+    },
+    param1: {
+        name: "Conversation Node ID",
+        description: "Conversation node ID.",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void ClearConversationNodeAsRead(String, Int32)", {
+    description: "Sets the node of the given conversation as unread.",
+    name: "Clear Conversation Node As Read",
+    category: "Scripts\\Conversation",
+    param0: {
+        name: "Conversation",
+        description: "Name of the conversation.",
+        default: "",
+        type: "Conversation"
+    },
+    param1: {
+        name: "Conversation Node ID",
+        description: "Conversation node ID.",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void OpenStore(Guid)", {
+    description: "Opens the store ui of the vendor.",
+    name: "Open Store",
+    category: "Scripts\\Stores",
+    param0: {
+        name: "Vendor",
+        description: "Vendor object to open.",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void OpenStoreWithRates(Guid, Single, Single)", {
+    description: "Opens the store ui of the vendor with buy and sell price multiplicator. Fullprice is 1.0",
+    name: "Open Store with Rates",
+    category: "Scripts\\Stores",
+    param0: {
+        name: "Vendor",
+        description: "Vendor object to open.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Buy Rate",
+        description: "Buy Rate (default 0.2)",
+        default: "0.2",
+        type: "Number"
+    },
+    param2: {
+        name: "Sell Rate",
+        description: "Sell Rate (default 1.5)",
+        default: "1.5",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void OpenInn(Guid)", {
+    description: "Opens the inn ui of the vendor.",
+    name: "Open Inn",
+    category: "Scripts\\Stores",
+    param0: {
+        name: "Vendor",
+        description: "Vendor object to open.",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void OpenInnWithRate(Guid, Single)", {
+    description: "Opens the inn ui of the vendor with sleep price multiplier. Fullprice is 1.0",
+    name: "Open Inn",
+    category: "Scripts\\Stores",
+    param0: {
+        name: "Vendor",
+        description: "Vendor object to open.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Rate",
+        description: "Rate multiplier (default 1.0)",
+        default: "1.0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetVendorRates(Guid, Single, Single, Single)", {
+    description: "Sets the multipliers for buy, sell and sleep of the vendor",
+    name: "Set Vendor Rates",
+    category: "Scripts\\Stores",
+    param0: {
+        name: "Vendor",
+        description: "Vendor object to set.",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Buy Rate",
+        description: "Buy Rate (default 0.2)",
+        default: "0.2",
+        type: "Number"
+    },
+    param2: {
+        name: "Sell Rate",
+        description: "Sell Rate (default 1.5)",
+        default: "1.5",
+        type: "Number"
+    },
+    param3: {
+        name: "Inn Rate",
+        description: "Inn Rate (default 1.0)",
+        default: "1.0",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void OpenRecruitment(Guid)", {
+    description: "Opens the recruitment ui.",
+    name: "Open Recruitment",
+    category: "Scripts\\Stores",
+    param0: {
+        name: "Vendor",
+        description: "Vendor object to open.",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void ActivateStronghold()", {
+    description: "Activates the Stronghold",
+    name: "Activate Stronghold",
+    category: "Scripts\\Stronghold"
+});
+PoeQuestEditor.Scripts.set("Void DisableStronghold()", {
+    description: "Disable the Stronghold",
+    name: "Disable Stronghold",
+    category: "Scripts\\Stronghold"
+});
+PoeQuestEditor.Scripts.set("Void ShowStrongholdUI(WindowPane)", {
+    description: "Opens the stronghold ui on the given page.",
+    name: "Show Stronghold UI",
+    category: "Scripts\\Stronghold",
+    param0: {
+        name: "Window",
+        description: "Window To Show",
+        default: "Status",
+        type: "StrongholdWindowPane"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AddPrisoner(Guid)", {
+    description: "Adds the character as prisoner to the stronghold.",
+    name: "Add Prisoner",
+    category: "Scripts\\Stronghold",
+    param0: {
+        name: "Object",
+        description: "Prisoner object to add to the stronghold prison",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void RemovePrisoner(Guid)", {
+    description: "Releases the character from the stronghold prison.",
+    name: "Remove Prisoner",
+    category: "Scripts\\Stronghold",
+    param0: {
+        name: "Object",
+        description: "Prisoner object to remove from the stronghold prison",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void OnPrisonerDeath(Guid)", {
+    description: "Calls Remove Prisoner",
+    name: "On Prisoner Death",
+    category: "Scripts\\Stronghold",
+    param0: {
+        name: "Object",
+        description: "Prisoner object who has been killed",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void ShowPrisoners()", {
+    description: "Lists all Prisoners in the console.",
+    name: "Show Prisoners",
+    category: "Scripts\\Stronghold"
+});
+PoeQuestEditor.Scripts.set("Void OnHirelingDeath(Guid)", {
+    description: "Dismisses the dead Hireling.",
+    name: "On Hireling Death",
+    category: "Scripts\\Stronghold",
+    param0: {
+        name: "Object",
+        description: "Hireling object who has been killed",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void OnVisitorDeath(Guid)", {
+    description: "Removes the Visitor and all bonuses/penalties from him.",
+    name: "On Visitor Death",
+    category: "Scripts\\Stronghold",
+    param0: {
+        name: "Object",
+        description: "Visitor object who has been killed",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AdjustSecurity(Int32)", {
+    description: "Adjust the stronghold security by amount.",
+    name: "Adjust Security",
+    category: "Scripts\\Stronghold",
+    param0: {
+        name: "Integer",
+        description: "Amount to adjust stronghold Security",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AdjustPrestige(Int32)", {
+    description: "Adjust the stronghold prestige by amount.",
+    name: "Adjust Prestige",
+    category: "Scripts\\Stronghold",
+    param0: {
+        name: "Integer",
+        description: "Amount to adjust stronghold Prestige",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AddTurns(Int32)", {
+    description: "Add turns to the stronghold timeline",
+    name: "Add Turns",
+    category: "Scripts\\Stronghold",
+    param0: {
+        name: "Integer",
+        description: "Number of turns to add",
+        default: "1",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void OpenCharacterCreation()", {
+    description: "Open the character creation screen for player characters.",
+    name: "Open Character Creation Screen",
+    category: "Scripts\\UI"
+});
+PoeQuestEditor.Scripts.set("Void OpenCharacterCreationNewCompanion(Int32, Int32)", {
+    description: "Open the character creation screen for companions.",
+    name: "Open Character Creation New Companion Screen",
+    category: "Scripts\\UI",
+    param0: {
+        name: "Player Cost",
+        description: "How much it will cost if the player completes this companion.",
+        default: "0",
+        type: "Number"
+    },
+    param1: {
+        name: "Ending Level",
+        description: "What level the character will be.",
+        default: "1",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void PlayInterstitial(Int32)", {
+    description: "Play the referenced interestial (static cutscene with scrolling text and voiceover?).",
+    name: "Play Interstitial",
+    category: "Scripts\\UI",
+    param0: {
+        name: "Index",
+        description: "The index of an interstitial to play (see InterstitialMaster list).",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void OpenCrafting(String)", {
+    description: "Open the crafting window if not in combat.",
+    name: "Open Crafting Window",
+    category: "Scripts\\UI",
+    param0: {
+        name: "Crafting Object Type",
+        description: "A String a unique crafting location to show (Recipe.CraftingLocation)",
+        default: "",
+		type: ""
+    }
+});
+PoeQuestEditor.Scripts.set("Void OpenEnchanting(String, String)", {
+    description: "Open the enchanting window, with the named item selected for enchanting.",
+    name: "Open Enchanting Window",
+    category: "Scripts\\UI",
+    param0: {
+        name: "Crafting Object Type",
+        description: "A String a unique crafting location to show (Recipe.CraftingLocation)",
+        default: "",
+        type: ""
+    },
+    param1: {
+        name: "Target Item Name",
+        description: "The name of the item to enchant.",
+        default: "",
+        type: "Text"
+    }
+});
+PoeQuestEditor.Scripts.set("Void ReturnToMainMenu()", {
+    description: "Quits game and return to main menu",
+    name: "Return To Main Menu",
+    category: "Scripts\\UI"
+});
+PoeQuestEditor.Scripts.set("Void TriggerTutorial(Int32)", {
+    description: "Trigger the referenced tutorial message if it wasn't already shown.",
+    name: "Trigger Tutorial",
+    category: "Scripts\\UI",
+    param0: {
+        name: "Tutorial Index",
+        description: "The index in the TutorialMaster list of the tutorial to play.",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SetEndGameSlide(Int32)", {
+    description: "Set the image shown in the endgame slides.",
+    name: "Set End Game Slide",
+    category: "Scripts\\UI",
+    param0: {
+        name: "Image Index",
+        description: "The index in the EndGameSlidesImages array.",
+        default: "0",
+		type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void BeginWatcherMovie()", {
+    description: "Shows the watcher movie.",
+    name: "Begin Watcher Movie",
+    category: "Scripts\\UI"
+});
+PoeQuestEditor.Scripts.set("Void EndWatcherMovie()", {
+    description: "Hides the watcher movie.",
+    name: "End Watcher Movie",
+    category: "Scripts\\UI"
+});
+
+// für betterselect
+PoeQuestEditor.Scripts_NameList = [];
+PoeQuestEditor.Scripts_byDisplayName = new Map();
+PoeQuestEditor.Scripts_fromDisplayName = new Map();
+PoeQuestEditor.Scripts.forEach(function(item, key, mapObj) {
+	PoeQuestEditor.Scripts_NameList.push(item.name);
+	PoeQuestEditor.Scripts_byDisplayName.set(item.name, item);
+	PoeQuestEditor.Scripts_fromDisplayName.set(item.name, key);
+});
+
+</script>

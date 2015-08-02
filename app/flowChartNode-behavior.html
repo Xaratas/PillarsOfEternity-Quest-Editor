@@ -196,6 +196,13 @@
 			Polymer.dom(this.$$("comments")).removeChild(comment); // die remove child erwartet eine node, deswegen über comment und nicht über id
 		},
 
+		addCondition: function(event, eventDetail) {
+			var condition = new ConditionElement();
+			// type = ?
+			condition.fullFunction = PoeQuestEditor.Conditionals.get("Boolean IsActive(Guid)");
+			this.push("conditions", condition);
+		},
+
 		toggleEdit: function() {
 			this.$.editpanel.hidden = !this.$.editpanel.hidden;
 		},

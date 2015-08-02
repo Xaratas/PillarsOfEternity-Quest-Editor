@@ -20,6 +20,9 @@ var FunctionCallBehavior = {
 			data = xml.childNodes[x];
 			if (data.nodeName == "FullName") {
 				this.fullFunction = PoeQuestEditor.Conditionals.get(data.textContent);
+				if(this.fullFunction === undefined) {
+					this.fullFunction = PoeQuestEditor.Scripts.get(data.textContent);
+				}
 			}
 			if (data.nodeName == "Parameters") {
 				for (var p = 0; p < data.childNodes.length; p++) {
@@ -30,7 +33,13 @@ var FunctionCallBehavior = {
 	},
 
 	functionCallToXML: function() {	
-		var xml = '<Data><FullName>' + PoeQuestEditor.Conditionals_fromDisplayName.get(this.fullFunction.name) + '</FullName>' + '<Parameters>';
+		var xml = '<Data><FullName>';
+		var functionxml = PoeQuestEditor.Conditionals_fromDisplayName.get(this.fullFunction.name);
+		if(functionxml === undefined) {
+			functionxml = PoeQuestEditor.Scripts_fromDisplayName.get(this.fullFunction.name);
+		}
+		xml += functionxml;
+		xml += '</FullName>' + '<Parameters>';
 		this.parameter.forEach(function (parameter) {
 			xml += '<string>' + parameter + '</string>';
 		});

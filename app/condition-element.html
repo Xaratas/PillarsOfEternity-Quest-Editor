@@ -19,7 +19,7 @@
 		}
 	</style>
 	<template>
-		<functionCall-element hide$="[[isHidden]]" not="{{not}}" function_="{{fullFunction}}" parameter="{{parameter}}"></functionCall-element>
+		<functionCall-element hide$="[[isHidden]]" not="{{not}}" function_="{{fullFunction}}" parameter="{{parameter}}" type="Conditional"></functionCall-element>
 		<operator>Operator: <select is="betterSelect-element" selectedvalue="{{operator::change}}" options_="{{options}}"></select></operator>
 		<nestedConditions></nestedConditions>
 	</template>

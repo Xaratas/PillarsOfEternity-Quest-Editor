@@ -8,7 +8,7 @@
 		}
 	</style>
 	<template>
-		<functionCall-editElement function_="{{fullFunction}}" parameter="{{parameter}}"></functionCall-editElement>
+		<functionCall-element function_="{{fullFunction}}" parameter="{{parameter}}" type="Script"></functionCall-element>
 		<div>Script: <span>{{functionName}}</span></div>
 		<template is="dom-repeat" items="{{parameter}}">
 			<div>Parameter <span>{{index}}</span>: <span>{{item}}</span></div>

@@ -32,7 +32,7 @@
 			display: none;
 		}
 
-		// bestimmte inputs länger
+		/* bestimmte inputs länger */
 	</style>
 	<template>
 		<div>
@@ -87,10 +87,11 @@
 				type: Array,
 				value: function() { return []; },
 				notify: true
-			}
+			},
+			type: String
 		},
 		
-		factoryImpl: function(function_, parameterValues) {
+		factoryImpl: function(function_, parameterValues, type) {
 			this.function_ = function_;
 			this.parameter = parameterValues;
 		},
@@ -98,7 +99,7 @@
 		attached: function() {
 			if(Object.keys(this.function_).length != 0) {
 				var edit;
-				edit = this.elementForType("Function");
+				edit = this.elementForType(this.type);
 				Polymer.dom(this.$$("func")).appendChild(edit);
 				if(this.function_.param0 !== undefined) {
 					edit = this.elementForType(this.function_.param0.type, 0);
@@ -129,10 +130,16 @@
 				return new BetterSelect(options, this.parameter[i]); // alle Enumerierten Konstanten
 			} else {
 				switch(type) {
-					case "Function":
+					case "Conditional":
 						return new BetterSelect(PoeQuestEditor.Conditionals_NameList, this.function_.name);
+					case "Script":
+						return new BetterSelect(PoeQuestEditor.Scripts_NameList, this.function_.name);
 					case "Guid":
-						return new BetterSelect(PoeQuestEditor.GUIDS_NameList, this.parameter[i]);
+						return new BetterSelect(PoeQuestEditor.GUIDS_NameList, this.parameter[i]); // das könnte glatt nie funktioniert haben
+					case "Boolean":
+						var button = document.createElement("paper-toggle-button");
+						button.checked = this.parameter[i];
+						return button;
 					case "Quest":
 					case "Conversation":
 					case "GlobalVariable":
@@ -153,8 +160,12 @@
 			if(this.function_.param2 !== undefined) this.$$("param2").children[0].remove();
 			if(this.function_.param3 !== undefined) this.$$("param3").children[0].remove();
 			if(this.function_.param4 !== undefined) this.$$("param4").children[0].remove();
-
-			this.function_ = PoeQuestEditor.Conditionals_byDisplayName.get(details.value);
+			
+			if(this.type == "Conditional") {
+				this.function_ = PoeQuestEditor.Conditionals_byDisplayName.get(details.value);
+			} else {
+				this.function_ = PoeQuestEditor.Scripts_byDisplayName.get(details.value);
+			}
 			var edit;
 			// parameter anpassen
 			this.parameter = [];

@@ -65,7 +65,7 @@
 		transform: translate(-4px, -26px) rotate(90deg);
 	}
 	
-	conditions, conditions[hidden], .leftmiddle > enterScripts, .right > exitScripts {
+	conditions, conditions[hidden], enterScripts, enterScripts[hidden], exitScripts, exitScripts[hidden] {
 		display: none;
 		position: absolute;
 		width: 800px;
@@ -76,18 +76,10 @@
 		padding: 10px;
 	}
 	
-	conditions {
+	conditions, enterScripts, exitScripts {
 		display: block;
 	}
 
-	.leftmiddle:hover > enterScripts, .right:hover > exitScripts {
-		display: block;
-	}
-
-	enterScripts:hover, exitScripts:hover {
-		display: block;
-	}
-	
 	.right > span {
 		position: absolute;
 	    transform: translate(0px, 86px) rotate(270deg);
@@ -118,10 +110,12 @@
 		<conditions hidden="">
 			<button on-tap="toggleConditions">close</button><button on-tap="addCondition">new</button>
 		</conditions>
-		<div class="leftmiddle">
+		<div class="leftmiddle" on-tap="toggleEnterScripts">
 			<span>Enter&nbsp;Scripts</span>
-			<enterScripts></enterScripts>
 		</div>
+		<enterScripts hidden="">
+			<button on-tap="toggleEnterScripts">close</button><button on-tap="addEnterScript">new</button>
+		</enterScripts>
 		<div class="center">
 			<div>Type: <span>{{type}}</span><span class="direction">{{direction}}</span></div>
 			<div>ID: <input is="iron-input" bind-value={{nodeId}}></input></div>
@@ -129,10 +123,12 @@
 			<comments></comments>
 			<div><button on-click="toggleEdit">edit</button></div>
 		</div>
-		<div class="right" on-click="showEffects">
+		<div class="right" on-tap="toggleExitScripts">
 			<span>Exit&nbsp;Scripts</span>
-			<exitScripts></exitScripts>
 		</div>
+		<exitScripts hidden="">
+			<button on-tap="toggleExitScripts">close</button><button on-tap="addExitScript">new</button>
+		</exitScripts>
 		<div id="editpanel" class="editPanel" hidden="">
 			<button class="closeButton" on-click="toggleEdit">close</button>
 			<template is="dom-repeat" items="{{editElements}}">

@@ -47,6 +47,17 @@
 			}
 		},
 		
+		// überschreiben der Behavior Version
+		show: function() {
+			if(this.wasShown != true) {
+				this.wasShown = true;
+				this.$$('FunctionCall-element').show();
+				this.nestedConditions.forEach(function(condition) {
+					condition.show();
+				});
+			}
+		},
+
 		conditionalCall: function(xml) {
 			var node;
 			for (var x = 0; x < xml.childNodes.length; x++) {
@@ -62,6 +73,7 @@
 				}
 			}
 		},
+
 		conditionalExpression: function(xml) {
 			this.isHidden = true;
 			for(var i = 0; i < xml.childNodes.length; i++) {
@@ -81,6 +93,7 @@
 				}
 			}
 		},
+
 		fromXML: function(xml) {
 			if (xml.hasChildNodes()) {
 				if (xml.nodeName == "ExpressionComponent") {

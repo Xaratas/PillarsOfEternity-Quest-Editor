@@ -11,6 +11,14 @@ var FunctionCallBehavior = {
 		parameter: {
 			type: Array,
 			value: function() { return []; }
+		},
+		wasShown: Boolean
+	},
+	
+	show: function() {
+		if(this.wasShown != true) {
+			this.wasShown = true;
+			this.$$('functionCall-element').show();
 		}
 	},
 

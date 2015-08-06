@@ -95,8 +95,8 @@
 			this.function_ = function_;
 			this.parameter = parameterValues;
 		},
-
-		attached: function() {
+		// really performance heavy, so dont do this on attach, do it only when requested by the user to spread the needed time and decreasing performance over time
+		show: function() {
 			if(Object.keys(this.function_).length != 0) {
 				var edit;
 				edit = this.elementForType(this.type);

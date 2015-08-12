@@ -134,8 +134,16 @@
 						return new BetterSelect(PoeQuestEditor.Conditionals_NameList, this.function_.name);
 					case "Script":
 						return new BetterSelect(PoeQuestEditor.Scripts_NameList, this.function_.name);
-					case "Guid":
-						return new BetterSelect(PoeQuestEditor.GUIDS_NameList, PoeQuestEditor.GUIDS.get(this.parameter[i]));
+					case "Guid": 
+						// Liste erweitern passiert im FunctionCallBehavior beim auslesen des XML, solange bis irgendwas ohne Performanceeinbußen eingesetzt wird.
+						//var instance = PoeQuestEditor.GUIDS.get(this.parameter[i]);
+						//if(instance === undefined) {
+							// unbekannte id
+						//	PoeQuestEditor.GUIDS.set(this.parameter[i], {instanceTag: this.parameter[i]});
+						//	PoeQuestEditor.GUIDS_NameList.push(this.parameter[i]);
+						//	PoeQuestEditor.GUIDS_byDisplayName.set(this.parameter[i], this.parameter[i]);
+						//}
+						return new BetterSelect(PoeQuestEditor.GUIDS_NameList, PoeQuestEditor.GUIDS.get(this.parameter[i]).instanceTag);
 					case "Boolean":
 						var button = document.createElement("paper-toggle-button");
 						button.checked = this.parameter[i];
@@ -159,11 +167,27 @@
 		},
 
 		functionChange: function(e, details, sender) {
-			if(this.function_.param0 !== undefined) this.$$("param0").children[0].remove(); //Polymer.dom(this.$$("param0")).removeChild(Polymer.dom(this.$$("param0").firstChild));
-			if(this.function_.param1 !== undefined) this.$$("param1").children[0].remove();
-			if(this.function_.param2 !== undefined) this.$$("param2").children[0].remove();
-			if(this.function_.param3 !== undefined) this.$$("param3").children[0].remove();
-			if(this.function_.param4 !== undefined) this.$$("param4").children[0].remove();
+			var elem;
+			if(this.function_.param0 !== undefined) {
+				elem = this.$$("param0").children[0];
+				if(elem !== undefined) elem.remove(); //Polymer.dom(this.$$("param0")).removeChild(Polymer.dom(this.$$("param0").firstChild));
+			}
+			if(this.function_.param1 !== undefined) {
+				elem = this.$$("param1").children[0];
+				if(elem !== undefined) elem.remove();
+		   	}
+			if(this.function_.param2 !== undefined) {
+				elem = this.$$("param2").children[0];
+				if(elem !== undefined) elem.remove(); 
+			}
+			if(this.function_.param3 !== undefined) {
+				elem = this.$$("param3").children[0];
+				if(elem !== undefined) elem.remove();
+		   	}
+			if(this.function_.param4 !== undefined) {
+				elem = this.$$("param4").children[0];
+				if(elem !== undefined) elem.remove();
+		   	}
 			
 			if(this.type == "Conditional") {
 				this.function_ = PoeQuestEditor.Conditionals_byDisplayName.get(details.value);

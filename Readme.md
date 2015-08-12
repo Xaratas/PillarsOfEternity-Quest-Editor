@@ -1,4 +1,4 @@
-# Pillars of Eternity Quest Editor (im entstehen) v0.2.9
+# Pillars of Eternity Quest Editor (im entstehen) v0.2.9b
 
 Basiert momentan rein auf [Polymer](www.polymer-project.org)
 
@@ -17,7 +17,8 @@ Für UI Verbesserungen und Ideen bitte ein Ticket anlegen.
 * Highlight ein- und ausgehender Links in verschiedenen Farben
 * Anzeigen und editieren der Texte für die ausgewählte Node
 * Editieren von Playtype, Persistence, DisplayType, Experiencetype, Experience Level und Experience Weight
-* Editieren von Conditions in allen belangen, ohne Validierung der Eingaben.
+* Editieren von Conditions in allen Belangen, ohne Validierung der Eingaben.
+* Editieren von Scriptcalls in allen Belangen, soweit das gui dazu ausreicht.
 * Anzeigen der redenden und zuhörenden NPCs
 * Ausgeben der editierten Files auf der Konsole (ohne Formatierung)
 * Hilfetexte, was die Conditionfunktionen bewirken

@@ -34,6 +34,20 @@ var FunctionCallBehavior = {
 			}
 			if (data.nodeName == "Parameters") {
 				for (var p = 0; p < data.childNodes.length; p++) {
+					if((this.fullFunction.param0 !== undefined && this.fullFunction.param0.type == "Guid") ||
+						(this.fullFunction.param1 !== undefined && this.fullFunction.param1.type == "Guid") ||
+						(this.fullFunction.param2 !== undefined && this.fullFunction.param2.type == "Guid") ||
+						(this.fullFunction.param3 !== undefined && this.fullFunction.param3.type == "Guid") ||
+						(this.fullFunction.param4 !== undefined && this.fullFunction.param4.type == "Guid") ||
+						(this.fullFunction.param5 !== undefined && this.fullFunction.param5.type == "Guid") ||
+						(this.fullFunction.param6 !== undefined && this.fullFunction.param6.type == "Guid")) {
+						var known = PoeQuestEditor.GUIDS.get(data.childNodes[p].textContent);
+						if(known === undefined) {
+							PoeQuestEditor.GUIDS.set(data.childNodes[p].textContent, {instanceTag: data.childNodes[p].textContent, files: []});
+							PoeQuestEditor.GUIDS_NameList.push(data.childNodes[p].textContent);
+							PoeQuestEditor.GUIDS_byDisplayName.set(data.childNodes[p].textContent, data.childNodes[p].textContent);
+						}
+					}
 					this.push('parameter', data.childNodes[p].textContent);
 				}
 			}

@@ -197,7 +197,7 @@
 		},
 
 		addCondition: function(event, eventDetail) {
-			var condition = new ConditionElement();
+			var condition = new ConditionElement(0, false); // TODO
 			// type = ?
 			condition.fullFunction = PoeQuestEditor.Conditionals.get("Boolean IsActive(Guid)");
 			this.push("conditions", condition);
@@ -248,7 +248,7 @@
 						this.linkXML = node;
 					}
 					if (node.nodeName == "Conditionals") {
-						var conditionElement = new ConditionElement();
+						var conditionElement = new ConditionElement(0, true);
 						conditionElement.fromXML(node);
 						this.push('conditions', conditionElement);
 						Polymer.dom(this.$$("conditions")).appendChild(conditionElement);

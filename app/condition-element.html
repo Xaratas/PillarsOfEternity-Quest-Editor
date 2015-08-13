@@ -6,21 +6,28 @@
 	<style>
 		:host {
 			display: flex;
-			flex-direction: column;		 
+			flex-direction: column;
+		    background-color: rgba(0, 30, 225, .2);	
 		}
 
-		functionCall-element[hide] {
+		functionCall-element[hide], operator[hide] {
 			display: none;
 		}
 
+		:host > ::content > functionCall-element {
+			margin-top: 4px;
+			padding-left: 10px;
+		}
+
 		nestedConditions, operator {
-			border-left: 2px solid blue;
-			padding-left: 4px;
+			padding-left: 10px;
+			padding-right: 10px;
+			margin-top: 4px;
 		}
 	</style>
 	<template>
 		<functionCall-element hide$="[[isHidden]]" not="{{not}}" function_="{{fullFunction}}" parameter="{{parameter}}" type="Conditional"></functionCall-element>
-		<operator>Operator: <select is="betterSelect-element" selectedvalue="{{operator::change}}" options_="{{options}}"></select></operator>
+		<operator hide$="[[hideOperator]]">Operator: <select is="betterselect-element" selectedvalue="{{operator::change}}" options_="{{options}}"></select></operator>
 		<nestedConditions></nestedConditions>
 	</template>
 </dom-module>
@@ -44,9 +51,16 @@
 			options: {
 				type: Array,
 				value: function() { return PoeQuestEditor.LogicalOperator; }
-			}
+			},
+			level: Number,
+			hideOperator: Boolean
 		},
-		
+
+		factoryImpl: function(level, hideOperator) {
+			this.level = level;
+			this.hideOperator = hideOperator;
+		},
+
 		// überschreiben der Behavior Version
 		show: function() {
 			if(this.wasShown != true) {
@@ -84,7 +98,7 @@
 					// rekursion, liste von conditionals
 					if (xml.childNodes[i].hasChildNodes()) {
 						for (var c = 0; c < xml.childNodes[i].childNodes.length; c++) {
-							var conditional = new ConditionElement();
+							var conditional = new ConditionElement(this.level + 1, c == xml.childNodes[i].childNodes.length -1);
 							conditional.fromXML(xml.childNodes[i].childNodes[c]);
 							this.push('nestedConditions', conditional);
 							Polymer.dom(this.$$("nestedConditions")).appendChild(conditional);

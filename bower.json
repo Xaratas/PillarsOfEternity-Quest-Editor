@@ -19,7 +19,7 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#1.0.8",  
+    "polymer": "Polymer/polymer#1.0.9",  
     "iron-input": "PolymerElements/iron-input#^1.0.0",
     "iron-signals": "PolymerElements/iron-signals#^1.0.0",
     "iron-icon": "PolymerElements/iron-icon#^1.0.0",

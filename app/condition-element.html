@@ -2,7 +2,7 @@
 <link rel="import" href="functionCall-data-behavior.html">
 <link rel="import" href="betterselect-element.html">
 <!-- TODO select element in polymer mit Hinweisen, was die Einträge bewirken -->
-<dom-module id="Condition-element">
+<dom-module id="condition-element">
 	<style>
 		:host {
 			display: flex;
@@ -28,7 +28,7 @@
 "use strict";
 // muss sachen wie fun1 && (fun2 || fun3) && !(fun4 && !fun5) unterstützen
 	var ConditionElement = new Polymer({
-		is: "Condition-element",
+		is: "condition-element",
 		behaviors: [FunctionCallBehavior],
 
 		properties: {

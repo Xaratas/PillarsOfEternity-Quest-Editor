@@ -9,7 +9,7 @@
 <!-- The common base and drag and drop is in flowChartNode-behavior defined -->
 
 
-<dom-module id="FlowChartNode-element">
+<dom-module id="flowchartnode-element">
 <style>
 	:host {
 		background-color: var(--FlowChartNode-element-background-color);
@@ -138,7 +138,7 @@
 </template>
 </dom-module>
 
-<dom-module id="QuestNode-element">
+<dom-module id="questnode-element">
 	<style>
 		:host {
 			--FlowChartNode-element-background-color: #96C5F7;
@@ -151,7 +151,7 @@
 	</template>
 </dom-module>
 
-<dom-module id="ObjectiveNode-element">
+<dom-module id="objectivenode-element">
 	<style>
 		:host {
 			--FlowChartNode-element-background-color: #96C5F7;
@@ -164,13 +164,13 @@
 	</template>
 </dom-module>
 
-<dom-module id="DialogueNode-element">
+<dom-module id="dialoguenode-element">
 	<template>
 		<flowchartnode-element id="flowchartnode" direction="{{direction}}" edit-elements="{{addEditControls(editElements)}}"></flowchartnode-element>
 	</template>
 </dom-module>
 
-<dom-module id="TalkNode-element">
+<dom-module id="talknode-element">
 	<style>
 		:host {
 			--FlowChartNode-element-background-color: #8FC0A9;
@@ -183,7 +183,7 @@
 	</template>
 </dom-module>
 
-<dom-module id="PlayerResponseNode-element">
+<dom-module id="playerresponsenode-element">
 	<style>
 		:host {
 			--FlowChartNode-element-background-color: #8FC0A9;
@@ -196,7 +196,7 @@
 	</template>
 </dom-module>
 
-<dom-module id="TriggerConversationNode-element">
+<dom-module id="triggerconversationnode-element">
 	<style>
 		:host {
 			--FlowChartNode-element-background-color: #8FC0A9;
@@ -209,7 +209,7 @@
 	</template>
 </dom-module>
 
-<dom-module id="BankNode-element">
+<dom-module id="banknode-element">
 	<style>
 		:host {
 			--FlowChartNode-element-background-color: #8FC0A9;
@@ -222,7 +222,7 @@
 	</template>
 </dom-module>
 
-<dom-module id="ScriptNode-element">
+<dom-module id="scriptnode-element">
 	<style>
 		:host {
 			--FlowChartNode-element-background-color: #8FC0A9;
@@ -238,7 +238,7 @@
 <script>
 "use strict";
 	var FlowChartNode = new Polymer({
-		is: "FlowChartNode-element",
+		is: "flowchartnode-element",
 		behaviors: [FlowChartNodeBehavior],
 
 		/** Create Links via Drag and Drop */
@@ -281,7 +281,7 @@
 	});
 
 	var QuestNode = new Polymer({
-		is: "QuestNode-element",
+		is: "questnode-element",
 		behaviors: [UIBehavior],
 		
 		properties: {
@@ -387,7 +387,7 @@
 	});
 
 	var ObjectiveNode = new Polymer({
-		is: "ObjectiveNode-element",
+		is: "Objectivenode-element",
 		behaviors: [UIBehavior],
 
 		properties: {
@@ -472,7 +472,7 @@
 	});
 
 	var DialogueNode = new Polymer({
-		is: "DialogueNode-element",
+		is: "dialoguenode-element",
 
 		properties: {
 			// elements of DialogueNode, all Strings for now
@@ -581,7 +581,7 @@
 
 
 	var TalkNode = new Polymer({
-		is: 'TalkNode-element',
+		is: 'talknode-element',
 		
 		behaviors: [UIBehavior],
 		properties: {
@@ -649,7 +649,7 @@
 	});
 
 	var PlayerResponseNode = new Polymer({
-		is: 'PlayerResponseNode-element',
+		is: 'playerresponsenode-element',
 		behaviors: [UIBehavior],
 
 		properties: {
@@ -677,7 +677,7 @@
 	});
 
 	var TriggerConversationNode = new Polymer({
-		is: 'TriggerConversationNode-element',
+		is: 'triggerconversationnode-element',
 		behaviors: [UIBehavior],
 
 		properties: {
@@ -735,7 +735,7 @@
 	});
 
 	var BankNode = new Polymer({
-		is: 'BankNode-element',
+		is: 'banknode-element',
 
 		behaviors: [UIBehavior],
 
@@ -800,7 +800,7 @@
 	});
 
 	var ScriptNode = new Polymer({
-		is: 'ScriptNode-element',
+		is: 'scriptnode-element',
 
 		behaviors: [UIBehavior],
 

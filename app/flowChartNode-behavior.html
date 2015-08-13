@@ -165,7 +165,7 @@
 				type: Array, 
 				value: function() { return []; }
 			},
-
+			conditionCount: Number,
 			editElements: {
 				type: Array,
 				value: function() { return []; }
@@ -249,7 +249,7 @@
 					}
 					if (node.nodeName == "Conditionals") {
 						var conditionElement = new ConditionElement(0, true);
-						conditionElement.fromXML(node);
+						this.conditionCount = conditionElement.fromXML(node);
 						this.push('conditions', conditionElement);
 						Polymer.dom(this.$$("conditions")).appendChild(conditionElement);
 					}

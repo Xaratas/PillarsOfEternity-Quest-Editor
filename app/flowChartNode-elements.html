@@ -59,10 +59,12 @@
 	    position: absolute;
 		transform: translate(0px, -12px) rotate(90deg);
 	    transform-origin: left bottom 0;
+		display: flex;
 	}
 
 	.leftmiddle > span {
 		transform: translate(-4px, -26px) rotate(90deg);
+		display: flex;
 	}
 	
 	conditions, conditions[hidden], enterScripts, enterScripts[hidden], exitScripts, exitScripts[hidden] {
@@ -82,7 +84,7 @@
 
 	.right > span {
 		position: absolute;
-	    transform: translate(0px, 86px) rotate(270deg);
+	    transform: translate(0px, 104px) rotate(270deg);
 	    transform-origin: left top 0;
 	}
 
@@ -105,13 +107,13 @@
 </style>
 <template>
 		<div class="left" on-tap="toggleConditions">
-			<span>Conditions</span>
+			<span>Conditions:&nbsp;<span>[[conditionCount]]</span></span>
 		</div>
 		<conditions hidden="">
 			<button on-tap="toggleConditions">close</button><button on-tap="addCondition">new</button>
 		</conditions>
 		<div class="leftmiddle" on-tap="toggleEnterScripts">
-			<span>Enter&nbsp;Scripts</span>
+			<span>Enter&nbsp;Scripts:&nbsp;<span>[[enterScripts.length]]</span></span>
 		</div>
 		<enterScripts hidden="">
 			<button on-tap="toggleEnterScripts">close</button><button on-tap="addEnterScript">new</button>
@@ -124,7 +126,7 @@
 			<div><button on-click="toggleEdit">edit</button></div>
 		</div>
 		<div class="right" on-tap="toggleExitScripts">
-			<span>Exit&nbsp;Scripts</span>
+			<span>Exit&nbsp;Scripts:&nbsp;<span>[[exitScripts.length]]</span></span>
 		</div>
 		<exitScripts hidden="">
 			<button on-tap="toggleExitScripts">close</button><button on-tap="addExitScript">new</button>

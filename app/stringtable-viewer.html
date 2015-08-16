@@ -52,7 +52,10 @@
 		textarea[hide], div[hide], #addendumpanel[hide] {
 			display: none;
 		}
-
+		
+		#questEvents {
+			overflow: scroll;
+		}
 
 		#addendumpanel label {
 			margin-right: 5px;
@@ -61,6 +64,9 @@
 	<template>
 		<iron-signals on-iron-signal-flow-chart-node-selected="flowChartNodeSelected"></iron-signals>
 		<wrap>
+			<div id="questEvents" class="column leftleft">
+				<span>QuestEvents</span>
+			</div>
 			<div class="column left">
 				<span>Selected Node: <span>{{nodeId}}</span></span>
 				<span>
@@ -118,6 +124,10 @@
 				type: Array,
 				value: function() { return []; }
 			},
+			questEvents: {
+				type: Array,
+				value: function() { return []; }
+			},
 			
 			isConversation: {
 				type: Boolean,
@@ -143,6 +153,12 @@
 			if(this.sourceNode.type == "QuestNode" || this.sourceNode.type == "ObjectiveNode") {
 			    this.title = this.sourceNode.defaultText;	
 				this.description = this.sourceNode.description;
+				this.questEvents = this.sourceNode.parent_.questEvents;
+
+				for(var i = 0; i < this.questEvents.length; i++) {
+					Polymer.dom(this.$.questEvents).appendChild(this.questEvents[i]);
+				}
+
 				this.isQuest = true; 
 				this.isConversation = false;
 			} else {

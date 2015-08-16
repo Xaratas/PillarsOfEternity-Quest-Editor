@@ -1,17 +1,156 @@
 <link rel="import" href="event-data-behavior.html" />
+<link rel="import" href="betterselect-element.html" />
+<link rel="import" href="../bower_components/iron-input/iron-input.html" />
+<dom-module id="questevent-element">
+	<style>
+		:host > span:nth-child(2) {
+			display: flex;
+		}
+
+		div {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.small {
+			max-width: 30px;
+		}
+	</style>
+	<template>
+		<span><span>{{displayName}}</span>:</span>
+		<span>
+		<div>
+			<span>ID</span>
+			<input is="iron-input" bind-value="{{id}}" class="small"></input>
+		</div>
+		<div>
+			<span>Type</span>
+			<select is="betterselect-element" options_="{{options}}" selectedValue="{{type}}"></select>
+		</div>
+		<div>
+			<span>{{param0_name}}</span>
+			<input is="iron-input" bind-value="{{param0_value}}"></input>
+		</div>
+		<div>
+			<span>{{param1_name}}</span>
+			<input is="iron-input" bind-value="{{param1_value}}"></input>
+		</div>
+		</span>
+	</template>
+</dom-module>
+
+<dom-module id="questevent-globalvariable-element">
+	<style>
+		:host {
+			background-color: lightblue;
+			margin-bottom: 5px;
+		}
+	</style>
+	<template>
+		<questevent-element param0_name="Variable" param0_Value="{{variableName}}" param1_Name="Value" param1_value="{{variableValue}}"></questevent-element>
+	</template>
+</dom-module>
+
+<dom-module id="questevent-aquire-element">
+	<style>
+		:host {
+			background-color: lightblue;
+			margin-bottom: 5px;
+		}
+	</style>
+	<template>
+		<questevent-element param0_Name="Item" param0_Value="{{item}}"></questevent-element>
+	</template>
+</dom-module>
+
+<dom-module id="questevent-inspect-element">
+	<style>
+		:host {
+			background-color: lightblue;
+			margin-bottom: 5px;
+		}
+	</style>
+	<template>
+		<questevent-element param0_Name="Item" param0_Value="{{item}}"></questevent-element>
+	</template>
+</dom-module>
+
+<dom-module id="questevent-interact-element">
+	<style>
+		:host {
+			background-color: lightblue;
+			margin-bottom: 5px;
+		}
+	</style>
+	<template>
+		<questevent-element param0_Name="Object" param0_Value="{{object}}"></questevent-element>
+	</template>
+</dom-module>
+
+<dom-module id="questevent-kill-element">
+	<style>
+		:host {
+			background-color: lightblue;
+			margin-bottom: 5px;
+		}
+	</style>
+	<template>
+		<questevent-element param0_Name="Target" param0_Value="{{target}}" param1_Name="Amount" param1_Value="{{totalToKill}}"></questevent-element>
+	</template>
+</dom-module>
+
+<dom-module id="questevent-location-element">
+	<style>
+		:host {
+			background-color: lightblue;
+			margin-bottom: 5px;
+		}
+	</style>
+	<template>
+		<questevent-element param0_Name="TriggerObject" param0_Value="{{triggerObject}}"></questevent-element>
+	</template>
+</dom-module>
+
+<dom-module id="questevent-talk-element">
+	<style>
+		:host {
+			background-color: lightblue;
+			margin-bottom: 5px;
+		}
+	</style>
+	<template>
+		<questevent-element param0_Name="Conversation" param0_Value="{{conversation}}" param1_Name="Node ID" param1_Value="{{nodeId}}"></questevent-element>
+	</template>
+</dom-module>
+
 <script>
 "use strict";
-var QuestEventGlobalVariable = new Polymer({
-	is: "questevent-globalvariable-element",
+var QuestEventElement = new Polymer({
+	is: "questevent-element",
 	behaviors: [EventDataBehavior],
 
 	properties: {
+		param0_Name: String,
+		param0_Value: String,
+		param1_Name: String,
+		param1_Value: String,
+		options: {
+			type: Array,
+			value: PoeQuestEditor.QuestEvents
+		}
+	}
+});
+
+var QuestEventGlobalVariable = new Polymer({
+	is: "questevent-globalvariable-element",
+
+	properties: {
 		variableName: String,
-		variableValue: Number
+		variableValue: Number,
 	},
 
 	fromXML: function(xml) {
-		this._fromXML(xml);
+		this.$$('questevent-element')._fromXML(xml);
 		var data;
 		for(var c = 0; c < xml.childNodes.length; c++) {
 			data = xml.childNodes[c];
@@ -26,7 +165,7 @@ var QuestEventGlobalVariable = new Polymer({
 
 	toXML: function() {
 		var xml = '<QuestEvent xsi:type="' + this.type + '">';
-		xml += this._toXML();
+		xml += this.$$('questevent-element')._toXML();
 		xml += '<VariableName>' + this.variableName + '</VariableName>';
 		xml += '<VariableValue>' + this.variableValue + '</VariableValue>';
 		xml += '</QuestEvent>';
@@ -36,14 +175,13 @@ var QuestEventGlobalVariable = new Polymer({
 
 var QuestEventAquire = new Polymer({
 	is: "questevent-aquire-element",
-	behaviors: [EventDataBehavior],
 
 	properties: {
 		item: String
 	},
 
 	fromXML: function(xml) {
-		this._fromXML(xml);
+		this.$$('questevent-element')._fromXML(xml);
 		var data;
 		for(var c = 0; c < xml.childNodes.length; c++) {
 			data = xml.childNodes[c];
@@ -55,8 +193,8 @@ var QuestEventAquire = new Polymer({
 
 	toXML: function() {
 		var xml = '<QuestEvent xsi:type="' + this.type + '">';
-		xml += this._toXML();
-		xml += '<Item>' + this.variableName + '</Item>';
+		xml += this.$$('questevent-element')._toXML();
+		xml += '<Item>' + this.item + '</Item>';
 		xml += '</QuestEvent>';
 		return xml;
 	}
@@ -64,14 +202,13 @@ var QuestEventAquire = new Polymer({
 
 var QuestEventInspect = new Polymer({
 	is: "questevent-inspect-element",
-	behaviors: [EventDataBehavior],
 
 	properties: {
 		item: String
 	},
 
 	fromXML: function(xml) {
-		this._fromXML(xml);
+		this.$$('questevent-element')._fromXML(xml);
 		var data;
 			for(var c = 0; c < xml.childNodes.length; c++) {
 			data = xml.childNodes[c];
@@ -83,8 +220,8 @@ var QuestEventInspect = new Polymer({
 
 	toXML: function() {
 		var xml = '<QuestEvent xsi:type="' + this.type + '">';
-		xml += this._toXML();
-		xml += '<Item>' + this.variableName + '</Item>';
+		xml += this.$$('questevent-element')._toXML();
+		xml += '<Item>' + this.item + '</Item>';
 		xml += '</QuestEvent>';
 		return xml;
 	}
@@ -92,14 +229,13 @@ var QuestEventInspect = new Polymer({
 
 var QuestEventInteract = new Polymer({
 	is: "questevent-interact-element",
-	behaviors: [EventDataBehavior],
 
 	properties: {
 		object: String
 	},
 
 	fromXML: function(xml) {
-		this._fromXML(xml);
+		this.$$('questevent-element')._fromXML(xml);
 		var data;
 		for(var c = 0; c < xml.childNodes.length; c++) {
 			data = xml.childNodes[c];
@@ -111,8 +247,8 @@ var QuestEventInteract = new Polymer({
 
 	toXML: function() {
 		var xml = '<QuestEvent xsi:type="' + this.type + '">';
-		xml += this._toXML();
-		xml += '<Object>' + this.variableName + '</Object>';
+		xml += this.$$('questevent-element')._toXML();
+		xml += '<Object>' + this.object + '</Object>';
 		xml += '</QuestEvent>';
 		return xml;
 	}
@@ -120,7 +256,6 @@ var QuestEventInteract = new Polymer({
 
 var QuestEventKill = new Polymer({ 
 	is: "questevent-kill-element",
-	behaviors: [EventDataBehavior],
 
 	properties: {
 		target: String,
@@ -128,7 +263,7 @@ var QuestEventKill = new Polymer({
 	},
 
 	fromXML: function(xml) {
-		this._fromXML(xml);
+		this.$$('questevent-element')._fromXML(xml);
 		var data;
 		for(var c = 0; c < xml.childNodes.length; c++) {
 			data = xml.childNodes[c];
@@ -143,9 +278,9 @@ var QuestEventKill = new Polymer({
 
 	toXML: function() {
 		var xml = '<QuestEvent xsi:type="' + this.type + '">';
-		xml += this._toXML();
-		xml += '<Target>' + this.variableName + '</Target>';
-		xml += '<TotalToKill>' + this.variableValue + '</TotalToKill>';
+		xml += this.$$('questevent-element')._toXML();
+		xml += '<Target>' + this.target + '</Target>';
+		xml += '<TotalToKill>' + this.totalToKill + '</TotalToKill>';
 		xml += '</QuestEvent>';
 		return xml;
 	}
@@ -153,14 +288,13 @@ var QuestEventKill = new Polymer({
 
 var QuestEventLocation = new Polymer({
 	is: "questevent-location-element",
-	behaviors: [EventDataBehavior],
 
 	properties: {
 		triggerObject: String
 	},
 
 	fromXML: function(xml) {
-		this._fromXML(xml);
+		this.$$('questevent-element')._fromXML(xml);
 		var data;
 		for(var c = 0; c < xml.childNodes.length; c++) {
 			data = xml.childNodes[c];
@@ -172,8 +306,8 @@ var QuestEventLocation = new Polymer({
 
 	toXML: function() {
 		var xml = '<QuestEvent xsi:type="' + this.type + '">';
-		xml += this._toXML();
-		xml += '<TriggerObject>' + this.variableName + '</TriggerObject>';
+		xml += this.$$('questevent-element')._toXML();
+		xml += '<TriggerObject>' + this.triggerObject + '</TriggerObject>';
 		xml += '</QuestEvent>';
 		return xml;
 	}
@@ -181,7 +315,6 @@ var QuestEventLocation = new Polymer({
 
 var QuestEventTalk = new Polymer({
 	is: "questevent-talk-element",
-	behaviors: [EventDataBehavior],
 
 	properties: {
 		conversation: String,
@@ -189,7 +322,7 @@ var QuestEventTalk = new Polymer({
 	},
 
 	fromXML: function(xml) {
-		this._fromXML(xml);
+		this.$$('questevent-element')._fromXML(xml);
 		var data;
 		for(var c = 0; c < xml.childNodes.length; c++) {
 			data = xml.childNodes[c];
@@ -204,9 +337,9 @@ var QuestEventTalk = new Polymer({
 
 	toXML: function() {
 		var xml = '<QuestEvent xsi:type="' + this.type + '">';
-		xml += this._toXML();
-		xml += '<Conversation>' + this.variableName + '</Conversation>';
-		xml += '<NodeID>' + this.variableValue + '</NodeID>';
+		xml += this.$$('questevent-element')._toXML();
+		xml += '<Conversation>' + this.conversation + '</Conversation>';
+		xml += '<NodeID>' + this.nodeId + '</NodeID>';
 		xml += '</QuestEvent>';
 		return xml;
 	}

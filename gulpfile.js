@@ -25,18 +25,27 @@ gulp.task('copy', function () {
   var app = gulp.src([
     'app/*',
     '!app/test',
-    '!app/precache.json'
+    '!app/precache.json',
+    '!app/**/build.log',
+    '!app/**/bower.json',
+    '!app/*.swp',
+    '!app/*.*~'
   ], {
     dot: true
   }).pipe(gulp.dest('dist'));
 
   var bower = gulp.src([
-    'bower_components/**/*'
+    'bower_components/**/*',
+    '!bower_components/**/build.log',
+    '!bower_components/**/bower.json'
   ]).pipe(gulp.dest('dist/bower_components'));
 
   var elements = gulp.src(['app/elements/**/*.html'])
     .pipe(gulp.dest('dist/elements'));
  
+  var readme = gulp.src(['Readme.md'])
+    .pipe(gulp.dest('dist'));
+
   return merge(app, bower, elements)
     .pipe($.size({title: 'copy'}));
 });
@@ -45,13 +54,15 @@ gulp.task('copy', function () {
 gulp.task('html', function () {
   var assets = $.useref.assets({searchPath: ['.tmp', 'app', 'dist']});
 
-  return gulp.src(['app/**/*.html', '!app/{elements,test}/**/*.html'])
+  return gulp.src(['app/*.html', 'app/**/*.html', '!app/{elements,test}/**/*.html'])
+    // Replace path for vulcanized assets
+    //.pipe($.if('*.html', $.replace('elements/elements.html', 'elements/elements.vulcanized.html'))) // das bringt bei mir gar nix
     .pipe(assets)
     // Concatenate And Minify JavaScript
-    .pipe($.if('*.js', $.uglify({preserveComments: 'some'})))
+    .pipe($.if('*.html', $.uglify({preserveComments: 'some'})))
     // Concatenate And Minify Styles
     // In case you are still using useref build blocks
-    .pipe($.if('*.css', $.cssmin()))
+    .pipe($.if('*.html', $.cssmin()))
     .pipe(assets.restore())
     .pipe($.useref())
     // Minify Any HTML
@@ -65,6 +76,20 @@ gulp.task('html', function () {
     .pipe($.size({title: 'html'}));
 });
 
+
+// Vulcanize imports, so macht das großen bullshit
+gulp.task('vulcanize', function () {
+  var DEST_DIR = 'dist';
+
+  return gulp.src(['dist/*.html'])
+    .pipe($.vulcanize({
+      stripComments: true,
+      inlineCss: true,
+      inlineScripts: true
+    }))
+    .pipe(gulp.dest(DEST_DIR))
+    .pipe($.size({title: 'vulcanize'}));
+});
 
 // Watch Files For Changes & Reload
 gulp.task('serve', function () {
@@ -96,4 +121,3 @@ gulp.task('serve', function () {
   gulp.watch(['app/{scripts,elements}/**/*.js'], ['jshint']);
   gulp.watch(['app/images/**/*'], reload);
 });
-

@@ -10,102 +10,102 @@
 
 
 <dom-module id="flowchartnode-element">
-<style>
-	:host {
-		background-color: var(--FlowChartNode-element-background-color);
-		width: 260px;
-		display: flex;
-		margin: 10px;
-		position: relative;
-	}
-	
-	:host.selected {
-		background-color: var(--FlowChartNode-element-selected-color);
-	}
-
-	.direction {
-		float: right;
-	}
-
-	.left, .right, .leftmiddle {
-		width: 40px;
-		padding: 10px 5px;
-		background-color: var(--FlowChartNode-element-popup-target-color);
-		position: relative;
-	}
-
-	.left {
-		border-top-right-radius: 20px;
-		border-bottom-right-radius: 20px;
-		padding-right: 18px;
-	}
-
-	.right {
-		border-top-left-radius: 20px;
-		border-bottom-left-radius: 20px;
-		padding-right: 18px;
-	}
-
-	.leftmiddle {
-		border-radius: 20px;
-		padding: 12px;
-		margin-left: 3px;
-	}
-	.center {
-		margin: 10px;
-	}
-
-	.left > span, .leftmiddle > span {
-	    position: absolute;
-		transform: translate(0px, -12px) rotate(90deg);
-	    transform-origin: left bottom 0;
-		display: flex;
-	}
-
-	.leftmiddle > span {
-		transform: translate(-4px, -26px) rotate(90deg);
-		display: flex;
-	}
-	
-	conditions, conditions[hidden], enterScripts, enterScripts[hidden], exitScripts, exitScripts[hidden] {
-		display: none;
-		position: absolute;
-		width: 800px;
-		background-color: #a6fff7;
-		z-index: 10;
-		left: 25px;
-		top: 30px;
-		padding: 10px;
-	}
-	
-	conditions, enterScripts, exitScripts {
-		display: block;
-	}
-
-	.right > span {
-		position: absolute;
-	    transform: translate(0px, 104px) rotate(270deg);
-	    transform-origin: left top 0;
-	}
-
-	comments {
-	}
-
-	.editPanel {
-		background-color: #A9D3FF;
-		height: 400px;
-		left: 0;
-		position: absolute;
-		width: 400px;
-		z-index: 1;
-	}
-
-	.closeButton {
-		position: absoulte;
-		right: 0;
-	}
-</style>
-<template>
+	<template>
+		<style>
+			:host {
+				background-color: var(--FlowChartNode-element-background-color);
+				width: 260px;
+				display: flex;
+				margin: 10px;
+				position: relative;
+			}
+			
+			:host.selected {
+				background-color: var(--FlowChartNode-element-selected-color);
+			}
+		
+			.direction {
+				float: right;
+			}
+		
+			.left, .right, .leftmiddle {
+				width: 40px;
+				padding: 10px 5px;
+				background-color: var(--FlowChartNode-element-popup-target-color);
+				position: relative;
+			}
+		
+			.left {
+				border-top-right-radius: 20px;
+				border-bottom-right-radius: 20px;
+				padding-right: 18px;
+			}
+		
+			.right {
+				border-top-left-radius: 20px;
+				border-bottom-left-radius: 20px;
+				padding-right: 18px;
+			}
+		
+			.leftmiddle {
+				border-radius: 20px;
+				padding: 12px;
+				margin-left: 3px;
+			}
+			.center {
+				margin: 10px;
+			}
+		
+			.left > span, .leftmiddle > span {
+			    position: absolute;
+				transform: translate(0px, -12px) rotate(90deg);
+			    transform-origin: left bottom 0;
+				display: flex;
+			}
+		
+			.leftmiddle > span {
+				transform: translate(-4px, -26px) rotate(90deg);
+				display: flex;
+			}
+			
+			conditions, conditions[hidden], enterScripts, enterScripts[hidden], exitScripts, exitScripts[hidden] {
+				display: none;
+				position: absolute;
+				width: 800px;
+				background-color: #a6fff7;
+				z-index: 10;
+				left: 25px;
+				top: 30px;
+				padding: 10px;
+			}
+			
+			conditions, enterScripts, exitScripts {
+				display: block;
+			}
+		
+			.right > span {
+				position: absolute;
+			    transform: translate(0px, 104px) rotate(270deg);
+			    transform-origin: left top 0;
+			}
+		
+			comments {
+			}
+		
+			.editPanel {
+				background-color: #A9D3FF;
+				height: 400px;
+				left: 0;
+				position: absolute;
+				width: 400px;
+				z-index: 1;
+			}
+		
+			.closeButton {
+				position: absoulte;
+				right: 0;
+			}
+		</style>
 		<div class="left" on-tap="toggleConditions">
 			<span>Conditions:&nbsp;<span>[[conditionCount]]</span></span>
 		</div>
@@ -141,27 +141,27 @@
 </dom-module>
 
 <dom-module id="questnode-element">
-	<style>
-		:host {
-			--FlowChartNode-element-background-color: #96C5F7;
-			--FlowChartNode-element-popup-target-color: #A9D3FF;
-			--FlowChartNode-element-selected-color: #6782A7;
-		}	
-	</style>
 	<template>
+		<style>
+			:host {
+				--FlowChartNode-element-background-color: #96C5F7;
+				--FlowChartNode-element-popup-target-color: #A9D3FF;
+				--FlowChartNode-element-selected-color: #6782A7;
+			}	
+		</style>
 		<flowchartnode-element id="flowchartnode" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
 	</template>
 </dom-module>
 
 <dom-module id="objectivenode-element">
-	<style>
-		:host {
-			--FlowChartNode-element-background-color: #96C5F7;
-			--FlowChartNode-element-popup-target-color: #A9D3FF;
-			--FlowChartNode-element-selected-color: #6782A7;
-		}	
-	</style>
 	<template>
+		<style>
+			:host {
+				--FlowChartNode-element-background-color: #96C5F7;
+				--FlowChartNode-element-popup-target-color: #A9D3FF;
+				--FlowChartNode-element-selected-color: #6782A7;
+			}	
+		</style>
 		<flowchartnode-element id="flowchartnode" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
 	</template>
 </dom-module>
@@ -173,66 +173,66 @@
 </dom-module>
 
 <dom-module id="talknode-element">
-	<style>
-		:host {
-			--FlowChartNode-element-background-color: #8FC0A9;
-			--FlowChartNode-element-popup-target-color: #9FD8CB;
-			--FlowChartNode-element-selected-color: #E2EB98;
-		}	
-	</style>
 	<template>
+		<style>
+			:host {
+				--FlowChartNode-element-background-color: #8FC0A9;
+				--FlowChartNode-element-popup-target-color: #9FD8CB;
+				--FlowChartNode-element-selected-color: #E2EB98;
+			}	
+		</style>
 		<dialoguenode-element id="dialoguenode" direction="{{direction}}" edit-elements="{{editElements}}"></dialoguenode-element>
 	</template>
 </dom-module>
 
 <dom-module id="playerresponsenode-element">
-	<style>
-		:host {
-			--FlowChartNode-element-background-color: #8FC0A9;
-			--FlowChartNode-element-popup-target-color: #9FD8CB;
-			--FlowChartNode-element-selected-color: #E2EB98;
-		}	
-	</style>
 	<template>
+		<style>
+			:host {
+				--FlowChartNode-element-background-color: #8FC0A9;
+				--FlowChartNode-element-popup-target-color: #9FD8CB;
+				--FlowChartNode-element-selected-color: #E2EB98;
+			}	
+		</style>
 		<dialoguenode-element id="dialoguenode" direction="{{direction}}"></dialoguenode-element>
 	</template>
 </dom-module>
 
 <dom-module id="triggerconversationnode-element">
-	<style>
-		:host {
-			--FlowChartNode-element-background-color: #8FC0A9;
-			--FlowChartNode-element-popup-target-color: #9FD8CB;
-			--FlowChartNode-element-selected-color: #E2EB98;
-		}	
-	</style>
 	<template>
+		<style>
+			:host {
+				--FlowChartNode-element-background-color: #8FC0A9;
+				--FlowChartNode-element-popup-target-color: #9FD8CB;
+				--FlowChartNode-element-selected-color: #E2EB98;
+			}	
+		</style>
 		<dialoguenode-element id="dialoguenode" direction="{{direction}}" edit-elements="{{editElements}}"></dialoguenode-element>
 	</template>
 </dom-module>
 
 <dom-module id="banknode-element">
-	<style>
-		:host {
-			--FlowChartNode-element-background-color: #8FC0A9;
-			--FlowChartNode-element-popup-target-color: #9FD8CB;
-			--FlowChartNode-element-selected-color: #E2EB98;
-		}	
-	</style>
 	<template>
+		<style>
+			:host {
+				--FlowChartNode-element-background-color: #8FC0A9;
+				--FlowChartNode-element-popup-target-color: #9FD8CB;
+				--FlowChartNode-element-selected-color: #E2EB98;
+			}	
+		</style>
 		<flowchartnode-element id="flowchartnode" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
 	</template>
 </dom-module>
 
 <dom-module id="scriptnode-element">
-	<style>
-		:host {
-			--FlowChartNode-element-background-color: #8FC0A9;
-			--FlowChartNode-element-popup-target-color: #9FD8CB;
-			--FlowChartNode-element-selected-color: #E2EB98;
-		}	
-	</style>
 	<template>
+		<style>
+			:host {
+				--FlowChartNode-element-background-color: #8FC0A9;
+				--FlowChartNode-element-popup-target-color: #9FD8CB;
+				--FlowChartNode-element-selected-color: #E2EB98;
+			}	
+		</style>
 		<dialoguenode-element id="dialoguenode" direction="{{direction}}"></dialoguenode-element>
 	</template>
 </dom-module>

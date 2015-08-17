@@ -2,21 +2,21 @@
 <link rel="import" href="betterselect-element.html" />
 <link rel="import" href="../bower_components/iron-input/iron-input.html" />
 <dom-module id="questevent-element">
-	<style>
-		:host > span:nth-child(2) {
-			display: flex;
-		}
-
-		div {
-			display: flex;
-			flex-direction: column;
-		}
-
-		.small {
-			max-width: 30px;
-		}
-	</style>
 	<template>
+		<style>
+			:host > span:nth-child(2) {
+				display: flex;
+			}
+	
+			div {
+				display: flex;
+				flex-direction: column;
+			}
+	
+			.small {
+				max-width: 30px;
+			}
+		</style>
 		<span><span>{{displayName}}</span>:</span>
 		<span>
 		<div>
@@ -40,85 +40,85 @@
 </dom-module>
 
 <dom-module id="questevent-globalvariable-element">
-	<style>
-		:host {
-			background-color: lightblue;
-			margin-bottom: 5px;
-		}
-	</style>
 	<template>
+		<style>
+			:host {
+				background-color: lightblue;
+				margin-bottom: 5px;
+			}
+		</style>
 		<questevent-element param0_name="Variable" param0_Value="{{variableName}}" param1_Name="Value" param1_value="{{variableValue}}"></questevent-element>
 	</template>
 </dom-module>
 
 <dom-module id="questevent-aquire-element">
-	<style>
-		:host {
-			background-color: lightblue;
-			margin-bottom: 5px;
-		}
-	</style>
 	<template>
+		<style>
+			:host {
+				background-color: lightblue;
+				margin-bottom: 5px;
+			}
+		</style>
 		<questevent-element param0_Name="Item" param0_Value="{{item}}"></questevent-element>
 	</template>
 </dom-module>
 
 <dom-module id="questevent-inspect-element">
-	<style>
-		:host {
-			background-color: lightblue;
-			margin-bottom: 5px;
-		}
-	</style>
 	<template>
+		<style>
+			:host {
+				background-color: lightblue;
+				margin-bottom: 5px;
+			}
+		</style>
 		<questevent-element param0_Name="Item" param0_Value="{{item}}"></questevent-element>
 	</template>
 </dom-module>
 
 <dom-module id="questevent-interact-element">
-	<style>
-		:host {
-			background-color: lightblue;
-			margin-bottom: 5px;
-		}
-	</style>
 	<template>
+		<style>
+			:host {
+				background-color: lightblue;
+				margin-bottom: 5px;
+			}
+		</style>
 		<questevent-element param0_Name="Object" param0_Value="{{object}}"></questevent-element>
 	</template>
 </dom-module>
 
 <dom-module id="questevent-kill-element">
-	<style>
-		:host {
-			background-color: lightblue;
-			margin-bottom: 5px;
-		}
-	</style>
 	<template>
+		<style>
+			:host {
+				background-color: lightblue;
+				margin-bottom: 5px;
+			}
+		</style>
 		<questevent-element param0_Name="Target" param0_Value="{{target}}" param1_Name="Amount" param1_Value="{{totalToKill}}"></questevent-element>
 	</template>
 </dom-module>
 
 <dom-module id="questevent-location-element">
-	<style>
-		:host {
-			background-color: lightblue;
-			margin-bottom: 5px;
-		}
-	</style>
 	<template>
+		<style>
+			:host {
+				background-color: lightblue;
+				margin-bottom: 5px;
+			}
+		</style>
 		<questevent-element param0_Name="TriggerObject" param0_Value="{{triggerObject}}"></questevent-element>
 	</template>
 </dom-module>
 
 <dom-module id="questevent-talk-element">
-	<style>
-		:host {
-			background-color: lightblue;
-			margin-bottom: 5px;
-		}
-	</style>
 	<template>
+		<style>
+			:host {
+				background-color: lightblue;
+				margin-bottom: 5px;
+			}
+		</style>
 		<questevent-element param0_Name="Conversation" param0_Value="{{conversation}}" param1_Name="Node ID" param1_Value="{{nodeId}}"></questevent-element>
 	</template>
 </dom-module>

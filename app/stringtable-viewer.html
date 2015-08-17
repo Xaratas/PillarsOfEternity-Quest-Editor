@@ -2,66 +2,66 @@
 <link rel="import" href="../bower_components/iron-signals/iron-signals.html">
 
 <dom-module id="stringtable-viewer">
-	<style>
-		:host {
-			position: fixed;
-			bottom: 0;
-			left: 0;
-			width: 100%;
-			z-index: 3000;
-			background-color: white;
-			height: 140px;
-		}
-		iron-signals {
-			height: inherit;
-		}
-
-		:host wrap {
-			display: flex;
-			height: inherit;
-		}
-
-		.column {
-			display: flex;
-			flex-direction: column;
-		}
-
-		.left {
-			flex-grow: 1;
-		}
-
-		.right {
-			flex-grow: 5;
-			position: relative;
-		}
-
-		textarea {
-			flex-grow: 1; 
-		}
-
-		#addendumpanel {
-			background-color: white;
-			height: 83%;
-			left: 0;
-	    	position: absolute;
-			top: 0;
-			width: 100%;
-			display: flex;
-		}
-		
-		textarea[hide], div[hide], #addendumpanel[hide] {
-			display: none;
-		}
-		
-		#questEvents {
-			overflow: scroll;
-		}
-
-		#addendumpanel label {
-			margin-right: 5px;
-		}
-	</style>
 	<template>
+		<style>
+			:host {
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				z-index: 3000;
+				background-color: white;
+				height: 140px;
+			}
+			iron-signals {
+				height: inherit;
+			}
+	
+			:host wrap {
+				display: flex;
+				height: inherit;
+			}
+	
+			.column {
+				display: flex;
+				flex-direction: column;
+			}
+	
+			.left {
+				flex-grow: 1;
+			}
+	
+			.right {
+				flex-grow: 5;
+				position: relative;
+			}
+	
+			textarea {
+				flex-grow: 1; 
+			}
+	
+			#addendumpanel {
+				background-color: white;
+				height: 83%;
+				left: 0;
+		    	position: absolute;
+				top: 0;
+				width: 100%;
+				display: flex;
+			}
+			
+			textarea[hide], div[hide], #addendumpanel[hide] {
+				display: none;
+			}
+			
+			#questEvents {
+				overflow: scroll;
+			}
+	
+			#addendumpanel label {
+				margin-right: 5px;
+			}
+		</style>
 		<iron-signals on-iron-signal-flow-chart-node-selected="flowChartNodeSelected"></iron-signals>
 		<wrap>
 			<div id="questEvents" class="column leftleft">

@@ -1,0 +1,10 @@
+// "use strict" ohne function form -> -W097
+{
+	"browser": true,
+	"esnext": true,
+	"-W097": true,
+	"globals": {
+		"Polymer": true,
+		"PoeQuestEditor": true
+	}
+}

@@ -1,11 +1,11 @@
 
 <dom-module id="betterselect-element">
-	<style>
-		:host {
-			/* max-width: inherit; /* Funzt nicht im ff*/
-		}
-	</style>
 	<template>
+		<style>
+			:host {
+				/* max-width: inherit; /* Funzt nicht im ff*/
+			}
+		</style>
 		<template is="dom-repeat" items="{{options_}}">
 			<option>{{item}}</option>
 		</template>

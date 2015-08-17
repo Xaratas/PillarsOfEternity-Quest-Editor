@@ -4,36 +4,36 @@
 
 <link rel="import" href="polishedIron-input.html">
 <dom-module id="functioncall-element">
-	<style>
-		:host {
-			display: flex;
-		}
-		div {
-			display: flex;
-			flex-direction: column;
-		}
-		span, func, param0, param1, param2, param3, param4 {
-		}
-
-		func, param0, param1, param2, param3, param4 {
-			max-width: 200px;
-			display: flex;
-		}
-
-		func {
-		}
-
-		span:first-child {
-			flex: 0 0 22px; /* ziemlich genau 22px höhe */
-		}
-
-		div[hide], span[hide], param0[hide], param1[hide], param2[hide], param3[hide], param4[hide] {
-			display: none;
-		}
-
-		/* bestimmte inputs länger */
-	</style>
 	<template>
+		<style>
+			:host {
+				display: flex;
+			}
+			div {
+				display: flex;
+				flex-direction: column;
+			}
+			span, func, param0, param1, param2, param3, param4 {
+			}
+
+			func, param0, param1, param2, param3, param4 {
+				max-width: 200px;
+				display: flex;
+			}
+
+			func {
+			}
+
+			span:first-child {
+				flex: 0 0 22px; /* ziemlich genau 22px höhe */
+			}
+
+			div[hide], span[hide], param0[hide], param1[hide], param2[hide], param3[hide], param4[hide] {
+				display: none;
+			}
+
+			/* bestimmte inputs länger */
+		</style>
 		<div hide$="[[!isScript(type)]]">
 			<span>Not</span>
 			<span><paper-toggle-button checked="{{not}}"></paper-toggle-button></span>
@@ -96,7 +96,7 @@
 		},
 		// really performance heavy, so dont do this on attach, do it only when requested by the user to spread the needed time and decreasing performance over time
 		show: function() {
-			if(Object.keys(this.function_).length != 0) {
+			if(Object.keys(this.function_).length !== 0) {
 				var edit;
 				edit = this.elementForType(this.type);
 				Polymer.dom(this.$$("func")).appendChild(edit);

@@ -3,18 +3,18 @@
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 
 <dom-module id="edit-element">
-	<style>
-	:host {
-		display: flex;
-	}
-
-	.label, editControl {
-		flex-grow: 1;
-		width: 30%;
-	}
-
-	</style>
 	<template>
+		<style>
+		:host {
+			display: flex;
+		}
+
+		.label, editControl {
+			flex-grow: 1;
+			width: 30%;
+		}
+
+		</style>
 		<div class="label">{{label}}</div>
 		<editControl id="editControl">
 			<input id="input" is="iron-input" bind-value="{{value}}" hidden="true"></input>

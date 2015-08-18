@@ -146,6 +146,10 @@
 		},
 
 		flowChartNodeSelected: function(e, data, sender) {
+			var skipEvents = false;
+			if(this.sourceNode !== undefined && this.sourceNode.parent_ === data[0]) {
+				skipEvents = true;
+			}
 			this.sourceNode = data[0]; // erst this, dann kann der observer oben nichts überschreiben
 			this.nodeId = this.sourceNode.nodeId;
 			this.defaultText = this.sourceNode.defaultText;
@@ -153,10 +157,21 @@
 			if(this.sourceNode.type == "QuestNode" || this.sourceNode.type == "ObjectiveNode") {
 			    this.title = this.sourceNode.defaultText;	
 				this.description = this.sourceNode.description;
-				this.questEvents = this.sourceNode.parent_.questEvents;
-
-				for(var i = 0; i < this.questEvents.length; i++) {
-					Polymer.dom(this.$.questEvents).appendChild(this.questEvents[i]);
+				if(skipEvents || this.questEvents.length == this.sourceNode.parent_.questEvents.length && 
+						this.questEvents.every(
+							function(current, index, array) { 
+								return current == this.sourceNode.parent_.questEvents[index];
+							}, this)) {
+					// alles gleich, also mache mal nix
+				} else {
+					// aufräumen, kein forEach, das ist doch ne nodelist …
+					for(var j = 0; j < this.questEvents.length; j++) {
+						Polymer.dom(this.$.questEvents).removeChild(this.questEvents[j]);
+					}
+					this.questEvents = this.sourceNode.parent_.questEvents;
+					for(var i = 0; i < this.questEvents.length; i++) {
+						Polymer.dom(this.$.questEvents).appendChild(this.questEvents[i]);
+					}
 				}
 
 				this.isQuest = true; 

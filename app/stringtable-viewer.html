@@ -64,7 +64,7 @@
 		</style>
 		<iron-signals on-iron-signal-flow-chart-node-selected="flowChartNodeSelected"></iron-signals>
 		<wrap>
-			<div id="questEvents" class="column leftleft">
+			<div id="questEvents" class="column leftleft" on-value-changed="changeQuestEvent">
 				<span>QuestEvents</span>
 			</div>
 			<div class="column left">
@@ -214,6 +214,20 @@
 					word = "hide" + word;
 			}
 			return word;
+		},
+
+		changeQuestEvent: function(e, details) {
+			var orginal = e.target.parentElement.parentElement.parentElement.parentElement;
+			var newQuestEvent = new window[details.value]();
+			newQuestEvent.$$('questevent-element').id = orginal.$$('questevent-element').id
+			newQuestEvent.$$('questevent-element').displayName = orginal.$$('questevent-element').displayName;
+			for(var j = 0; j < this.questEvents.length; j++) {
+				Polymer.dom(this.$.questEvents).removeChild(this.questEvents[j]);
+			}
+			this.splice("questEvents", this.questEvents.indexOf(orginal), 1, newQuestEvent);
+			for(var i = 0; i < this.questEvents.length; i++) {
+				Polymer.dom(this.$.questEvents).appendChild(this.questEvents[i]);
+			}
 		}
 	});
 </script>

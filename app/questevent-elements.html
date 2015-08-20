@@ -16,8 +16,12 @@
 			.small {
 				max-width: 30px;
 			}
+
+			div[hide] {
+				visibility: hidden;
+			}
 		</style>
-		<span><span>{{displayName}}</span>:</span>
+		<span>Name:&nbsp;<input is="iron-input" bind-value="{{displayName}}"></input></span>
 		<span>
 		<div>
 			<span>ID</span>
@@ -31,7 +35,7 @@
 			<span>{{param0_name}}</span>
 			<input is="iron-input" bind-value="{{param0_value}}"></input>
 		</div>
-		<div>
+		<div hide$="[[isHidden(param1_name)]]">
 			<span>{{param1_name}}</span>
 			<input is="iron-input" bind-value="{{param1_value}}"></input>
 		</div>
@@ -47,7 +51,7 @@
 				margin-bottom: 5px;
 			}
 		</style>
-		<questevent-element param0_name="Variable" param0_Value="{{variableName}}" param1_Name="Value" param1_value="{{variableValue}}"></questevent-element>
+		<questevent-element param0_Name="Variable" param0_Value="{{variableName}}" param1_Name="Value" param1_Value="{{variableValue}}" type="QuestEventGlobalVariable"></questevent-element>
 	</template>
 </dom-module>
 
@@ -59,7 +63,7 @@
 				margin-bottom: 5px;
 			}
 		</style>
-		<questevent-element param0_Name="Item" param0_Value="{{item}}"></questevent-element>
+		<questevent-element param0_Name="Item" param0_Value="{{item}}" param1_Name="" type="QuestEventAquire"></questevent-element>
 	</template>
 </dom-module>
 
@@ -71,7 +75,7 @@
 				margin-bottom: 5px;
 			}
 		</style>
-		<questevent-element param0_Name="Item" param0_Value="{{item}}"></questevent-element>
+		<questevent-element param0_Name="Item" param0_Value="{{item}}" param1_Name="" type="QuestEventInspect"></questevent-element>
 	</template>
 </dom-module>
 
@@ -83,7 +87,7 @@
 				margin-bottom: 5px;
 			}
 		</style>
-		<questevent-element param0_Name="Object" param0_Value="{{object}}"></questevent-element>
+		<questevent-element param0_Name="Object" param0_Value="{{object}}" param1_Name="" type="QuestEventInteract"></questevent-element>
 	</template>
 </dom-module>
 
@@ -95,7 +99,7 @@
 				margin-bottom: 5px;
 			}
 		</style>
-		<questevent-element param0_Name="Target" param0_Value="{{target}}" param1_Name="Amount" param1_Value="{{totalToKill}}"></questevent-element>
+		<questevent-element param0_Name="Target" param0_Value="{{target}}" param1_Name="Amount" param1_Value="{{totalToKill}}" type="QuestEventKill"></questevent-element>
 	</template>
 </dom-module>
 
@@ -107,7 +111,7 @@
 				margin-bottom: 5px;
 			}
 		</style>
-		<questevent-element param0_Name="TriggerObject" param0_Value="{{triggerObject}}"></questevent-element>
+		<questevent-element param0_Name="TriggerObject" param0_Value="{{triggerObject}}" param1_Name="" type="QuestEventLocation"></questevent-element>
 	</template>
 </dom-module>
 
@@ -119,7 +123,7 @@
 				margin-bottom: 5px;
 			}
 		</style>
-		<questevent-element param0_Name="Conversation" param0_Value="{{conversation}}" param1_Name="Node ID" param1_Value="{{nodeId}}"></questevent-element>
+		<questevent-element param0_Name="Conversation" param0_Value="{{conversation}}" param1_Name="Node ID" param1_Value="{{nodeId}}" type="QuestEventTalk"></questevent-element>
 	</template>
 </dom-module>
 
@@ -132,12 +136,19 @@ var QuestEventElement = new Polymer({
 	properties: {
 		param0_Name: String,
 		param0_Value: String,
-		param1_Name: String,
+		param1_Name: {
+			type: String,
+			value: ""
+		},
 		param1_Value: String,
 		options: {
 			type: Array,
 			value: PoeQuestEditor.QuestEvents
 		}
+	},
+
+	isHidden: function(newValue) {
+		return newValue === undefined || newValue.length === 0;
 	}
 });
 
@@ -164,7 +175,7 @@ var QuestEventGlobalVariable = new Polymer({
 	},
 
 	toXML: function() {
-		var xml = '<QuestEvent xsi:type="' + this.type + '">';
+		var xml = '<QuestEvent xsi:type="' + this.$$('questevent-element').type + '">';
 		xml += this.$$('questevent-element')._toXML();
 		xml += '<VariableName>' + this.variableName + '</VariableName>';
 		xml += '<VariableValue>' + this.variableValue + '</VariableValue>';
@@ -192,7 +203,7 @@ var QuestEventAquire = new Polymer({
 	},
 
 	toXML: function() {
-		var xml = '<QuestEvent xsi:type="' + this.type + '">';
+		var xml = '<QuestEvent xsi:type="' + this.$$('questevent-element').type + '">';
 		xml += this.$$('questevent-element')._toXML();
 		xml += '<Item>' + this.item + '</Item>';
 		xml += '</QuestEvent>';
@@ -219,7 +230,7 @@ var QuestEventInspect = new Polymer({
 	},
 
 	toXML: function() {
-		var xml = '<QuestEvent xsi:type="' + this.type + '">';
+		var xml = '<QuestEvent xsi:type="' + this.$$('questevent-element').type + '">';
 		xml += this.$$('questevent-element')._toXML();
 		xml += '<Item>' + this.item + '</Item>';
 		xml += '</QuestEvent>';
@@ -246,7 +257,7 @@ var QuestEventInteract = new Polymer({
 	},
 
 	toXML: function() {
-		var xml = '<QuestEvent xsi:type="' + this.type + '">';
+		var xml = '<QuestEvent xsi:type="' + this.$$('questevent-element').type + '">';
 		xml += this.$$('questevent-element')._toXML();
 		xml += '<Object>' + this.object + '</Object>';
 		xml += '</QuestEvent>';
@@ -277,7 +288,7 @@ var QuestEventKill = new Polymer({
 	},
 
 	toXML: function() {
-		var xml = '<QuestEvent xsi:type="' + this.type + '">';
+		var xml = '<QuestEvent xsi:type="' + this.$$('questevent-element').type + '">';
 		xml += this.$$('questevent-element')._toXML();
 		xml += '<Target>' + this.target + '</Target>';
 		xml += '<TotalToKill>' + this.totalToKill + '</TotalToKill>';
@@ -305,7 +316,7 @@ var QuestEventLocation = new Polymer({
 	},
 
 	toXML: function() {
-		var xml = '<QuestEvent xsi:type="' + this.type + '">';
+		var xml = '<QuestEvent xsi:type="' + this.$$('questevent-element').type + '">';
 		xml += this.$$('questevent-element')._toXML();
 		xml += '<TriggerObject>' + this.triggerObject + '</TriggerObject>';
 		xml += '</QuestEvent>';
@@ -336,7 +347,7 @@ var QuestEventTalk = new Polymer({
 	},
 
 	toXML: function() {
-		var xml = '<QuestEvent xsi:type="' + this.type + '">';
+		var xml = '<QuestEvent xsi:type="' + this.$$('questevent-element').type + '">';
 		xml += this.$$('questevent-element')._toXML();
 		xml += '<Conversation>' + this.conversation + '</Conversation>';
 		xml += '<NodeID>' + this.nodeId + '</NodeID>';

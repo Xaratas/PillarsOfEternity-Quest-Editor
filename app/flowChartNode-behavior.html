@@ -260,9 +260,6 @@
 						this.scriptsFromXML("exitScripts", node);
 					}
 					// onUpdateScripts werden nicht verwendet
-					if (node.nodeName == "IsTempText") {
-						// ist niemals temp 
-					}
 				}
 			}
 			return this.nodeId;
@@ -302,7 +299,6 @@
 			});
 			result += "</OnExitScripts>";
 			result += "<OnUpdateScripts />";
-			result += "<IsTempText>false</IsTempText>";
 			return result + xmlstring;
 		},
 

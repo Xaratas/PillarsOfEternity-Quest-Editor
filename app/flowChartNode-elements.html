@@ -348,9 +348,8 @@
 				var node;
 				for (var x = 0; x < xml.childNodes.length; x++) {
 					node = xml.childNodes[x];
-					if (node.nodeName == "LinkEvaluation") {
-						// ignore
-					}
+					if (node.nodeName == "IsTempText") {} // ignore
+					if (node.nodeName == "LinkEvaluation") {} // ignore
 					if (node.nodeName == "EndStates") {
 						if(node.hasChildNodes()) {
 							var state;
@@ -379,7 +378,7 @@
 		},
 
 		toXML: function() {
-			var xml = "";
+			var xml = '<IsTempText>false</IsTempText>';
 			if(PoeQuestEditor.gameVersion > 1.4) {
 				xml += '<LinkEvaluation>FirstLinkThatPasses</LinkEvaluation>';
 			}
@@ -461,9 +460,8 @@
 				var node;
 				for (var x = 0; x < xml.childNodes.length; x++) {
 					node = xml.childNodes[x];
-					if (node.nodeName == "LinkEvaluation") {
-						// ignore
-					}
+					if (node.nodeName == "IsTempText") {} // ignore
+					if (node.nodeName == "LinkEvaluation") {} // ignore
 					if (node.nodeName == "AddendumIDs") {
 						var addendum = node.childNodes;
 						for(var i = 0; i < addendum.length; i++) {
@@ -474,18 +472,14 @@
 					if (node.nodeName == "ExperienceWeight") {
 						this.experienceWeight.value = node.textContent;
 					}
-					if (node.nodeName == "DisplayType") {
-						// ignore
-					}
-					if (node.nodeName == "SortGroup") {
-						// ignore
-					}
+					if (node.nodeName == "DisplayType") {} // ignore
+					if (node.nodeName == "SortGroup") {} // ignore
 				}
 			}
 		},
 
 		toXML: function() {
-			var xml = "";
+			var xml = '<IsTempText>false</IsTempText>';
 			if(PoeQuestEditor.gameVersion > 1.4) {
 				xml += '<LinkEvaluation>FirstLinkThatPasses</LinkEvaluation>';
 			}
@@ -569,6 +563,7 @@
 					if (node.nodeName == "IsQuestionNode") {
 						this.isQuestionNode = node.textContent;
 					}
+					if (node.nodeName == "HideSpeaker") {} // ignore
 					if (node.nodeName == "IsTempText") {
 						this.isTempText = node.textContent;
 					}
@@ -597,6 +592,9 @@
 			var xml = "";
 			xml += '<NotSkippable>' + this.notSkippable + '</NotSkippable>';
 			xml += '<IsQuestionNode>' + this.isQuestionNode + '</IsQuestionNode>';
+			if(PoeQuestEditor.gameVersion > 1.4) {
+				xml += '<HideSpeaker>false</HideSpeaker>';
+			}
 			xml += '<IsTempText>' + this.isTempText + '</IsTempText>';
 			xml += '<PlayVOAs3DSound>' + this.playVOAs3DSound + '</PlayVOAs3DSound>';
 			xml += '<PlayType>' + this.playType.value + '</PlayType>';

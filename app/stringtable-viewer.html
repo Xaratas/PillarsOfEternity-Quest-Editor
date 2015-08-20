@@ -219,7 +219,7 @@
 		changeQuestEvent: function(e, details) {
 			var orginal = e.target.parentElement.parentElement.parentElement.parentElement;
 			var newQuestEvent = new window[details.value]();
-			newQuestEvent.$$('questevent-element').id = orginal.$$('questevent-element').id
+			newQuestEvent.$$('questevent-element').id = orginal.$$('questevent-element').id;
 			newQuestEvent.$$('questevent-element').displayName = orginal.$$('questevent-element').displayName;
 			for(var j = 0; j < this.questEvents.length; j++) {
 				Polymer.dom(this.$.questEvents).removeChild(this.questEvents[j]);

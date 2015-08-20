@@ -151,6 +151,7 @@
 					if(item.nodeName == "NextAddendumID") {
 						this.nextAddendumID = item.textContent;
 					}
+					if(item.nodeName == "NextAlternateDescriptionID") {} // ignore
 					if(item.nodeName == "Events") {
 						var node2, element2; // scoping regeln von js …
 						for(var y = 0; y < item.childNodes.length; y++) {
@@ -194,6 +195,9 @@
 			result += '<NextEventID>' + this.nextEventID + '</NextEventID>';
 			result += '<NextEndStateID>' + this.nextEventID + '</NextEndStateID>';
 			result += '<NextAddendumID>' + this.nextAddendumID + '</NextAddendumID>';
+			if(PoeQuestEditor.gameVersion > 1.4) {
+				result += '<NextAlternateDescriptionID>1</NextAlternateDescriptionID>';
+			}
 			result += '<Events>';
 			for(var x = 0; x < this.questEvents.length; x++) {
 				result += this.questEvents[x].toXML();

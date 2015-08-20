@@ -348,6 +348,9 @@
 				var node;
 				for (var x = 0; x < xml.childNodes.length; x++) {
 					node = xml.childNodes[x];
+					if (node.nodeName == "LinkEvaluation") {
+						// ignore
+					}
 					if (node.nodeName == "EndStates") {
 						if(node.hasChildNodes()) {
 							var state;
@@ -362,6 +365,9 @@
 							}
 						}
 					}
+					if (node.nodeName == "AlternateDescriptionIDs") {
+						// Dont care, all empty
+					}
 					if (node.nodeName == "ExperienceType") {
 						this.experienceType.value = node.textContent;
 					}
@@ -373,7 +379,11 @@
 		},
 
 		toXML: function() {
-			var xml = '<EndStates>';
+			var xml = "";
+			if(PoeQuestEditor.gameVersion > 1.4) {
+				xml += '<LinkEvaluation>FirstLinkThatPasses</LinkEvaluation>';
+			}
+			xml += '<EndStates>';
 			for(var i = 0; i < this.endStates.length; i++) {
 				xml += '<QuestEndState>';
 				xml += '<EndStateID>' + this.endStates[i].id + '</EndStateID>';
@@ -382,6 +392,9 @@
 				xml += '</QuestEndState>';
 			}
 			xml += '</EndStates>';
+			if(PoeQuestEditor.gameVersion > 1.4) {
+				xml += "<AlternateDescriptionIDs />";
+			}
 			xml += '<ExperienceType>' + this.experienceType.value + '</ExperienceType>';
 			xml += '<ExperienceLevel>' + this.experienceLevel.value + '</ExperienceLevel>';
 			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.flowchartnode.toXML(xml) + '</FlowChartNode>';
@@ -448,6 +461,9 @@
 				var node;
 				for (var x = 0; x < xml.childNodes.length; x++) {
 					node = xml.childNodes[x];
+					if (node.nodeName == "LinkEvaluation") {
+						// ignore
+					}
 					if (node.nodeName == "AddendumIDs") {
 						var addendum = node.childNodes;
 						for(var i = 0; i < addendum.length; i++) {
@@ -458,17 +474,30 @@
 					if (node.nodeName == "ExperienceWeight") {
 						this.experienceWeight.value = node.textContent;
 					}
+					if (node.nodeName == "DisplayType") {
+						// ignore
+					}
+					if (node.nodeName == "SortGroup") {
+						// ignore
+					}
 				}
 			}
 		},
 
 		toXML: function() {
-			var xml = '<AddendumIDs>';
+			var xml = "";
+			if(PoeQuestEditor.gameVersion > 1.4) {
+				xml += '<LinkEvaluation>FirstLinkThatPasses</LinkEvaluation>';
+			}
+			xml += '<AddendumIDs>';
 			this.addendumIds.forEach(function(addendum) {
 				xml += '<int>' + addendum.id + '</int>';
 			});
 			xml += '</AddendumIDs>';
 			xml += '<ExperienceWeight>' + this.experienceWeight.value + '</ExperienceWeight>';
+			if(PoeQuestEditor.gameVersion > 1.4) {
+				xml += '<DisplayType>None</DisplayType><SortGroup>0</SortGroup>';
+			}
 			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.flowchartnode.toXML(xml) + '</FlowChartNode>';
 		}
 	});

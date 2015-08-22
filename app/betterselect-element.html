@@ -3,7 +3,7 @@
 	<template>
 		<style>
 			:host {
-				/* max-width: inherit; /* Funzt nicht im ff*/
+				max-width: inherit;
 			}
 		</style>
 		<template is="dom-repeat" items="{{options_}}">
@@ -39,10 +39,10 @@
 			this.async(function() {
 				if(this.value === "") { // delay further, looks like bad style
 					this.async(function() {
-						this.value = this.selectedvalue;
+						this.selectedIndex = this.options_.indexOf(this.selectedvalue); // ie erlaubt nicht value zu setzen
 					});
 				} else {
-					this.value = this.selectedvalue;
+					this.selectedIndex = this.options_.indexOf(this.selectedvalue);
 				}
 			});
 		},

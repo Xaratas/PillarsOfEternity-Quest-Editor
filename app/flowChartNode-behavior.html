@@ -144,7 +144,7 @@
 	var FlowChartNodeBehavior = {
 		properties: {
 			type: String,
-			nodeId: String, // statt Number solange der fix für https://github.com/PolymerElements/iron-input/issues/37 nicht gemergt wird
+			nodeId: Number, // benötigt iron-input >= 1.0.5
 			comments: {
 				type: Array,
 				value: function() { return []; }

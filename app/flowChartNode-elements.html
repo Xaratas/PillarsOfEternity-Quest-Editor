@@ -105,7 +105,22 @@
 				position: absoulte;
 				right: 0;
 			}
+
+			.xbutton {
+				border-bottom: 1px solid blue;
+			}
+
+			.type {
+				max-width: 160px;
+				text-overflow: ellipsis;
+			}
 		</style>
+		<div class="xbutton">
+			<div>Type: <span class="type">{{type}}</span>
+			<button on-tap="removeSelf">x</button>
+			<span class="direction">{{direction}}</span></div>
+			<div>ID: <input is="iron-input" bind-value={{nodeId}}></input></div>
+		</div>
 		<div class="left" on-tap="toggleConditions">
 			<span>Conditions:&nbsp;<span>[[conditionCount]]</span></span>
 		</div>
@@ -119,8 +134,6 @@
 			<button on-tap="toggleEnterScripts">close</button><button on-tap="addEnterScript">new</button>
 		</enterScripts>
 		<div class="center">
-			<div>Type: <span>{{type}}</span><span class="direction">{{direction}}</span></div>
-			<div>ID: <input is="iron-input" bind-value={{nodeId}}></input></div>
 			<div>Comments: <button on-click="addComment">Add</button></div>
 			<comments></comments>
 			<div><button on-click="toggleEdit">edit</button></div>
@@ -279,6 +292,36 @@
 					}
 				}
 			}
+		},
+
+		removeSelf: function() {
+			// orginalen wrapper finden, 
+			var parentElement;
+			if(this.parentElement.id == this.type + this.nodeId) {
+				// 1 level
+				parentElement = this.parentElement;
+			} else {
+				// 2 level
+				parentElement = this.parentElement.parentElement;
+			}
+			// aus allen links austragen
+			this.removeLinkTo(parentElement);
+			// TODO signal an alle nodes
+			// polymer dom remove
+			Polymer.dom(parentElement.parentElement).removeChild(parentElement);
+		},
+
+		removeLinkTo: function(toElement) {
+			Object.keys(this.links).forEach(function(link) {	
+				if(this.links[link].startElement == toElement) {
+					// ausgehender link auf das gegebene ziel -> entfernen
+					var l = this.links[link];
+					delete this.links[link];
+					Polymer.dom(document).querySelector("body").removeChild(l);
+				}
+			}, this);
+			// eingehender link wird nicht von der node selbst verwaltet
+			toElement.parentElement.parentElement.removeAllIncommingLinks(toElement);
 		}
 	});
 

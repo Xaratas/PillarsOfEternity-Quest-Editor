@@ -1,4 +1,6 @@
-
+<!--
+	`<betterselect-element>` wraps a html select in polymer. Will totally trash your performance if used repeatly with many items to list. (Product of selects times options of around 8000 dom elements is BAD!)
+-->
 <dom-module id="betterselect-element">
 	<template>
 		<style>
@@ -18,7 +20,11 @@
 		extends: "select",
 
 		properties: {
+			/** Names to display as select options. `options` is reserved in Chrome for the native HtmlOptionsCollection.
+			 *  @type {Array<String>}
+			 */
 			options_: Array,
+			/** Text of the selected value. */
 			selectedvalue: {
 				type: String,
 				notify: true
@@ -29,17 +35,19 @@
 			'change': 'onChange'
 		},
 		
-		/** Options is a reserved HtmlOptionsCollection */
 		factoryImpl: function(options_, selectedvalue) { // label?
 			this.options_ = options_;
 			this.selectedvalue = selectedvalue;
 		},
-		// Das selectbox Verhalten setzt den Wert auf das erste Option das kommt, sprich das muss korrigiert werden.
+
+		/** Setting the selected value onAttach, after things have settled. Default of FF is to select the first option. Default of Chrome and IE is to select none.
+		  * IE forbids to set `value` of a select via js, so it sets `selectedIndex`. 
+		  */
 		attached: function() {
 			this.async(function() {
 				if(this.value === "") { // delay further, looks like bad style
 					this.async(function() {
-						this.selectedIndex = this.options_.indexOf(this.selectedvalue); // ie erlaubt nicht value zu setzen
+						this.selectedIndex = this.options_.indexOf(this.selectedvalue);
 					});
 				} else {
 					this.selectedIndex = this.options_.indexOf(this.selectedvalue);

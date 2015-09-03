@@ -158,6 +158,18 @@ var ParserBehavior = {
 				}
 			});
 		}, this);
+	},
+
+	removeAllIncommingLinks: function(target) {
+		this.nodes.forEach(function(node) {
+			Object.keys(node.links).forEach(function(link) {
+				if(node.links[link].endElement == target) {
+					var l = node.links[link];
+					delete node.links[link];
+					Polymer.dom(document).querySelector("body").removeChild(l);
+				}
+			});
+		});
 	}	
 };
 </script>

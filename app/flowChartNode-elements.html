@@ -16,8 +16,10 @@
 				background-color: var(--FlowChartNode-element-background-color);
 				width: 260px;
 				display: flex;
+				flex-direction: column;
 				margin: 10px;
 				position: relative;
+				height: 160px;
 			}
 			
 			:host.selected {
@@ -25,35 +27,40 @@
 			}
 		
 			.direction {
-				float: right;
+				flex-basis: 40px;
 			}
-		
+			
+			wrapper {
+				display: flex;
+			}	
+			
 			.left, .right, .leftmiddle {
 				width: 40px;
 				padding: 10px 5px;
 				background-color: var(--FlowChartNode-element-popup-target-color);
 				position: relative;
+				height: 113px;
 			}
 		
 			.left {
 				border-top-right-radius: 20px;
 				border-bottom-right-radius: 20px;
-				padding-right: 18px;
+				padding-right: 5px;
 			}
 		
 			.right {
 				border-top-left-radius: 20px;
 				border-bottom-left-radius: 20px;
-				padding-right: 18px;
+				padding-right: 5px;
 			}
 		
 			.leftmiddle {
 				border-radius: 20px;
-				padding: 12px;
 				margin-left: 3px;
 			}
 			.center {
 				margin: 10px;
+				width: 99%; /* comments nehmen allen Platz ein der da ist, 100% macht in chrome nen Übertragsfehler */
 			}
 		
 			.left > span, .leftmiddle > span {
@@ -64,7 +71,7 @@
 			}
 		
 			.leftmiddle > span {
-				transform: translate(-4px, -26px) rotate(90deg);
+				transform: translate(0px, -15px) rotate(90deg);
 				display: flex;
 			}
 			
@@ -108,19 +115,28 @@
 
 			.xbutton {
 				border-bottom: 1px solid blue;
+				display: flex;
+				justify-content: space-between;
+				align-items: baseline;
+			}
+
+			.xbutton input {
+				max-width: 20px;
 			}
 
 			.type {
-				max-width: 160px;
-				text-overflow: ellipsis;
+			    max-width: 75px;
+			    overflow: hidden;
+			    text-overflow: ellipsis;
 			}
 		</style>
 		<div class="xbutton">
-			<div>Type: <span class="type">{{type}}</span>
+			Type:&nbsp;<span class="type">{{type}}</span>&nbsp;
+			ID:&nbsp;<input is="iron-input" bind-value={{nodeId}}></input>
+			<span class="direction">{{direction}}</span>
 			<button on-tap="removeSelf">x</button>
-			<span class="direction">{{direction}}</span></div>
-			<div>ID: <input is="iron-input" bind-value={{nodeId}}></input></div>
 		</div>
+		<wrapper>
 		<div class="left" on-tap="toggleConditions">
 			<span>Conditions:&nbsp;<span>[[conditionCount]]</span></span>
 		</div>
@@ -150,6 +166,7 @@
 				<edit-element label="{{item.label}}" options="{{item.set}}" value="{{item.value}}" type="{{item.type}}" helpText="{{item.help}}"></edit-element>
 			</template>
 		</div>
+		</wrapper>
 </template>
 </dom-module>
 
@@ -312,16 +329,22 @@
 		},
 
 		removeLinkTo: function(toElement) {
+			var parent_;
 			Object.keys(this.links).forEach(function(link) {	
 				if(this.links[link].startElement == toElement) {
 					// ausgehender link auf das gegebene ziel -> entfernen
 					var l = this.links[link];
 					delete this.links[link];
-					Polymer.dom(document).querySelector("body").removeChild(l);
+					// looking around for the correct parent
+					parent_ = this.parentElement;
+					while(parent_.nodeName !== "QUESTDATA-ELEMENT" && parent_.nodeName !== "CONVERSATIONDATA-ELEMENT") {
+						parent_ = parent_.parentElement;
+					}
+					Polymer.dom(parent_.firstElementChild).removeChild(l);
 				}
 			}, this);
 			// eingehender link wird nicht von der node selbst verwaltet
-			toElement.parentElement.parentElement.removeAllIncommingLinks(toElement);
+			parent_.removeAllIncommingLinks(toElement);
 		}
 	});
 

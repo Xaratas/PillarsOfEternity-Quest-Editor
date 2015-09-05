@@ -68,7 +68,7 @@
 		/** Add links between elements on attach of the node. Then the calculations of the links will work. */
 		attached: function() {
 			Object.keys(this.links).forEach(function(link) {
-				document.getElementsByTagName("body")[0].appendChild(this.links[link]);
+				this.parentElement.parentElement.appendChild(this.links[link]);
 			}, this);
 		},
 

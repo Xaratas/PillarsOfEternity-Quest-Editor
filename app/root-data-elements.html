@@ -2,6 +2,8 @@
 <link rel="import" href="parser-behavior.html">
 <link rel="import" href="flowChartNode-elements.html">
 <link rel="import" href="questevent-elements.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
 
 <!-- Quest Farbpalette
 	Hell: #EDEFFF
@@ -17,23 +19,49 @@
 			:host {
 				display: flex;
 			}
+
+			:host paper-material > ::content {
+				display: flex;
+			}
 	
-			:host > ::content > div {
+			:host paper-material > ::content > div {
 				display:flex;
 				flex-direction: column;
 				margin-left: 30px;
 				margin-right: 30px;
 			}
 	
-			:host > ::content > div:first-child {
+			:host paper-material > ::content > div:first-child {
 				margin-left: 0;	
 			}
 	
-			:host > ::content > div:last-child {
+			:host > paper-material ::content > div:last-child {
 				margin-right: 0;
 			}
+
+			.name {
+				transform: translate(30px, 34px) rotate(90deg);
+				transform-origin: top left;
+				height: 19px;
+				position: absolute;
+				min-width: 200px;
+			}
+
+			wrapper {
+				display: flex;
+				flex-direction: column;
+				margin-top: 10px;
+				margin-left: 45px;
+			}
 		</style>
-		<content></content>
+		<paper-material elevation="1">
+			<div class="name">Name: // TODO</div>
+			<wrapper>
+				<paper-button raised on-tap="newQuestNode">New QN</paper-button>
+				<paper-button raised on-tap="newObjectiveNode">New ObjN</paper-button>
+			</wrapper>
+			<content></content>
+		</paper-material>
 	</template>
 </dom-module>
 

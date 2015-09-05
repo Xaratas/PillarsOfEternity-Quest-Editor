@@ -132,13 +132,16 @@ var ParserBehavior = {
 
 	/** Place link targets in buckets, new reachable elements get in a new bucket */
 	place: function(links, i) {
+		// breite zuerst, mit nur einer schleife wirds tiefe zuerst, dann landen noch mehr linien übereinander
 		Object.keys(links).forEach(function(link) {
-			if(this.buckets[i] === undefined) this.buckets[i] = [];
 			if(links[link].endElement.placed === false) {
+				if(this.buckets[i] === undefined) this.buckets[i] = [];
 				this.buckets[i].push(links[link].endElement);
 				links[link].endElement.placed = true;
-				this.place(links[link].endElement.links, i+1); 
 			}
+		}, this);
+		Object.keys(links).forEach(function(link) {
+			this.place(links[link].endElement.links, i+1); 
 		}, this);
 	},
 
@@ -166,10 +169,10 @@ var ParserBehavior = {
 				if(node.links[link].endElement == target) {
 					var l = node.links[link];
 					delete node.links[link];
-					Polymer.dom(document).querySelector("body").removeChild(l);
+					Polymer.dom(this.firstElementChild).removeChild(l);
 				}
-			});
-		});
+			}, this);
+		}, this);
 	}	
 };
 </script>

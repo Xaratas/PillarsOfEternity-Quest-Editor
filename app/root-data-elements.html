@@ -80,22 +80,51 @@
 				display: flex;
 			}
 
-			:host > ::content > div {
+			:host paper-material > ::content {
+				display: flex;
+			}
+
+			::content bucket {
 				display:flex;
 				flex-direction: column;
 				margin-left: 30px;
 				margin-right: 30px;
 			}
 
-			:host > ::content > div:first-child {
+			::content bucket:first-of-type {
 				margin-left: 0;	
 			}
 		   
-			:host > ::content > div:last-child {
+			::content bucket:last-of-type {
 				margin-right: 0;
 			}
+			
+			.name {
+				transform: translate(30px, 34px) rotate(90deg);
+				transform-origin: top left;
+				height: 19px;
+				position: absolute;
+				min-width: 200px;
+			}
+
+			wrapper {
+				display: flex;
+				flex-direction: column;
+				margin-top: 10px;
+				margin-left: 45px;
+			}
 		</style>
-		<content></content>
+		<paper-material elevation="1">	
+			<div class="name">Name: // TODO</div>
+			<wrapper>
+				<paper-button raised on-tap="newTalkNode">New TN</paper-button>
+				<paper-button raised on-tap="newPlayerResponseNode">New PRN</paper-button>
+				<paper-button raised on-tap="newTriggerConversationNode">New TCN</paper-button>
+				<paper-button raised on-tap="newBankNode">New BN</paper-button>
+				<paper-button raised on-tap="newScriptNode">New SN</paper-button>
+			</wrapper>
+			<content></content>
+		</paper-material>
 	</template>
 </dom-module>
 
@@ -385,13 +414,57 @@
 			characterMappings: {
 				type: Array, // array of objects with Guid and InstanceTag
 				value: function() { return []; }
-			}
+			},
+
+			logicalParent: Object
 		},
 
 		created: function() {
 			this.type = "ConversationData";
 		},
 
+		attached: function() {
+			this.logicalParent = Polymer.dom(this.firstElementChild);
+		},
+		
+		newNode: function(newNode) {
+			newNode.nodeId = this.nextNodeId;
+			this.nextNodeId += 1;
+			this.push("nodes", newNode);
+			this.nodesMap[newNode.id] = newNode;
+			// nur einen wrapper generieren
+			if(this.buckets[0] === undefined) {
+				this.buckets[0] = [];
+				var bucketWrapper = document.createElement('bucket');
+				this.logicalParent.appendChild(bucketWrapper);
+			}
+			this.buckets[0].push(newNode);
+			
+			this.buckets[0].forEach(function(node_) {
+				this.logicalParent.querySelector("bucket").appendChild(node_);
+			}, this);
+		},
+		
+		newTalkNode: function() {
+			this.newNode(new TalkNode(this));
+		},
+		
+		newPlayerResponseNode: function() {
+			this.newNode(new PlayerResponseNode(this));
+		},
+		
+		newTriggerConversationNode: function() {
+			this.newNode(new TriggerConversationNode(this));
+		},
+		
+		newBankNode: function() {
+			this.newNode(new BankNode(this));
+		},
+		
+		newScriptNode: function() {
+			this.newNode(new ScriptNode(this));
+		},
+		
 		fromXML: function(xml) {
 			if(typeof(xml) == "string") { // schon geparstes ist object
 				xml = this.parser.parseFromString(xml, 'text/xml');

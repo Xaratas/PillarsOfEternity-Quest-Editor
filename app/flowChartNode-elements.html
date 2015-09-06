@@ -769,8 +769,13 @@
 			this.parent_ = parent_; // da das den UIBehavior konstruktor überschreibt, und man über this.behaviors nicht gehen kann
 			this.links = this.$.dialoguenode.$.flowchartnode.links;
 			this.$.dialoguenode.$.flowchartnode.type = this.type;
+			this.$.dialoguenode.$.flowchartnode.parent_ = this;
 			this.push("editElements", this.speakerGuid);
 			this.push("editElements", this.listenerGuid);
+		},
+
+		attached: function() {
+			this.$.dialoguenode.$.flowchartnode.logicalParent = this.parent_.logicalParent;
 		},
 
 		createLink: function(to) {
@@ -818,7 +823,12 @@
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_;
 			this.links = this.$.dialoguenode.$.flowchartnode.links;
+			this.$.dialoguenode.$.flowchartnode.parent_ = this;
 			this.$.dialoguenode.$.flowchartnode.type = this.type;
+		},
+
+		attached: function() {
+			this.$.dialoguenode.$.flowchartnode.logicalParent = this.parent_.logicalParent;
 		},
 
 		createLink: function(to) {
@@ -866,10 +876,19 @@
 			this.parent_ = parent_;
 			this.links = this.$.dialoguenode.$.flowchartnode.links;
 			this.$.dialoguenode.$.flowchartnode.type = this.type;
+			this.$.dialoguenode.$.flowchartnode.parent_ = this;
 			this.push("editElements", this.conversationFilename);
 			this.push("editElements", this.startNodeId);
 		},
 		
+		attached: function() {
+			this.$.dialoguenode.$.flowchartnode.logicalParent = this.parent_.logicalParent;
+		},
+
+		createLink: function(to) {
+			this.$.dialoguenode.$.flowchartnode.createLink(to, this);
+		},
+
 		fromXML: function(xml) {
 			this.nodeId = this.$.dialoguenode.fromXML(xml);
 			if(xml.hasChildNodes()) {
@@ -923,7 +942,12 @@
 			this.parent_ = parent_;
 			this.links = this.$.flowchartnode.links;
 			this.$.flowchartnode.type = this.type;
+			this.$.flowchartnode.parent_ = this;
 			this.push("editElements", this.bankNodePlayType);
+		},
+
+		attached: function() {
+			this.$.flowchartnode.logicalParent = this.parent_.logicalParent;
 		},
 
 		createLink: function(to) {
@@ -973,9 +997,14 @@
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_;	
 			this.links = this.$.dialoguenode.$.flowchartnode.links;
+			this.$.dialoguenode.$.flowchartnode.parent_ = this;
 			this.$.dialoguenode.$.flowchartnode.type = this.type;
 		},
-
+		
+		attached: function() {
+			this.$.dialoguenode.$.flowchartnode.logicalParent = this.parent_.logicalParent;
+		}, 
+		
 		createLink: function(to) {
 			this.$.dialoguenode.createLink(to, this);
 		},

@@ -4,6 +4,7 @@
 <link rel="import" href="condition-element.html">
 <link rel="import" href="betterselect-element.html">
 <link rel="import" href="edit-element.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
 
 <!-- Contains the different kind of FlowChartNodes -->
 <!-- The common base and drag and drop is in flowChartNode-behavior defined -->
@@ -13,7 +14,6 @@
 	<template>
 		<style>
 			:host {
-				background-color: var(--FlowChartNode-element-background-color);
 				width: 260px;
 				display: flex;
 				flex-direction: column;
@@ -22,10 +22,14 @@
 				height: 160px;
 			}
 			
-			:host.selected {
+			:host.selected paper-material.outer {
 				background-color: var(--FlowChartNode-element-selected-color);
 			}
-		
+			
+			paper-material.outer {
+				background-color: var(--FlowChartNode-element-background-color);
+			}
+			
 			.direction {
 				flex-basis: 40px;
 			}
@@ -75,7 +79,7 @@
 				display: flex;
 			}
 			
-			conditions, conditions[hidden], enterScripts, enterScripts[hidden], exitScripts, exitScripts[hidden] {
+			.conditions, .conditions[hidden], .enterScripts, .enterScripts[hidden], .exitScripts, .exitScripts[hidden] {
 				display: none;
 				position: absolute;
 				width: 800px;
@@ -86,7 +90,7 @@
 				padding: 10px;
 			}
 			
-			conditions, enterScripts, exitScripts {
+			.conditions, .enterScripts, .exitScripts {
 				display: block;
 			}
 		
@@ -130,43 +134,51 @@
 			    text-overflow: ellipsis;
 			}
 		</style>
-		<div class="xbutton">
-			Type:&nbsp;<span class="type">{{type}}</span>&nbsp;
-			ID:&nbsp;<input is="iron-input" bind-value={{nodeId}}></input>
-			<span class="direction">{{direction}}</span>
-			<button on-tap="removeSelf">x</button>
-		</div>
-		<wrapper>
-		<div class="left" on-tap="toggleConditions">
-			<span>Conditions:&nbsp;<span>[[conditionCount]]</span></span>
-		</div>
-		<conditions hidden="">
-			<button on-tap="toggleConditions">close</button><button on-tap="addCondition">new</button>
-		</conditions>
-		<div class="leftmiddle" on-tap="toggleEnterScripts">
-			<span>Enter&nbsp;Scripts:&nbsp;<span>[[enterScripts.length]]</span></span>
-		</div>
-		<enterScripts hidden="">
-			<button on-tap="toggleEnterScripts">close</button><button on-tap="addEnterScript">new</button>
-		</enterScripts>
-		<div class="center">
-			<div>Comments: <button on-click="addComment">Add</button></div>
-			<comments></comments>
-			<div><button on-click="toggleEdit">edit</button></div>
-		</div>
-		<div class="right" on-tap="toggleExitScripts">
-			<span>Exit&nbsp;Scripts:&nbsp;<span>[[exitScripts.length]]</span></span>
-		</div>
-		<exitScripts hidden="">
-			<button on-tap="toggleExitScripts">close</button><button on-tap="addExitScript">new</button>
-		</exitScripts>
-		<div id="editpanel" class="editPanel" hidden="">
-			<button class="closeButton" on-click="toggleEdit">close</button>
-			<template is="dom-repeat" items="{{editElements}}">
-				<edit-element label="{{item.label}}" options="{{item.set}}" value="{{item.value}}" type="{{item.type}}" helpText="{{item.help}}"></edit-element>
-			</template>
-		</div>
-		</wrapper>
+		<paper-material elevation="{{selected}}" class="outer">
+			<div class="xbutton">
+				Type:&nbsp;<span class="type">{{type}}</span>&nbsp;
+				ID:&nbsp;<input is="iron-input" bind-value={{nodeId}}></input>
+				<span class="direction">{{direction}}</span>
+				<button on-tap="removeSelf">x</button>
+			</div>
+			<wrapper>
+				<div class="left" on-tap="toggleConditions">
+					<span>Conditions:&nbsp;<span>[[conditionCount]]</span></span>
+				</div>
+				<paper-material elevation="1" class="conditions" id="conditions" hidden="">
+					<conditions>
+						<button on-tap="toggleConditions">close</button><button on-tap="addCondition">new</button>
+					</conditions>
+				</paper-material>
+				<div class="leftmiddle" on-tap="toggleEnterScripts">
+					<span>Enter&nbsp;Scripts:&nbsp;<span>[[enterScripts.length]]</span></span>
+				</div>
+				<paper-material elevation="1" class="enterScripts" id="enterScripts" hidden="">
+					<enterScripts>
+						<button on-tap="toggleEnterScripts">close</button><button on-tap="addEnterScript">new</button>
+					</enterScripts>
+				</paper-material>
+				<div class="center">
+					<div>Comments: <button on-click="addComment">Add</button></div>
+					<comments></comments>
+					<div><button on-click="toggleEdit">edit</button></div>
+				</div>
+				<div class="right" on-tap="toggleExitScripts">
+					<span>Exit&nbsp;Scripts:&nbsp;<span>[[exitScripts.length]]</span></span>
+				</div>
+				<paper-material elevation="1" class="exitScripts" id="exitScripts" hidden="">
+					<exitScripts>
+						<button on-tap="toggleExitScripts">close</button><button on-tap="addExitScript">new</button>
+					</exitScripts>
+				</paper-material>
+				<div id="editpanel" class="editPanel" hidden="">
+					<button class="closeButton" on-click="toggleEdit">close</button>
+					<template is="dom-repeat" items="{{editElements}}">
+						<edit-element label="{{item.label}}" options="{{item.set}}" value="{{item.value}}" type="{{item.type}}" helpText="{{item.help}}"></edit-element>
+					</template>
+				</div>
+			</wrapper>
+		</paper-material>
 </template>
 </dom-module>
 
@@ -277,7 +289,13 @@
 			parent_: Object,
 
 			/* Logischer Root Data Elements Punkt */
-			logicalParent: Object
+			logicalParent: Object,
+
+			/* Paper material Elevation */
+			selected: {
+				type: Number,
+				value: 1
+			}
 		},
 
 		/** Create Links via Drag and Drop */
@@ -325,6 +343,26 @@
 					}
 				}
 			}
+		},
+
+		addCondition: function() {
+
+		},
+
+		addEnterScript: function() {
+			var scriptElement = new ScriptElement();
+			scriptElement.fullFunction = PoeQuestEditor.Scripts.get("Int32 GetPlayerMoney()"); // beliebiger Platzhalter
+			this.push("enterScripts", scriptElement);
+			Polymer.dom(this.$$("enterScripts")).appendChild(scriptElement);
+			scriptElement.show();	
+		},
+
+		addExitScript: function() {
+			var scriptElement = new ScriptElement();
+			scriptElement.fullFunction = PoeQuestEditor.Scripts.get("Int32 GetPlayerMoney()"); // beliebiger Platzhalter
+			this.push("exitScripts", scriptElement);
+			Polymer.dom(this.$$("exitScripts")).appendChild(scriptElement);
+			scriptElement.show();	
 		},
 
 		removeSelf: function() {

@@ -156,8 +156,10 @@ var ParserBehavior = {
 		this.nodes.forEach(function(node) {
 			if(node.$.dialoguenode !== undefined) {
 				this.toggleClass("selected", false, node.$.dialoguenode.$.flowchartnode);
+				node.$.dialoguenode.$.flowchartnode.selected = 1;
 			} else {
 				this.toggleClass("selected", false, node.$.flowchartnode);
+				node.$.flowchartnode.selected = 1;
 			}
 			Object.keys(node.links).forEach(function(link) {
 				if(node.links[link].endElement == exceptThis) {

@@ -53,8 +53,10 @@
 			this.parent_.selectNone(this);
 			if (this.$.dialoguenode !== undefined) {
 				this.toggleClass("selected", true, this.$.dialoguenode.$.flowchartnode);
+				this.$.dialoguenode.$.flowchartnode.selected = 4;	
 			} else {
 				this.toggleClass("selected", true, this.$.flowchartnode);
+				this.$.flowchartnode.selected = 4;	
 			}
 			Object.keys(this.links).forEach(function(link) {
 				if (this.links[link].startElement == this) { // die node selbst hat nur ausgehende links
@@ -214,21 +216,21 @@
 		},
 
 		toggleConditions: function() {
-			this.$$('conditions').hidden = !this.$$('conditions').hidden;
+			this.$.conditions.hidden = !this.$.conditions.hidden;
 			this.conditions.forEach(function(condition) {
 				condition.show();
 			});
 		},		
 		
 		toggleEnterScripts: function() {
-			this.$$('enterScripts').hidden = !this.$$('enterScripts').hidden;
+			this.$.enterScripts.hidden = !this.$.enterScripts.hidden;
 			this.enterScripts.forEach(function(script) {
 				script.show();
 			});
 		},		
 		
 		toggleExitScripts: function() {
-			this.$$('exitScripts').hidden = !this.$$('exitScripts').hidden;
+			this.$.exitScripts.hidden = !this.$.exitScripts.hidden;
 			this.exitScripts.forEach(function(script) {
 				script.show();
 			});

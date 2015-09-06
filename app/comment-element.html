@@ -1,8 +1,18 @@
 <link rel="import" href="../bower_components/iron-input/iron-input.html">
 <dom-module id="comment-element">
 	<template>
-		<style></style>
-		<input is="iron-input" bind-value="{{comment}}" placeholder="comment">
+		<style>
+			:host {
+				display: flex;
+				align-items: baseline;
+			}
+
+			textarea {
+				width: 100%;
+				height: 60px;
+			}
+		</style>
+		<textarea value="{{comment::input}}" placeholder="comment"></textarea>
 		<button on-click="remove">x</button>
 	</template>
 </dom-module>
@@ -11,7 +21,10 @@
 	var Comment = new Polymer({
 		is: "comment-element",
 		properties: {
-			comment: String,
+			comment: {
+				type: String,
+				value: ""
+			},
 			parent_: Object,
 			index: Number // zur Verwaltung in Listen
 		},

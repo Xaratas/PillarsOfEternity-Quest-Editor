@@ -142,7 +142,12 @@
 						//	PoeQuestEditor.GUIDS_NameList.push(this.parameter[i]);
 						//	PoeQuestEditor.GUIDS_byDisplayName.set(this.parameter[i], this.parameter[i]);
 						//}
-						return new BetterSelect(PoeQuestEditor.GUIDS_NameList, PoeQuestEditor.GUIDS.get(this.parameter[i]).instanceTag);
+						var selectedElement = PoeQuestEditor.GUIDS.get(this.parameter[i]);
+						if(selectedElement !== undefined) {
+							return new BetterSelect(PoeQuestEditor.GUIDS_NameList, selectedElement.instanceTag);
+						} else {
+							return new BetterSelect(PoeQuestEditor.GUIDS_NameList, "");
+						}
 					case "Boolean":
 						var button = document.createElement("paper-toggle-button");
 						button.checked = this.parameter[i];

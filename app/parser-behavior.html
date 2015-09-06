@@ -4,7 +4,10 @@
 var ParserBehavior = {
 	properties: {
 		type: String,
-		nextNodeId: Number,
+		nextNodeId: {
+			type: Number,
+			value: 1,
+		},
 		nodes: {
 			type: Array,
 			value: function() { return []; }
@@ -132,16 +135,19 @@ var ParserBehavior = {
 
 	/** Place link targets in buckets, new reachable elements get in a new bucket */
 	place: function(links, i) {
+		var atLeastOne;
 		// breite zuerst, mit nur einer schleife wirds tiefe zuerst, dann landen noch mehr linien übereinander
 		Object.keys(links).forEach(function(link) {
 			if(links[link].endElement.placed === false) {
+				atLeastOne = true;
 				if(this.buckets[i] === undefined) this.buckets[i] = [];
 				this.buckets[i].push(links[link].endElement);
 				links[link].endElement.placed = true;
 			}
 		}, this);
 		Object.keys(links).forEach(function(link) {
-			this.place(links[link].endElement.links, i+1); 
+			if(atLeastOne) i += 1;
+			this.place(links[link].endElement.links, i); 
 		}, this);
 	},
 
@@ -169,10 +175,27 @@ var ParserBehavior = {
 				if(node.links[link].endElement == target) {
 					var l = node.links[link];
 					delete node.links[link];
-					Polymer.dom(this.firstElementChild).removeChild(l);
+					this.logicalParent.removeChild(l);
 				}
 			}, this);
 		}, this);
+	},
+	
+	/* Alle Referenzen auf die Node entfernen */
+	removeNode: function(node) {
+		for(var i = 0; i < this.buckets.length; i++) {
+			for(var j = 0; j < this.buckets[i].length; j++) {
+				if(this.buckets[i][j] == node) {
+					this.buckets[i].splice(j, 1);
+				}
+			}
+		}
+		this.nodes.forEach(function(value, index) {
+			if(value == node) {
+				delete this.nodes[index];
+			}
+		}, this);
+		delete this.nodesMap[node.id];
 	}	
 };
 </script>

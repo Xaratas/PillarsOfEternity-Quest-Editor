@@ -12,13 +12,16 @@
 				value: "true",
 				reflectToAttribute: true
 			},
+			nodeId: {
+				type: Number
+			},
 			id: {
 				computed: 'setId(type, nodeId)',
 				reflectToAttribute: true
 			},
 			/** Direction in Drag and Drop events: from or to */
 			direction: String,
-			/** Parent Quest or Conversation element, limits the range of selectNone() */
+			/** Parent Quest or Conversation Root Element, limits the range of selectNone() */
 			parent_: Object
 		},
 
@@ -144,7 +147,10 @@
 	var FlowChartNodeBehavior = {
 		properties: {
 			type: String,
-			nodeId: Number, // benötigt iron-input >= 1.0.5
+			nodeId: { // no same name allowed
+				type: Number, // benötigt iron-input >= 1.0.5
+				notify: true,
+			},
 			comments: {
 				type: Array,
 				value: function() { return []; }

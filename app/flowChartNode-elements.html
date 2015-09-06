@@ -179,7 +179,7 @@
 				--FlowChartNode-element-selected-color: #6782A7;
 			}	
 		</style>
-		<flowchartnode-element id="flowchartnode" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
+		<flowchartnode-element id="flowchartnode" node-id="{{nodeId}}" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
 	</template>
 </dom-module>
 
@@ -192,13 +192,13 @@
 				--FlowChartNode-element-selected-color: #6782A7;
 			}	
 		</style>
-		<flowchartnode-element id="flowchartnode" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
+		<flowchartnode-element id="flowchartnode" node-id="{{nodeId}}" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
 	</template>
 </dom-module>
 
 <dom-module id="dialoguenode-element">
 	<template>
-		<flowchartnode-element id="flowchartnode" direction="{{direction}}" edit-elements="{{addEditControls(editElements)}}"></flowchartnode-element>
+		<flowchartnode-element id="flowchartnode" node-id="{{nodeId}}" direction="{{direction}}" edit-elements="{{addEditControls(editElements)}}"></flowchartnode-element>
 	</template>
 </dom-module>
 
@@ -211,7 +211,7 @@
 				--FlowChartNode-element-selected-color: #E2EB98;
 			}	
 		</style>
-		<dialoguenode-element id="dialoguenode" direction="{{direction}}" edit-elements="{{editElements}}"></dialoguenode-element>
+		<dialoguenode-element id="dialoguenode" node-id="{{nodeId}}" direction="{{direction}}" edit-elements="{{editElements}}"></dialoguenode-element>
 	</template>
 </dom-module>
 
@@ -224,7 +224,7 @@
 				--FlowChartNode-element-selected-color: #E2EB98;
 			}	
 		</style>
-		<dialoguenode-element id="dialoguenode" direction="{{direction}}"></dialoguenode-element>
+		<dialoguenode-element id="dialoguenode" node-id="{{nodeId}}" direction="{{direction}}"></dialoguenode-element>
 	</template>
 </dom-module>
 
@@ -237,7 +237,7 @@
 				--FlowChartNode-element-selected-color: #E2EB98;
 			}	
 		</style>
-		<dialoguenode-element id="dialoguenode" direction="{{direction}}" edit-elements="{{editElements}}"></dialoguenode-element>
+		<dialoguenode-element id="dialoguenode" node-id="{{nodeId}}" direction="{{direction}}" edit-elements="{{editElements}}"></dialoguenode-element>
 	</template>
 </dom-module>
 
@@ -250,7 +250,7 @@
 				--FlowChartNode-element-selected-color: #E2EB98;
 			}	
 		</style>
-		<flowchartnode-element id="flowchartnode" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
+		<flowchartnode-element id="flowchartnode" node-id="{{nodeId}}" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
 	</template>
 </dom-module>
 
@@ -263,7 +263,7 @@
 				--FlowChartNode-element-selected-color: #E2EB98;
 			}	
 		</style>
-		<dialoguenode-element id="dialoguenode" direction="{{direction}}"></dialoguenode-element>
+		<dialoguenode-element id="dialoguenode" node-id="{{nodeId}}" direction="{{direction}}"></dialoguenode-element>
 	</template>
 </dom-module>
 
@@ -272,6 +272,13 @@
 	var FlowChartNode = new Polymer({
 		is: "flowchartnode-element",
 		behaviors: [FlowChartNodeBehavior],
+		properties: {
+			/* Umschließende Node */
+			parent_: Object,
+
+			/* Logischer Root Data Elements Punkt */
+			logicalParent: Object
+		},
 
 		/** Create Links via Drag and Drop */
 		createLink: function(to, orginalThis) {
@@ -281,7 +288,16 @@
 			if (!(to.id in this.links)) {
 				this.links[to.id] = new DialogueLink(orginalThis, to); // TODO QuestLink bei Quests
 				//document.getElementsByTagName("body")[0].appendChild(this.links[to.id]);
-				Polymer.dom(document).querySelector("body").appendChild(this.links[to.id]);
+				// orginalen wrapper finden, 
+				var parentElement;
+				if(this.parentElement.id == this.type + this.nodeId) {
+					// 1 level
+					parentElement = this.parentElement;
+				} else {
+					// 2 level
+					parentElement = this.parentElement.parentElement;
+				}
+				this.logicalParent.appendChild(this.links[to.id]);
 			}
 		},
 
@@ -322,10 +338,10 @@
 				parentElement = this.parentElement.parentElement;
 			}
 			// aus allen links austragen
-			this.removeLinkTo(parentElement);
-			// TODO signal an alle nodes
+			this.removeLinkTo(parentElement);	
 			// polymer dom remove
 			Polymer.dom(parentElement.parentElement).removeChild(parentElement);
+			this.logicalParent.node.parentElement.removeNode(parentElement);
 		},
 
 		removeLinkTo: function(toElement) {
@@ -335,16 +351,11 @@
 					// ausgehender link auf das gegebene ziel -> entfernen
 					var l = this.links[link];
 					delete this.links[link];
-					// looking around for the correct parent
-					parent_ = this.parentElement;
-					while(parent_.nodeName !== "QUESTDATA-ELEMENT" && parent_.nodeName !== "CONVERSATIONDATA-ELEMENT") {
-						parent_ = parent_.parentElement;
-					}
-					Polymer.dom(parent_.firstElementChild).removeChild(l);
+					this.logicalParent.node.removeChild(l); // TODO find out why node is necesarry
 				}
 			}, this);
 			// eingehender link wird nicht von der node selbst verwaltet
-			parent_.removeAllIncommingLinks(toElement);
+			this.logicalParent.node.parentElement.removeAllIncommingLinks(toElement);
 		}
 	});
 
@@ -385,10 +396,16 @@
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_;
 			this.links = this.$.flowchartnode.links;
+			this.$.flowchartnode.type = this.type;
+			this.$.flowchartnode.parent_ = this;
 			this.push("editElements", this.experienceType);
 			this.push("editElements", this.experienceLevel);
 		},
 
+		attached: function() {
+			this.$.flowchartnode.logicalParent = this.parent_.logicalParent;
+		}, 
+		
 		createLink: function(to) {
 			this.$.flowchartnode.createLink(to, this);
 		},
@@ -496,7 +513,13 @@
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_;
 			this.links = this.$.flowchartnode.links;
+			this.$.flowchartnode.type = this.type;
+			this.$.flowchartnode.parent_ = this;
 			this.push("editElements", this.experienceWeight);
+		},
+
+		attached: function() {
+			this.$.flowchartnode.logicalParent = this.parent_.logicalParent;
 		},
 
 		createLink: function(to) {
@@ -707,6 +730,7 @@
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_; // da das den UIBehavior konstruktor überschreibt, und man über this.behaviors nicht gehen kann
 			this.links = this.$.dialoguenode.$.flowchartnode.links;
+			this.$.dialoguenode.$.flowchartnode.type = this.type;
 			this.push("editElements", this.speakerGuid);
 			this.push("editElements", this.listenerGuid);
 		},
@@ -756,6 +780,7 @@
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_;
 			this.links = this.$.dialoguenode.$.flowchartnode.links;
+			this.$.dialoguenode.$.flowchartnode.type = this.type;
 		},
 
 		createLink: function(to) {
@@ -802,6 +827,7 @@
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_;
 			this.links = this.$.dialoguenode.$.flowchartnode.links;
+			this.$.dialoguenode.$.flowchartnode.type = this.type;
 			this.push("editElements", this.conversationFilename);
 			this.push("editElements", this.startNodeId);
 		},
@@ -858,6 +884,7 @@
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_;
 			this.links = this.$.flowchartnode.links;
+			this.$.flowchartnode.type = this.type;
 			this.push("editElements", this.bankNodePlayType);
 		},
 
@@ -908,6 +935,7 @@
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_;	
 			this.links = this.$.dialoguenode.$.flowchartnode.links;
+			this.$.dialoguenode.$.flowchartnode.type = this.type;
 		},
 
 		createLink: function(to) {

@@ -535,7 +535,7 @@
 						}, this);
 						// dom anpassen, quasi eigenes template
 						this.buckets.forEach(function(bucket) {
-							var bucketWrapper = document.createElement('div');
+							var bucketWrapper = document.createElement('bucket');
 							Polymer.dom(this).appendChild(bucketWrapper);
 							bucket.forEach(function(node_) {
 								Polymer.dom(bucketWrapper).appendChild(node_);

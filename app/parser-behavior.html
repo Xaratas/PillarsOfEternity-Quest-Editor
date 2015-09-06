@@ -177,7 +177,7 @@ var ParserBehavior = {
 				if(node.links[link].endElement == target) {
 					var l = node.links[link];
 					delete node.links[link];
-					this.logicalParent.removeChild(l);
+					this.logicalParent.node.removeChild(l);
 				}
 			}, this);
 		}, this);

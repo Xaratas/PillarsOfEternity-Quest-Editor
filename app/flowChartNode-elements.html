@@ -304,8 +304,11 @@
 				orginalThis = this;
 			}
 			if (!(to.id in this.links)) {
-				this.links[to.id] = new DialogueLink(orginalThis, to); // TODO QuestLink bei Quests
-				//document.getElementsByTagName("body")[0].appendChild(this.links[to.id]);
+				if(this.parent_.parent_.is == "questdata-element") {
+					this.links[to.id] = new QuestLink(orginalThis, to);
+				} else {
+					this.links[to.id] = new DialogueLink(orginalThis, to);
+				}
 				// orginalen wrapper finden, 
 				var parentElement;
 				if(this.parentElement.id == this.type + this.nodeId) {
@@ -375,9 +378,7 @@
 				// 2 level
 				parentElement = this.parentElement.parentElement;
 			}
-			// aus allen links austragen
 			this.removeLinkTo(parentElement);	
-			// polymer dom remove
 			Polymer.dom(parentElement.parentElement).removeChild(parentElement);
 			this.logicalParent.node.parentElement.removeNode(parentElement);
 		},

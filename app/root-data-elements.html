@@ -18,6 +18,7 @@
 		<style>
 			:host {
 				display: flex;
+				min-height: 200px;
 			}
 
 			:host paper-material > ::content {
@@ -57,8 +58,8 @@
 		<paper-material elevation="1">
 			<div class="name">Name: // TODO</div>
 			<wrapper>
-				<paper-button raised on-tap="newQuestNode">New QN</paper-button>
-				<paper-button raised on-tap="newObjectiveNode">New ObjN</paper-button>
+				<paper-button raised on-tap="newQuestNode">New <abbr title="QuestNode">QN</abbr></paper-button>
+				<paper-button raised on-tap="newObjectiveNode">New <abbr title="ObjectiveNode">ObjN</abbr></paper-button>
 			</wrapper>
 			<content></content>
 		</paper-material>
@@ -78,6 +79,7 @@
 		<style>
 			:host {
 				display: flex;
+				min-height: 200px;
 			}
 
 			:host paper-material > ::content {
@@ -117,11 +119,11 @@
 		<paper-material elevation="1">	
 			<div class="name">Name: // TODO</div>
 			<wrapper>
-				<paper-button raised on-tap="newTalkNode">New TN</paper-button>
-				<paper-button raised on-tap="newPlayerResponseNode">New PRN</paper-button>
-				<paper-button raised on-tap="newTriggerConversationNode">New TCN</paper-button>
-				<paper-button raised on-tap="newBankNode">New BN</paper-button>
-				<paper-button raised on-tap="newScriptNode">New SN</paper-button>
+				<paper-button raised on-tap="newTalkNode">New <abbr title="TalkNode">TN</abbr></paper-button>
+				<paper-button raised on-tap="newPlayerResponseNode">New <abbr title="PlayerResponseNode">PRN</abbr></paper-button>
+				<paper-button raised on-tap="newTriggerConversationNode">New <abbr title="TriggerConversationNode">TCN</abbr></paper-button>
+				<paper-button raised on-tap="newBankNode">New <abbr title="BankNode">BN</abbr></paper-button>
+				<paper-button raised on-tap="newScriptNode">New <abbr title="ScriptNode">SN</abbr></paper-button>
 			</wrapper>
 			<content></content>
 		</paper-material>

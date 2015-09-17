@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
+		<title>Quest- and Conversation-viewer for Pillars of Eterninty</title>
 		<script src="../bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 		<link rel="import" href="constants.html">
 		<link rel="import" href="constants-npc-guids.html">
@@ -85,14 +86,17 @@
 	</head>
 	<body>
 		<h2>Instructions</h2>
-		Copy the content of a .quest file in the light violet box. And the content of a conversation file in the turquise box. Hit the respective buttons. Limitations: write buttons write only the first read quest/ conversation.<br />
+		Copy the content of a .quest file in the light violet box. And the content of a conversation file in the turquoise box. Hit the respective buttons. Limitations: write buttons write only the first read quest/ conversation.<br />
 		On selecting a Node (Box) all ingoing links get blue, and all outgoing links get green.<br />
-		If a spaker name is "-" then this npc has got no name.
+		If a speaker name is "-" then this npc has got no name.
 		<h3>Conditions</h3>
-		Conditions can now be edited. The Questionmark Icon and each parameter name has a short description text on hover.
+		Conditions can now be edited. The question mark icon and each parameter name has a short description text on hover.
+		<h3>New Nodes</h3>
+		Completly from scratch: Hit the “Read Quest” and “Read Conversation” button with an empty textbox.
+		Behind the crude labeled Buttons is the Function to create new Nodes. They will order themself yust downward. To reorder them it is currently necessary to export and reread the quest / conversation.
 		<h3>Nice examples</h3>
-		[gamepath]/data/quests/05_defiance_bay_heritage_hill/05_qst_rise_and_fall.quest <br />
-		[gamepath]/data/conversations/07_gilded_vale/07_bs_rh_ext_guard_01.conversation <br />
+		[game-path]/data/quests/05_defiance_bay_heritage_hill/05_qst_rise_and_fall.quest <br />
+		[game-path]/data/conversations/07_gilded_vale/07_bs_rh_ext_guard_01.conversation <br />
 		<h5>Tested and Works on: FF, Chrome and IE.</h5>
 		<div style="display:flex;">
 		<div style="display:flex;flex-direction: column;width: 260px;">

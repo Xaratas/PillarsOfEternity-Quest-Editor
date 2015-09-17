@@ -1,8 +1,8 @@
-# Pillars of Eternity Quest Editor (im entstehen) v0.3.0
+# Pillars of Eternity Quest Editor (im entstehen) v0.3.1
 
 Basiert momentan rein auf [Polymer](www.polymer-project.org)
 
-XML für Conversation, Quest und Stringtable vollständig bis Spielversion 1.0.6. Ausgabe kann für Spiele bis 1.0.4 umgeschaltet werden. (constants.html)
+XML für Conversation, Quest und Stringtable vollständig bis Spielversion 1.0.6, 2.00 hat das XML verändert, damit kann noch nicht umgegangen werden. Ausgabe kann für Spiele bis 1.0.4 umgeschaltet werden. (constants.html)
 Verknüpfen von Quest und Conversation zu Stringtable vollständig.
 Für UI Verbesserungen und Ideen bitte ein Ticket anlegen.
 
@@ -23,6 +23,7 @@ Für UI Verbesserungen und Ideen bitte ein Ticket anlegen.
 * Anzeigen der redenden und zuhörenden NPCs
 * Ausgeben der editierten Files auf der Konsole (ohne Formatierung)
 * Anzeige der Quest Events
+* Anlegen und enfernen von Nodes
 
 
 Rest: Muss noch gebaut werden :)
@@ -37,7 +38,7 @@ Dokumentation des Quest-/Conversationsystems http://pillarsofeternity.gamepedia.
 Dokumentation Conditions, Scripts, NPCs 
 * http://pillarsofeternity.gamepedia.com/Modding/Quest/
 * http://pillarsofeternity.gamepedia.com/Modding/Conditionals
-* ttp://pillarsofeternity.gamepedia.com/Modding/Scripts
+* http://pillarsofeternity.gamepedia.com/Modding/Scripts
 
 
 XSD um Quest- und Conversationdateien zu validieren: 

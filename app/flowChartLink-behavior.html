@@ -13,15 +13,21 @@ var FlowChartLinkBehavior = {
 
 	/** color: html valid colorstring */
 	connect: function(color) {
-		// find offset positions for both elements
-		var offsetStart = {
-			x: this.startElement.offsetLeft + this.startElement.offsetWidth / 2,
-			y: this.startElement.offsetTop + this.startElement.offsetHeight / 2
-		};
-		var offsetEnd = {
-			x: this.endElement.offsetLeft + this.endElement.offsetWidth / 2,
-			y: this.endElement.offsetTop + this.endElement.offsetHeight / 2
-		};
+		// find offset positions for both elements and remember
+		if(this.startElement.offset_ === undefined) {
+			this.startElement.offset_ = {
+				x: this.startElement.offsetLeft + this.startElement.offsetWidth / 2,
+				y: this.startElement.offsetTop + this.startElement.offsetHeight / 2
+			};
+		}
+		var offsetStart = this.startElement.offset_;
+		if(this.endElement.offset_ === undefined) {
+			this.endElement.offset_ = {
+				x: this.endElement.offsetLeft + this.endElement.offsetWidth / 2,
+				y: this.endElement.offsetTop + this.endElement.offsetHeight / 2
+			};
+		}
+		var offsetEnd = this.endElement.offset_;
 
 		// x,y = top left corner
 		// x1,y1 = bottom right corner
@@ -31,20 +37,26 @@ var FlowChartLinkBehavior = {
 			y: offsetStart.y < offsetEnd.y ? offsetStart.y : offsetEnd.y,
 			y1: offsetStart.y > offsetEnd.y ? offsetStart.y : offsetEnd.y
 		};
-		// straight lines should be visible
-		this.setAttribute("width", Math.max(p.x1 - p.x, 2));
-		this.setAttribute('height', Math.max(p.y1 - p.y, 2));
+		
+		// http://wilsonpage.co.uk/preventing-layout-thrashing/ ohne ist es um viele Größenordnungen langsamer.
+		requestAnimationFrame(
+			function() { 
+				// straight lines should be visible
+				this.setAttribute("width", Math.max(p.x1 - p.x, 2));
+				this.setAttribute("height", Math.max(p.y1 - p.y, 2));
 
-		this.setAttribute("style", "position: absolute; left: " + p.x + "px; top: " + p.y + "px; z-index: -1");
-		var drawContext = this.getContext('2d');
+				this.setAttribute("style", "position: absolute; left: " + p.x + "px; top: " + p.y + "px; z-index: -1");
+				var drawContext = this.getContext('2d');
 
-		// draw line on this canvas, line goes from center to center, -1 z-index hides the unneded parts
-		drawContext.strokeStyle = color;
-		drawContext.lineWidth = 2;
-		drawContext.beginPath();
-		drawContext.moveTo(offsetStart.x - p.x, offsetStart.y - p.y);
-		drawContext.lineTo(offsetEnd.x - p.x, offsetEnd.y - p.y);
-		drawContext.stroke();
+				// draw line on this canvas, line goes from center to center, -1 z-index hides the unneded parts
+				drawContext.strokeStyle = color;
+				drawContext.lineWidth = 2;
+				drawContext.beginPath();
+				drawContext.moveTo(offsetStart.x - p.x, offsetStart.y - p.y);
+				drawContext.lineTo(offsetEnd.x - p.x, offsetEnd.y - p.y);
+				drawContext.stroke();
+			}.bind(this)
+		);
 	}
 
 };

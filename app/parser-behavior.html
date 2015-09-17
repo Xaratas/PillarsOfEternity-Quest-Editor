@@ -135,7 +135,7 @@ var ParserBehavior = {
 
 	/** Place link targets in buckets, new reachable elements get in a new bucket */
 	place: function(links, i) {
-		var atLeastOne;
+		var atLeastOne = false;
 		// breite zuerst, mit nur einer schleife wirds tiefe zuerst, dann landen noch mehr linien übereinander
 		Object.keys(links).forEach(function(link) {
 			if(links[link].endElement.placed === false) {
@@ -146,8 +146,11 @@ var ParserBehavior = {
 			}
 		}, this);
 		Object.keys(links).forEach(function(link) {
-			if(atLeastOne) i += 1;
-			this.place(links[link].endElement.links, i); 
+			if(links[link].working === undefined) {
+				if(atLeastOne) i += 1;
+				links[link].working = true; // prevent infinite loop on circles
+				this.place(links[link].endElement.links, i);
+			}
 		}, this);
 	},
 

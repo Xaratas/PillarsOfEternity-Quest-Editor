@@ -36,8 +36,10 @@ gulp.task('copy', function () {
 
   var bower = gulp.src([
     'bower_components/**/*',
+    '!bower_components/**/{test,demo}/*',
     '!bower_components/**/build.log',
-    '!bower_components/**/bower.json'
+    '!bower_components/**/{README,CONTRIBUTING}.md',
+    '!bower_components/**/{package,bower}.json'
   ]).pipe(gulp.dest('dist/bower_components'));
 
   var elements = gulp.src(['app/elements/**/*.html'])

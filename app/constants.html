@@ -1,18 +1,18 @@
 <script>
 /** Enumeration values for changeable Settings in the Questeditor */
 var PoeQuestEditor = {};
-PoeQuestEditor.gameVersion      = 1.6; // Verstehe und Verarbeite Quests für Patch 1.0.6, für alte Quests schreibe 1.4
+PoeQuestEditor.gameVersion      = 3.04; // Verstehe und Verarbeite Quests für Patch 3.05, für alte Quests schreibe 1.4 oder weniger
 
 // enums in XML files
 PoeQuestEditor.BankNodePlayType = ['PlayFirst', 'PlayAll', 'PlayRandom'];
 PoeQuestEditor.ConversationType = ['Conversation', 'Chatter'];
 PoeQuestEditor.PlayType =         ['Normal', 'Random', 'CycleLoop', 'CycleStop'];
 PoeQuestEditor.Persistence =      ['None', 'OnceEver', 'OncePerConversation', 'MarkAsRead'];
-PoeQuestEditor.DisplayType =      ['Hidden', 'Conversation', 'Bark'];
+PoeQuestEditor.DisplayType =      ['Hidden', 'Conversation', 'Bark', 'Overlay'];
 PoeQuestEditor.LogicalOperator =  ['And', 'Or'];
 PoeQuestEditor.QuestionNodeTextDisplay = ['ShowOnce', 'ShowAlways', 'ShowNever'];
 PoeQuestEditor.ExperienceType =   ['Minor', 'Normal', 'Major'];
-PoeQuestEditor.QuestType =        ['MainQuest', 'Quest', 'Task'];
+PoeQuestEditor.QuestType =        ['MainQuest', 'Quest', 'Task', '? (3)', '? (4)'];
 
 PoeQuestEditor.QuestEvents =      ['QuestEventGlobalVariable', 'QuestEventAquire', 'QuestEventInspect', 'QuestEventInteract', 'QuestEventKill', 'QuestEventTalk', 'QuestEventLocation'];
 

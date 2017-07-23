@@ -171,6 +171,7 @@ var QuestEventGlobalVariable = new Polymer({
 			if(data.nodeName == "VariableValue") {
 				this.variableValue = parseInt(data.textContent);
 			}
+			if(data.nodeName == "ExternalVariableValue") { } // ignore
 		}
 	},
 
@@ -179,6 +180,9 @@ var QuestEventGlobalVariable = new Polymer({
 		xml += this.$$('questevent-element')._toXML();
 		xml += '<VariableName>' + this.variableName + '</VariableName>';
 		xml += '<VariableValue>' + this.variableValue + '</VariableValue>';
+		if(this.gameVersion > 3) {
+			xml += '<ExternalVariableValue />';
+		}
 		xml += '</QuestEvent>';
 		return xml;
 	}

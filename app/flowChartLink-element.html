@@ -36,12 +36,22 @@
 				if (node.nodeName == "FromNodeID") {
 					if (node.textContent === "0") {
 						this.startElement = nodesMap["QuestNode" + node.textContent];
-					} else {
+					} else if(node.textContent === "-10") {
+						this.startElement = nodesMap["GlobalQuestNode" + node.textContent];
+					} else if(nodesMap.hasOwnProperty("ObjectiveNode" + node.textContent)) {
 						this.startElement = nodesMap["ObjectiveNode" + node.textContent];
+					} else {
+						this.startElement = nodesMap["EndStateNode" + node.textContent];
 					}
 				}
 				if (node.nodeName == "ToNodeID") {
-					this.endElement = nodesMap["ObjectiveNode" + node.textContent];
+					if(nodesMap.hasOwnProperty("ObjectiveNode" + node.textContent)) {
+						this.endElement = nodesMap["ObjectiveNode" + node.textContent];
+					} else if(nodesMap.hasOwnProperty("GlobalQuestNode" + node.textContent)) {
+						this.endElement = nodesMap["GlobalQuestNode" + node.textContent];
+					} else if(nodesMap.hasOwnProperty("EndStateNode" + node.textContent)) {
+						this.endElement = nodesMap["EndStateNode" + node.textContent];
+					}
 				}
 				if (node.nodeName == "PointsToGhost") {
 					this.pointsToGhost = node.textContent;
@@ -140,6 +150,42 @@
 				+ '<PlayQuestionNodeVO>' + this.playQuestionNodeVO + '</PlayQuestionNodeVO>'
 				+ '<QuestionNodeTextDisplay>' + this.questionNodeTextDisplay + '</QuestionNodeTextDisplay>';
 			return xml	+ '</FlowChartLink>';
+		}
+	});
+
+	
+	var ChildLink = new Polymer({
+		is: "childlink-element",
+		extends: "canvas",
+		behaviors: [FlowChartLinkBehavior],
+
+		properties: {
+			id: String
+		},
+
+		factoryImpl: function(startElement, endElement) {
+			this.startElement = startElement;
+			this.endElement = endElement;
+		},
+		
+		attached: function() {
+			this.async(function() {
+				if(this.startElement !== undefined && this.endElement !== undefined) { 
+					this.connect('#00f');
+				}
+			});
+		},
+		
+		fromId: function(id, startNode, nodesMap) {
+			var node;
+			var types = ["TalkNode", "PlayerResponseNode", "TriggerConversationNode", "BankNode", "ScriptNode"];
+			this.startElement = startNode;
+
+			types.forEach(function (type) {
+				if(nodesMap[type + id] !== undefined) {
+					this.endElement = nodesMap[type + id];
+				}
+			}, this);
 		}
 	});
 </script>

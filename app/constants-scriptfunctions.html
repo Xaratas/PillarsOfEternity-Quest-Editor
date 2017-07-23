@@ -2329,6 +2329,170 @@ PoeQuestEditor.Scripts.set("Void EndWatcherMovie()", {
     name: "End Watcher Movie",
     category: "Scripts\\UI"
 });
+// 3.00
+PoeQuestEditor.Scripts.set("Void SpecifyCharacter(Guid, Int32)", {
+    description: "Set Character as [Specified x] ??",
+    name: "Specify Character",
+    category: "Scripts\\?",
+    param0: {
+        name: "Character Guid",
+        description: "Id of the Character to remember",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Index",
+        description: "Index under which to remember the character",
+        default: "0",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Boolean IsPlayerInSlot(Int32)", {
+    description: "Is the player character in the specified slot",
+    name: "Is player in slot",
+    category: "Scripts\\?",
+    param0: {
+        name: "Slot",
+        description: "Which slot to check",
+        default: "0",
+	type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Boolean AreGuidsSameObject(Guid, Guid)", {
+    description: "Use to check if 2 Objects are the same, PoE can have multiple uids for one entity …",
+    name: "Are Guids Same Object",
+    category: "Scripts\\?",
+    param0: {
+        name: "Object1",
+        description: "First Object",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Object2",
+        description: "Second Object",
+        default: "",
+        type: "Guid"
+    }
+});
+PoeQuestEditor.Scripts.set("Boolean AnyPartyMemberCanUseAbility(Int32)", {
+    description: "Has the party one Character which can use the specified ability?",
+    name: "Any Party Member Can Use Ability",
+    category: "Scripts\\?",
+    param0: {
+        name: "Ability Number",
+        description: "No I don't have the list at hand",
+        default: "0",
+	type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Boolean CharacterCanUseAbility(Guid, Int32)", {
+    description: "Can the specified caracter use this ability",
+    name: "Character Can Use Ability",
+    category: "Scripts\\?",
+    param0: {
+        name: "Character",
+        description: "Caster",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Ability Number",
+        description: "Ability to check",
+        default: "0",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void CharacterUseAbility(Guid, Int32)", {
+    description: "Let the specified character use this ability.",
+    name: "Character use ability",
+    category: "Scripts\\?",
+    param0: {
+        name: "Character",
+        description: "Caster",
+        default: "",
+        type: "Guid"
+    },
+    param1: {
+        name: "Ability Number",
+        description: "Ability to use",
+        default: "0",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Boolean SlotCanUseAbility(Int32, Int32)", {
+    description: "Can the given Slot use this ability.",
+    name: "Slot can use ability",
+    category: "Scripts\\?",
+    param0: {
+        name: "Slot",
+        description: "Caster",
+        default: "0",
+        type: "Number"
+    },
+    param1: {
+        name: "Ability Number",
+        description: "Ability to check",
+        default: "0",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void SlotCanUseAbility(Int32, Int32)", {
+    description: "Can the given Slot use this ability. ? Use it immediatly?",
+    name: "Slot can use ability",
+    category: "Scripts\\?",
+    param0: {
+        name: "Slot",
+        description: "Caster",
+        default: "0",
+        type: "Number"
+    },
+    param1: {
+        name: "Ability Number",
+        description: "Ability to check",
+        default: "0",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Boolean IsSlotActive(Int32)", {
+    description: "Is a party member in the given slot ?",
+    name: "Is slot active",
+    category: "Scripts\\?",
+    param0: {
+        name: "Slot #",
+        description: "Slotnumber",
+        default: "0",
+	type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void AdjustFatigueLevel(Guid, Int32)", {
+    description: "Adjust fatigue by level for given character.",
+    name: "Adjust Fatigue Level",
+    category: "Scripts\\Health",
+    param0: {
+        name: "Character",
+        description: "Character to adjust fatigue level",
+        default: "0",
+        type: "Guid"
+    },
+    param1: {
+        name: "Fatigue Level",
+        description: "? TODO",
+        default: "0",
+        type: "Number"
+    }
+});
+PoeQuestEditor.Scripts.set("Void RemoveItemIncludingEquipped(String)", {
+    description: "Remove the item from the party.",
+    name: "Remove Item including equipped",
+    category: "Scripts\\Items",
+    param0: {
+        name: "Item Name",
+        description: "Name of the item to remove",
+        default: "",
+	type: "String"
+    }
+});
 
 // für betterselect
 PoeQuestEditor.Scripts_NameList = [];

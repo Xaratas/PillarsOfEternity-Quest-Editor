@@ -208,6 +208,32 @@
 	</template>
 </dom-module>
 
+<dom-module id="globalquestnode-element">
+	<template>
+		<style>
+			:host {
+				--FlowChartNode-element-background-color: #96C5F7;
+				--FlowChartNode-element-popup-target-color: #A9D3FF;
+				--FlowChartNode-element-selected-color: #6782A7;
+			}	
+		</style>
+		<flowchartnode-element id="flowchartnode" node-id="{{nodeId}}" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
+	</template>
+</dom-modue>
+
+<dom-module id="endstatenode-element">
+	<template>
+		<style>
+			:host {
+				--FlowChartNode-element-background-color: #96C5F7;
+				--FlowChartNode-element-popup-target-color: #A9D3FF;
+				--FlowChartNode-element-selected-color: #6782A7;
+			}	
+		</style>
+		<flowchartnode-element id="flowchartnode" node-id="{{nodeId}}" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
+	</template>
+</dom-modue>
+
 <dom-module id="dialoguenode-element">
 	<template>
 		<flowchartnode-element id="flowchartnode" node-id="{{nodeId}}" direction="{{direction}}" edit-elements="{{addEditControls(editElements)}}"></flowchartnode-element>
@@ -263,6 +289,7 @@
 			}	
 		</style>
 		<flowchartnode-element id="flowchartnode" node-id="{{nodeId}}" direction="{{direction}}" edit-elements="{{editElements}}"></flowchartnode-element>
+		<childnode-element id="childnode"></childnode-element>
 	</template>
 </dom-module>
 
@@ -281,6 +308,30 @@
 
 <script>
 "use strict";
+	var ChildNode = new Polymer({
+		is: "childnode-element",
+		behaviors: [ChildNodeBehavior],
+
+		properties: {
+			parent_: Object,
+			logicalParent: Object,
+			selected: {
+				type: Number,
+				value: 1
+			}
+		},
+
+		activateChildLinks: function(node, nodesMap) {
+			if(node.childNodeIds.length > 0) {
+				for(var i = 0; i < node.childNodeIds.length; i++) {
+					var link = new ChildLink();
+					link.fromId(node.childNodeIds[i], node, nodesMap);
+					this.links[link.endElement.id] = link;
+				}
+			}
+		}
+	});
+
 	var FlowChartNode = new Polymer({
 		is: "flowchartnode-element",
 		behaviors: [FlowChartNodeBehavior],
@@ -330,15 +381,18 @@
 					if (node.nodeName == "FlowChartLink") {
 						var link;
 						switch(this.type) {
+							case "BankNode":
 							case "TalkNode":
 							case "PlayerResponseNode":
 							case "TriggerConversationNode":
-							case "BankNode":
 							case "ScriptNode": link = new DialogueLink();
 									link.fromXML(node, nodesMap);
 									break;
 							case "QuestNode":
-							case "ObjectiveNode": link = new QuestLink();
+							case "ObjectiveNode":
+							case "GlobalQuestNode":
+							case "EndStateNode":
+									link = new QuestLink();
 									link.fromXML(node, nodesMap);
 									break;
 						}
@@ -479,15 +533,26 @@
 								state = node.childNodes[i];
 								if(state.hasChildNodes()) {
 									var endStateId = parseInt(state.childNodes[0].textContent);
-									var displayName = state.childNodes[1].textContent;
-									var packageId = state.childNodes[2].textContent;
+									var displayName = "";
+									var packageId;
+									if(state.childNodes[1].nodeName == "DisplayName") {
+										displayName = state.childNodes[1].textContent;
+										packageId = state.childNodes[2].textContent;
+									} else {
+										 packageId = state.childNodes[1].textContent;
+									}
 									this.endStates.push({id: endStateId, 'displayName': displayName, 'packageId': packageId});
 								}
 							}
 						}
 					}
 					if (node.nodeName == "AlternateDescriptionIDs") {
-						// Dont care, all empty
+						// Dont care, all empty, not true in 3.04
+						if(node.hasChildNodes()) {
+							for(var i = 0; i < nodes.childNodes.length; i++) {
+								this.alternateDescriptionIds.push(node.childNodes[i].textContent);
+							}
+						}
 					}
 					if (node.nodeName == "ExperienceType") {
 						this.experienceType.value = node.textContent;
@@ -514,7 +579,14 @@
 			}
 			xml += '</EndStates>';
 			if(PoeQuestEditor.gameVersion > 1.4) {
-				xml += "<AlternateDescriptionIDs />";
+				xml += '<AlternateDescriptionIDs />';
+			}
+			if(PoeQuestEditor.gameVersion > 3) {
+				xml += '<AlternateDescriptionIDs>';
+				for(var i = 0; i < this.alternateDescriptionIds.size(); i++) {
+					xml += '<int>' + this.alternateDescriptionIds[i] + '</int>';
+				}
+				xml += '</AlternateDescriptionIDs>';
 			}
 			xml += '<ExperienceType>' + this.experienceType.value + '</ExperienceType>';
 			xml += '<ExperienceLevel>' + this.experienceLevel.value + '</ExperienceLevel>';
@@ -624,6 +696,121 @@
 		}
 	});
 
+	var GlobalQuestNode = new Polymer({
+		is: "globalquestnode-element",
+		behaviors: [UIBehavior],
+
+		properties: {
+			type: {
+				value: 'GlobalQuestNode'
+			}
+		},
+		
+		factoryImpl: function(parent_) {
+			this.parent_ = parent_;
+			this.links = this.$.flowchartnode.links;
+			this.$.flowchartnode.type = this.type;
+			this.$.flowchartnode.parent_ = this;
+		},
+
+		attached: function() {
+			this.$.flowchartnode.logicalParent = this.parent_.logicalParent;
+		}, 
+		
+		createLink: function(to) {
+			this.$.flowchartnode.createLink(to, this);
+		},
+
+		fromXML: function(xml) {
+			this.nodeId = this.$.flowchartnode.fromXML(xml);
+		},
+
+		toXML: function() {
+			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.flowchartnode.toXML("") + '</FlowChartNode>';
+		}
+	});
+
+	var EndStateNode = new Polymer({
+		is: "endstatenode-element",
+		behaviors: [UIBehavior],
+
+		properties: {
+			type: {
+				value: 'EndStateNode'
+			},
+
+			description: String,
+
+			failed: {
+				type: Object, // Boolean
+				value: function() {
+					return {label: "Quest Failed on this node?", value: false, type: 'input', help: 'If true, treat this node as failing the quest.'};
+				}
+			},
+
+			endStateId: {
+				type: Object, // Number
+				value: function() {
+					return {label: "Use Text from", value: 0, type: 'input', help: '?'};
+				}
+			},
+			
+			editElements: {
+				type: Array,
+				value: function() { return []; }
+			}
+		},
+		
+		factoryImpl: function(parent_) {
+			this.parent_ = parent_;
+			this.links = this.$.flowchartnode.links;
+			this.$.flowchartnode.type = this.type;
+			this.$.flowchartnode.parent_ = this;
+			this.push("editElements", this.failed);
+			this.push("editElements", this.endStateId);
+		},
+
+		attached: function() {
+			this.$.flowchartnode.logicalParent = this.parent_.logicalParent;
+		}, 
+		
+		createLink: function(to) {
+			this.$.flowchartnode.createLink(to, this);
+		},
+
+		setText: function(text, femaleText, textType, id) {
+			if(textType == "title") {
+				this.defaultText = text;
+				this.femaleText = femaleText;
+			}
+			if(textType == "description") {
+				this.description = text;
+			}
+		},
+
+		fromXML: function(xml) {
+			this.nodeId = this.$.flowchartnode.fromXML(xml);
+			if (xml.hasChildNodes()) {
+				var node;
+				for (var x = 0; x < xml.childNodes.length; x++) {
+					node = xml.childNodes[x];
+					if (node.nodeName == "Failed") {
+						this.failed.value = node.textContent;
+					}
+					if (node.nodeName == "EndStateID") {
+						this.endStateId.value = node.textContent;
+					}
+				}
+			}
+		},
+
+		toXML: function() {
+			var xml = '<Failed>' + this.failed.value + '</Failed>';
+			xml += '<EndStateID>' + this.endStateId.value + '</EndStateID>';
+			return '<FlowChartNode xsi:type="' + this.type + '">' + this.$.flowchartnode.toXML(xml) + '</FlowChartNode>';
+		}
+	});
+
 	var DialogueNode = new Polymer({
 		is: "dialoguenode-element",
 
@@ -695,6 +882,7 @@
 					if (node.nodeName == "IsTempText") {
 						this.isTempText = node.textContent;
 					}
+					if (node.nodeName == "IsMultiline") {} // ignore
 					if (node.nodeName == "PlayVOAs3DSound") {
 						this.playVOAs3DSound = node.textContent;
 					}
@@ -941,7 +1129,7 @@
 		
 		factoryImpl: function(parent_) {
 			this.parent_ = parent_;
-			this.links = this.$.flowchartnode.links;
+			this.links = function() { return Object.assign(this.$.flowchartnode.links, this.$.childnode.links); };
 			this.$.flowchartnode.type = this.type;
 			this.$.flowchartnode.parent_ = this;
 			this.push("editElements", this.bankNodePlayType);
@@ -964,7 +1152,7 @@
 					if (node.nodeName == "BankNodePlayType") {
 						this.bankNodePlayType.value = node.textContent;
 					}
-					if(node.nodeName == "ChildNodesIDs") {
+					if(node.nodeName == "ChildNodeIDs") {
 						for(var i = 0; i < node.childNodes.length; i++) {
 							this.push('childNodeIds', node.childNodes[i].textContent); 
 						}

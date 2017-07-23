@@ -199,9 +199,13 @@
 								// type rausfiddeln
 								switch(node.attributes[0].value) {
 									case "QuestNode": element = new QuestNode(this);
-													  break;
+														break;
 									case "ObjectiveNode": element = new ObjectiveNode(this);
-														  break;
+														break;
+									case "GlobalQuestNode": element = new GlobalQuestNode(this);
+														break;
+									case "EndStateNode": element = new EndStateNode(this);
+														break;
 								}
 								element.fromXML(node);
 							}
@@ -516,8 +520,12 @@
 						this.nodes.forEach(function(node) {
 							if(node.$.dialoguenode !== undefined) {
 								node.$.dialoguenode.$.flowchartnode.activateLinks(this.nodesMap);
-							} else {
+							}
+							if(node.$.flowchartnode !== undefined){
 								node.$.flowchartnode.activateLinks(this.nodesMap);
+							}
+							if(node.$.childnode !== undefined) {
+								node.$.childnode.activateChildLinks(node, this.nodesMap);
 							}
 						}, this);
 						// nodes anhand der links sortieren
@@ -530,9 +538,13 @@
 								i++;
 								if(node.$.dialoguenode !== undefined) {
 									this.place(node.$.dialoguenode.$.flowchartnode.links, i);
-								} else {
+								}
+								if(node.$.flowchartnode !== undefined) {
 									this.place(node.$.flowchartnode.links, i);
 								}
+							}
+							if(node.$.childnode !== undefined) {
+								this.place(node.$.childnode.links, i);
 							}
 						}, this);
 						// dom anpassen, quasi eigenes template
@@ -548,6 +560,9 @@
 					if(item.nodeName == "ClassExtender") {} // ignore
 					if(item.nodeName == "ConversationType") {
 						this.conversationType = item.textContent;
+					}
+					if(item.nodeName == "WordLimit") {
+						this.wordLimit = item.textContent;
 					}
 					if(item.nodeName == "Description") {} // ignore
 					if(item.nodeName == "SceneLocation") {} // ignore
@@ -565,6 +580,7 @@
 							}
 						}
 					}
+					if(item.nodeName == "WarningDisplayed") {} // ignore
 				}
 			}
 		},
@@ -573,6 +589,9 @@
 			var result = this.basetypecontent_toXML();
 			// todo nicht gleiches
 			result += '<ConversationType>' + this.conversationType + '</ConversationType>';
+			if(this.gameVersion > 3) {
+				result += '<WordLimit>' + this.wordLimit + '</WordLimit>';
+			}
 			// Nicht weiter wichtig, solange die Community nicht einen Weg findet die Texte zu vertonen
 			result += '<Description>Scene description.</Description>';
 			result += '<SceneLocation>SCENE LOCATION</SceneLocation>';

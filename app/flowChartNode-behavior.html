@@ -72,8 +72,12 @@
 
 		/** Add links between elements on attach of the node. Then the calculations of the links will work. */
 		attached: function() {
-			Object.keys(this.links).forEach(function(link) {
-				this.parentElement.parentElement.appendChild(this.links[link]);
+			var links = this.links;
+			if(typeof(this.links) == "function") {
+				links = this.links();
+			}
+			Object.keys(links).forEach(function(link) {
+				this.parentElement.parentElement.appendChild(links[link]);
 			}, this);
 		},
 
@@ -143,6 +147,15 @@
 		onDragEnd: function(event) {
 			console.log("Fin");
 			this.direction = ""; // drag source
+		}
+	};
+
+	var ChildNodeBehavior = {
+		properties: {
+			links: {
+				type: Object,
+				value: function() { return {}; }
+			}
 		}
 	};
 

@@ -542,9 +542,9 @@
 								if(node.$.flowchartnode !== undefined) {
 									this.place(node.$.flowchartnode.links, i);
 								}
-							}
-							if(node.$.childnode !== undefined) {
-								this.place(node.$.childnode.links, i);
+								if(node.$.childnode !== undefined) {
+									this.place(node.$.childnode.links, i);
+								}
 							}
 						}, this);
 						// dom anpassen, quasi eigenes template

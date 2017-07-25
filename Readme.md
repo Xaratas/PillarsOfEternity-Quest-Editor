@@ -1,8 +1,9 @@
-# Pillars of Eternity Quest Editor (im entstehen) v0.3.1
+# Pillars of Eternity Quest Editor (im entstehen) v0.4.0
 
 Basiert momentan rein auf [Polymer](www.polymer-project.org)
 
-XML für Conversation, Quest und Stringtable vollständig bis Spielversion 1.0.6, 2.00 hat das XML verändert, damit kann noch nicht umgegangen werden. Ausgabe kann für Spiele bis 1.0.4 umgeschaltet werden. (constants.html)
+XML für Conversation, Quest und Stringtable vollständig bis Spielversion 3.0.6, 2.00 und 3.00 hat das XML verändert, das sollte jetzt alles verarbeitet werden können. Ausgabe kann für Spiele bis 1.0.4 umgeschaltet werden. (constants.html)
+Funktionen sind vermutlich nicht vollständig.
 Verknüpfen von Quest und Conversation zu Stringtable vollständig.
 Für UI Verbesserungen und Ideen bitte ein Ticket anlegen.
 
@@ -24,7 +25,7 @@ Für UI Verbesserungen und Ideen bitte ein Ticket anlegen.
 * Ausgeben der editierten Files auf der Konsole (ohne Formatierung)
 * Anzeige der Quest Events
 * Anlegen und enfernen von Nodes
-
+* Anzeigen von Childnode Verbindungen, aber kein Hinzufügen von neuen
 
 Rest: Muss noch gebaut werden :)
 
@@ -47,7 +48,7 @@ XSD um Quest- und Conversationdateien zu validieren:
 
 
 ### Abhängigkeiten
-Polymer mind 1.1.0
+Polymer mind 1.1.0, wahrscheinlich mehr. Gebaut mit 1.9.3
 
 
 [bower](bower.io) um die referenzierten Polymer Elemente zu laden.
